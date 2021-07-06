@@ -249,6 +249,9 @@ public:
         }
     }
 
+    /*
+    ** Linked List for easier working with linked list compared to std::list.
+     */
     class LinkedList
     {
         class Node
@@ -294,24 +297,30 @@ public:
         int size;
 
     public:
+        /* Standard constructor */
         LinkedList()
         {
             this->tail = new Node();
             this->head = tail;
         }
+
+        /* Constructor for turning an STL vector in to a custom Linked List*/
         LinkedList(std::vector<int> t_array)
         {
             this->head = new Node();
+            auto it = head;
             for (int i = 0; i < t_array.size(); i++)
             {
                 if (i == 0)
                 {
-                    this->head->setData(t_array[i]);
+                    it->setData(t_array[i]);
+                    this->tail = it;
                     continue;
                 }
                 auto newNode = new Node(t_array[i]);
-                this->head->addNode(newNode);
+                it->addNode(newNode);
                 this->tail = newNode;
+                it = it->getNext();
             }
         }
 
@@ -345,13 +354,6 @@ public:
     static void removeDups(std::list<int> &list)
     {
         std::unordered_set<int> duplicates;
-        for (auto &item : list)
-        {
-            if (duplicates.count(item))
-            {
-
-            }
-        }
     }
 
     /*How would you solve this problem if a temporary buffer is not allowed?*/
@@ -360,7 +362,8 @@ public:
 
 int main(int argc, char *argv[])
 {
-    Cracking::LinkedList list({1,2,3,4,5});
+    std::vector<int> a = {1,2,3,4,5};
+    Cracking::LinkedList list(a);
     list.printList();
     return 0;
 }
