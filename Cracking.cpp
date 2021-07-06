@@ -255,7 +255,6 @@ public:
         {
             int data;
             Node *next;
-
         public:
             Node() : data{0}, next{nullptr} {}
             Node(int t_data) : data{t_data}, next{nullptr} {}
@@ -263,6 +262,8 @@ public:
             int getData() { return this->data; }
             Node *getNext() { return this->next; }
             void addNode(Node *newNode) { this->next = newNode; }
+            void setData(int t_data) { this->data = t_data;}
+
             Node *addNode(int element)
             {
                 auto newNode = new Node(element);
@@ -271,13 +272,49 @@ public:
             }
             Node* deleteNode(Node* head, int element)
             {
-                if (head == )
+                Node* it = head;
+                if (it->data == element)
+                {
+                    return it->next;
+                }
+                while (it->next != nullptr)
+                {
+                    if(it->data == element)
+                    {
+                        it->next = it->next->next;
+                        break;
+                    }
+                    it = it->next;
+                }
+                return head;
             }
         };
         Node *head;
         Node *tail;
+        int size;
 
     public:
+        LinkedList()
+        {
+            this->tail = new Node();
+            this->head = tail;
+        }
+        LinkedList(std::vector<int> t_array)
+        {
+            this->head = new Node();
+            for (int i = 0; i < t_array.size(); i++)
+            {
+                if (i == 0)
+                {
+                    this->head->setData(t_array[i]);
+                    continue;
+                }
+                auto newNode = new Node(t_array[i]);
+                this->head->addNode(newNode);
+                this->tail = newNode;
+            }
+        }
+
         Node *getHead() { return this->head; }
         Node *getTail() { return this->tail; }
         void push_back(int element)
@@ -287,6 +324,15 @@ public:
         void push_front(int element)
         {
             this->head = this->head->addNode(element);
+        }
+        void printList()
+        {
+            auto node = this->head;
+            while (node != nullptr)
+            {
+                std::cout << node->getData();
+                node = node->getNext();
+            }
         }
     };
 
@@ -303,6 +349,7 @@ public:
         {
             if (duplicates.count(item))
             {
+
             }
         }
     }
@@ -311,4 +358,9 @@ public:
     static void removeDupsV2(std::list<int> &list) {}
 };
 
-int main(int argc, char *argv[]) { return 0; }
+int main(int argc, char *argv[])
+{
+    Cracking::LinkedList list({1,2,3,4,5});
+    list.printList();
+    return 0;
+}
