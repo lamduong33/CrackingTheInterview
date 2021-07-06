@@ -1,4 +1,5 @@
 #include <iostream>
+#include <list>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -116,6 +117,7 @@ public:
 
     /*
     ** 1.7) Rotate Matrix:
+    **
     ** ----------------------------------------------------------------------
     ** Given an image represented by an NxN matrix, where each pixel in the
     ** image is 4 bytes, write a method to rotate the image by 90 degrees. Can
@@ -175,12 +177,39 @@ public:
     **
     ---------------------------------------------------------------------------
     ** Assume you have a method isSubstring which checks if one word is a
-    substring of another. Given two strings, s1 and s2, write code to check if
-    s2 is a rotation of s1 using only one call to isSubstring(e.g. "waterbottle"
-    is a rotation of "erbottlewat").*/
-    static bool stringRotation(std::string &str)
+    ** substring of another. Given two strings, s1 and s2, write code to check if
+    ** s2 is a rotation of s1 using only one call to isSubstring(e.g.
+    ** "waterbottle" is a rotation of "erbottlewat").
+    NOTE: A rotation is simply where a chunk is moved around, in the case of
+    "waterbottle", "wat" is moved to the end of the string, creating
+    "erbottlewat"
+    */
+    static bool stringRotation(const std::string &substr, const std::string &str)
+    {
+        return isSubstring(substr, str + str);
+    }
+
+    /* Helper Method to see if a string is a substring of another. */
+    static bool isSubstring(const std::string &substr, const std::string &str)
     {
         bool result = false;
+        auto substringIndex = 0;
+        for (int i = 0; i < str.length(); i++)
+        {
+            if (str.at(i) == substr.at(substringIndex))
+            {
+                if (substringIndex == substr.length() - 1)
+                {
+                    result = true;
+                    break;
+                }
+                substringIndex++;
+            }
+            else
+            {
+                substringIndex = 0;
+            }
+        }
         return result;
     }
 
@@ -202,8 +231,8 @@ public:
                 }
             }
         }
-        std::pair<std::unordered_set<int>, std::unordered_set<int>>
-            result(rowIndices, columnIndices);
+        std::pair<std::unordered_set<int>, std::unordered_set<int>> result(
+            rowIndices, columnIndices);
         return result;
     }
 
@@ -219,23 +248,67 @@ public:
             std::cout << std::endl;
         }
     }
+
+    class LinkedList
+    {
+        class Node
+        {
+            int data;
+            Node *next;
+
+        public:
+            Node() : data{0}, next{nullptr} {}
+            Node(int t_data) : data{t_data}, next{nullptr} {}
+            Node(int t_data, Node *t_next) : data{t_data}, next{t_next} {}
+            int getData() { return this->data; }
+            Node *getNext() { return this->next; }
+            void addNode(Node *newNode) { this->next = newNode; }
+            Node *addNode(int element)
+            {
+                auto newNode = new Node(element);
+                this->next = newNode;
+                return newNode;
+            }
+            Node* deleteNode(Node* head, int element)
+            {
+                if (head == )
+            }
+        };
+        Node *head;
+        Node *tail;
+
+    public:
+        Node *getHead() { return this->head; }
+        Node *getTail() { return this->tail; }
+        void push_back(int element)
+        {
+            this->tail = this->tail->addNode(element);
+        }
+        void push_front(int element)
+        {
+            this->head = this->head->addNode(element);
+        }
+    };
+
+    /*
+    ** 2.1) Remove Dups:
+    **
+    ** -----------------------------------------------------------------
+    ** Write code to remove duplicates from an unsorted linked list.
+    */
+    static void removeDups(std::list<int> &list)
+    {
+        std::unordered_set<int> duplicates;
+        for (auto &item : list)
+        {
+            if (duplicates.count(item))
+            {
+            }
+        }
+    }
+
+    /*How would you solve this problem if a temporary buffer is not allowed?*/
+    static void removeDupsV2(std::list<int> &list) {}
 };
 
-int main(int argc, char *argv[])
-{
-    std::vector<std::vector<int>> matrix;
-    std::vector<int> row1 = {1, 2, 3, 0};
-    matrix.push_back(row1);
-    std::vector<int> row2 = {5, 6, 7, 8};
-    matrix.push_back(row2);
-    std::vector<int> row3 = {9, 0, 11, 12};
-    matrix.push_back(row3);
-    std::vector<int> row4 = {13, 14, 15, 16};
-    matrix.push_back(row4);
-    std::cout << "MATRIX BEFORE:" << std::endl;
-    Cracking::printMatrix(matrix);
-    Cracking::zeroMatrix(matrix);
-    std::cout << "MATRIX after:" << std::endl;
-    Cracking::printMatrix(matrix);
-    return 0;
-}
+int main(int argc, char *argv[]) { return 0; }
