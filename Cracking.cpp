@@ -254,18 +254,19 @@ public:
      */
     class LinkedList
     {
+    public:
         class Node
         {
+        public:
             int data;
             Node *next;
-        public:
             Node() : data{0}, next{nullptr} {}
             Node(int t_data) : data{t_data}, next{nullptr} {}
             Node(int t_data, Node *t_next) : data{t_data}, next{t_next} {}
-            int getData() { return this->data; }
-            Node *getNext() { return this->next; }
+            bool hasNext() { return this->next != nullptr;}
             void addNode(Node *newNode) { this->next = newNode; }
             void setData(int t_data) { this->data = t_data;}
+            void setNext(Node *newNode) { this->next = newNode; }
 
             Node *addNode(int element)
             {
@@ -296,7 +297,6 @@ public:
         Node *tail;
         int size;
 
-    public:
         /* Standard constructor */
         LinkedList()
         {
@@ -320,12 +320,15 @@ public:
                 auto newNode = new Node(t_array[i]);
                 it->addNode(newNode);
                 this->tail = newNode;
-                it = it->getNext();
+                it = it->next;
             }
         }
 
         Node *getHead() { return this->head; }
         Node *getTail() { return this->tail; }
+        void setHead(Node* newHead) { this->head = newHead;}
+        void setTail(Node* newTail) { this->tail = newTail;}
+
         void push_back(int element)
         {
             this->tail = this->tail->addNode(element);
@@ -339,8 +342,8 @@ public:
             auto node = this->head;
             while (node != nullptr)
             {
-                std::cout << node->getData();
-                node = node->getNext();
+                std::cout << node->data;
+                node = node->next;
             }
         }
     };
@@ -351,9 +354,27 @@ public:
     ** -----------------------------------------------------------------
     ** Write code to remove duplicates from an unsorted linked list.
     */
-    static void removeDups(std::list<int> &list)
+    static void removeDups(LinkedList &list)
     {
         std::unordered_set<int> duplicates;
+        std::unordered_set<int> encountered;
+        auto it = list.getHead();
+        LinkedList::Node* previous;
+
+        // Find duplicates
+        while(it != nullptr)
+        {
+            if (encountered.count(it->data))
+            {
+                previous->next = it->next;
+            }
+            else
+            {
+                encountered.insert(it->data);
+                previous = it;
+            }
+            it = it->next;
+        }
     }
 
     /*How would you solve this problem if a temporary buffer is not allowed?*/
@@ -362,8 +383,9 @@ public:
 
 int main(int argc, char *argv[])
 {
-    std::vector<int> a = {1,2,3,4,5};
+    std::vector<int> a = {4,5,3,1,5};
     Cracking::LinkedList list(a);
+    Cracking::removeDups(list);
     list.printList();
     return 0;
 }
