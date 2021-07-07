@@ -1,9 +1,11 @@
+#include <exception>
 #include <iostream>
 #include <list>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
 /*
 ** author: Lam Duong
 ** Cracking the coding interview problems and solutions.
@@ -249,101 +251,61 @@ public:
         }
     }
 
-    /*
-    ** Linked List for easier working with linked list compared to std::list.
-     */
-    class LinkedList
+    struct Node
     {
-    public:
-        class Node
-        {
-        public:
-            int data;
-            Node *next;
-            Node() : data{0}, next{nullptr} {}
-            Node(int t_data) : data{t_data}, next{nullptr} {}
-            Node(int t_data, Node *t_next) : data{t_data}, next{t_next} {}
-            bool hasNext() { return this->next != nullptr;}
-            void addNode(Node *newNode) { this->next = newNode; }
-            void setData(int t_data) { this->data = t_data;}
-            void setNext(Node *newNode) { this->next = newNode; }
+        Node *next = nullptr;
+        int data;
 
-            Node *addNode(int element)
-            {
-                auto newNode = new Node(element);
-                this->next = newNode;
-                return newNode;
-            }
-            Node* deleteNode(Node* head, int element)
-            {
-                Node* it = head;
-                if (it->data == element)
-                {
-                    return it->next;
-                }
-                while (it->next != nullptr)
-                {
-                    if(it->data == element)
-                    {
-                        it->next = it->next->next;
-                        break;
-                    }
-                    it = it->next;
-                }
-                return head;
-            }
-        };
-        Node *head;
-        Node *tail;
-        int size;
-
-        /* Standard constructor */
-        LinkedList()
+        Node(int t_data) : data{t_data} {}
+        Node(std::vector<int> &list)
         {
-            this->tail = new Node();
-            this->head = tail;
-        }
-
-        /* Constructor for turning an STL vector in to a custom Linked List*/
-        LinkedList(std::vector<int> t_array)
-        {
-            this->head = new Node();
-            auto it = head;
-            for (int i = 0; i < t_array.size(); i++)
+            auto it = this;
+            it->data = list[0];
+            for (int i = 1; i < list.size(); i++)
             {
-                if (i == 0)
-                {
-                    it->setData(t_array[i]);
-                    this->tail = it;
-                    continue;
-                }
-                auto newNode = new Node(t_array[i]);
-                it->addNode(newNode);
-                this->tail = newNode;
+                it->next = new Node(list[i]);
                 it = it->next;
             }
         }
 
-        Node *getHead() { return this->head; }
-        Node *getTail() { return this->tail; }
-        void setHead(Node* newHead) { this->head = newHead;}
-        void setTail(Node* newTail) { this->tail = newTail;}
+        void appendToTail(int t_data)
+        {
+            auto end = new Node(t_data);
+            auto n = this;
+            while (n->next != nullptr)
+            {
+                n = n->next;
+            }
+            n->next = end;
+        }
 
-        void push_back(int element)
+        Node *deleteNode(Node *t_head, int t_data)
         {
-            this->tail = this->tail->addNode(element);
+            auto n = t_head;
+            if (n->data == t_data)
+            {
+                return t_head->next; // head moved
+            }
+
+            while (n->next != nullptr)
+            {
+                if (n->next->data == t_data)
+                {
+                    n->next = n->next->next;
+                    return t_head; // head didn't change
+                }
+                n = n->next;
+            }
+            return t_head;
         }
-        void push_front(int element)
-        {
-            this->head = this->head->addNode(element);
-        }
+
         void printList()
         {
-            auto node = this->head;
-            while (node != nullptr)
+            auto it = this;
+            while (it != nullptr)
             {
-                std::cout << node->data;
-                node = node->next;
+                std::cout << it->data;
+                it = it->next;
             }
         }
     };
@@ -354,15 +316,15 @@ public:
     ** -----------------------------------------------------------------
     ** Write code to remove duplicates from an unsorted linked list.
     */
-    static void removeDups(LinkedList &list)
+    static void removeDups(Node *list)
     {
         std::unordered_set<int> duplicates;
         std::unordered_set<int> encountered;
-        auto it = list.getHead();
-        LinkedList::Node* previous;
+        auto it = list;
+        Node *previous;
 
         // Find duplicates
-        while(it != nullptr)
+        while (it != nullptr)
         {
             if (encountered.count(it->data))
             {
@@ -377,15 +339,134 @@ public:
         }
     }
 
-    /*How would you solve this problem if a temporary buffer is not allowed?*/
-    static void removeDupsV2(std::list<int> &list) {}
+    /*
+    ** 2.2) Return Kth to Last:
+    **
+    ** ----------------------------------------------------------------------
+    ** Implement an algorithm to find the kth to last last element of a singly
+    ** linked list.
+    */
+    static int kthToLast(int k, Node *list)
+    {
+        int result;
+        auto size = 0;
+        auto count = 0;
+        auto it = list;
+        auto previous = it;
+
+        // Find the size
+        while (it != nullptr)
+        {
+            size++;
+            it = it->next;
+        }
+        if ((k > size) || (k < 1))
+            throw std::logic_error("k has to be 1 < k < size");
+        it = list;
+
+        // Remove the item
+        while (it != nullptr)
+        {
+            if (count == size - k)
+            {
+                result = it->data;
+                break;
+            }
+            else
+            {
+                previous = it;
+            }
+            count++;
+            it = it->next;
+        }
+        return result;
+    }
+
+    /*
+    ** 2.3) Delete Middle Node:
+    ** ----------------------------------------------------------------------
+    ** Implement an algorithm to delete a node in the middle (.e., any node but
+    ** the first and last node, not necessarily the exact middle) of a singly
+    ** linked list, given only access to that node.
+    **
+    ** Input: the node c from the linked list a->b->c->d->e->f
+    ** Result: nothing is returned, but the new linked list looks like
+    ** a->b->d->e->f
+    */
+    static void deleteMiddleNode(Node *c)
+    {
+        // This is assuming that the function is never used on the last element
+        // or the first element
+        c->data = c->next->data;
+        c->next = c->next->next;
+    }
+
+    /*
+    ** 2.4) Partition:
+    ** ----------------------------------------------------------------------
+    ** Write code to partition a linked list around a value x, such that all
+    ** nodes less than x come before all nodes greater than or equal to x. IF x
+    ** is contained within the list, the values of x only need to be after the
+    ** elements less than x(see below) THe partition element x can appear
+    ** anywhere in the right partitions.
+    **
+    ** Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
+    ** Output: 3 ->1 ->2 -> 10 -> 5 ->5 -> 8
+    */
+    static void partition() {}
+
+    /*
+    ** 2.5) Sum Lists:
+    ** ----------------------------------------------------------------------
+    ** You have two numbers represented by a linked list, where
+    ** each node contains a single digit. The digits are stored in reverse order,
+    ** such that the 1-s digit is at the head of the list. Write a function that
+    ** adds the two numbers and returns the sum as a linked list.
+    **
+    ** Input: (7 -> 1 -> 6) + (5-> 9 -> 2), that is, 617 + 295
+    ** Output: (2 -> 1 -> 9), that is, 912
+    **
+    ** Follow up: Suppose the digits are stored in forward order, repeat the
+    ** above problem.
+    */
+
+    /*
+    ** 2.6) Palindrome:
+    ** ----------------------------------------------------------------------
+    ** Implement a function to check if a linked list is a
+    ** palindrome.
+    */
+
+    /*
+    ** 2.7) Intersection:
+    ** ----------------------------------------------------------------------
+    ** Given two (singly) linked lists, determine if the two lists intersect.
+    ** Return the intersecting node. Not that the intersection is defined based
+    ** reference, not value. That is, the kth node of the first linked list is
+    ** the exact same node (by reference) as the jth node of the second linked
+    ** list, then they are intersecting.
+    */
+
+    /*
+    ** 2.8) Loop Detection:
+    ** ----------------------------------------------------------------------
+    Given a circular linked list, implement an algorithm that returns the node
+    at the beginning of the loop. A circular linked list is a (corrupt) linked
+    list iin whicha node's next pointer points to an earlier node, so as to make
+    a loop in the linked list.
+    Input: A -> B -> C -> D -> E -> C [the same C as earlier]
+    Output: C
+     */
 };
 
 int main(int argc, char *argv[])
 {
-    std::vector<int> a = {4,5,3,1,5};
-    Cracking::LinkedList list(a);
-    Cracking::removeDups(list);
+    std::vector<int> a = {4, 5, 3, 1, 5};
+    Cracking::Node list(a);
+    auto it = &list;
+    it = it->next;
+    it = it->next;
+    Cracking::deleteMiddleNode(it);
     list.printList();
     return 0;
 }
