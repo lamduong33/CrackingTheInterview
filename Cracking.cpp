@@ -251,9 +251,11 @@ public:
         }
     }
 
+    /* Class for a simple linked list */
     struct Node
     {
         Node *next = nullptr;
+        Node *previous = nullptr;
         int data;
 
         Node(int t_data) : data{t_data} {}
@@ -264,6 +266,7 @@ public:
             for (int i = 1; i < list.size(); i++)
             {
                 it->next = new Node(list[i]);
+                it->next->previous = it;
                 it = it->next;
             }
         }
@@ -277,6 +280,7 @@ public:
                 n = n->next;
             }
             n->next = end;
+            end->previous = n;
         }
 
         Node *deleteNode(Node *t_head, int t_data)
@@ -284,6 +288,7 @@ public:
             auto n = t_head;
             if (n->data == t_data)
             {
+                t_head->next->previous = nullptr;
                 return t_head->next; // head moved
             }
 
@@ -292,6 +297,7 @@ public:
                 if (n->next->data == t_data)
                 {
                     n->next = n->next->next;
+                    n->next->next->previous = n;
                     return t_head; // head didn't change
                 }
                 n = n->next;
@@ -346,9 +352,9 @@ public:
     ** Implement an algorithm to find the kth to last last element of a singly
     ** linked list.
     */
-    static int kthToLast(int k, Node *list)
+    static Node *kthToLast(int k, Node *list)
     {
-        int result;
+        Node *result;
         auto size = 0;
         auto count = 0;
         auto it = list;
@@ -369,7 +375,7 @@ public:
         {
             if (count == size - k)
             {
-                result = it->data;
+                result = it;
                 break;
             }
             else
@@ -407,13 +413,34 @@ public:
     ** Write code to partition a linked list around a value x, such that all
     ** nodes less than x come before all nodes greater than or equal to x. IF x
     ** is contained within the list, the values of x only need to be after the
-    ** elements less than x(see below) THe partition element x can appear
+    ** elements less than x (see below). The partition element x can appear
     ** anywhere in the right partitions.
     **
-    ** Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
-    ** Output: 3 ->1 ->2 -> 10 -> 5 ->5 -> 8
+    ** Input:  3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
+    ** Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
     */
-    static void partition() {}
+    static void partition(Node *t_list, int x)
+    {
+        auto node = t_list;
+        Node* previous = nullptr;
+        while (node != nullptr)
+        {
+            // Move to the beginning
+            if ((node->data < x) && (previous != nullptr))
+            {
+                previous->next = node->next;
+                node->next = t_list;
+                t_list->previous = node;
+                t_list = node;
+                node = previous->next;
+            }
+            else
+            {
+                previous = node;
+                node = node->next;
+            }
+        }
+    }
 
     /*
     ** 2.5) Sum Lists:
@@ -449,10 +476,10 @@ public:
 
     /*
     ** 2.8) Loop Detection:
-    ** ----------------------------------------------------------------------
+    ----------------------------------------------------------------------
     Given a circular linked list, implement an algorithm that returns the node
     at the beginning of the loop. A circular linked list is a (corrupt) linked
-    list iin whicha node's next pointer points to an earlier node, so as to make
+    list in which a node's next pointer points to an earlier node, so as to make
     a loop in the linked list.
     Input: A -> B -> C -> D -> E -> C [the same C as earlier]
     Output: C
@@ -461,12 +488,9 @@ public:
 
 int main(int argc, char *argv[])
 {
-    std::vector<int> a = {4, 5, 3, 1, 5};
+    std::vector<int> a = {3, 5, 8, 5, 10, 2, 1};
     Cracking::Node list(a);
-    auto it = &list;
-    it = it->next;
-    it = it->next;
-    Cracking::deleteMiddleNode(it);
+    Cracking::partition(&list, 5);
     list.printList();
     return 0;
 }
