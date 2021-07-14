@@ -283,6 +283,17 @@ public:
             end->previous = n;
         }
 
+        void joinList(Node* anotherList)
+        {
+            auto n = this;
+            while (n->next != nullptr)
+            {
+                n = n->next;
+            }
+            n->next = anotherList;
+            anotherList->previous = n;
+        }
+
         Node *deleteNode(Node *t_head, int t_data)
         {
             auto n = t_head;
@@ -419,7 +430,7 @@ public:
     ** Input:  3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
     ** Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
     */
-    static void partition(Node *t_list, int x)
+    static Node* partition(Node *t_list, int x)
     {
         auto node = t_list;
         Node* previous = nullptr;
@@ -440,6 +451,7 @@ public:
                 node = node->next;
             }
         }
+        return t_list;
     }
 
     /*
@@ -456,6 +468,80 @@ public:
     ** Follow up: Suppose the digits are stored in forward order, repeat the
     ** above problem.
     */
+    static Node* sumLists(Node* list1, Node* list2)
+    {
+        if ((list1 == nullptr) && (list2 == nullptr)) return nullptr;
+        if ((list1 != nullptr) && (list2 == nullptr)) return list1;
+        if ((list1 == nullptr) && (list2 != nullptr)) return list2;
+
+        bool carry = false;
+        bool first = true;
+        Node* result;
+        Node* head;
+
+        while ((list1 != nullptr) && (list2 != nullptr))
+        {
+            auto addition = list1->data +list2->data + carry;
+
+            if (addition >= 10)
+            {
+                carry = true;
+                addition -= 10;
+            }
+            else
+            {
+                carry = false;
+            }
+
+            if (first)
+            {
+                result = new Node(addition);
+                head = result;
+                first = false;
+            }
+            else
+            {
+                head->next = new Node(addition);
+                head = head->next;
+            }
+
+            // Advance
+            list1 = list1->next;
+            list2 = list2->next;
+        }
+
+        // Take care of leftovers
+        Node* leftOver;
+        if (list1 != nullptr|| list2 != nullptr)
+        {
+            leftOver = (list1 == nullptr) ? list2 : list1;
+            auto head = leftOver;
+            while (carry == true)
+            {
+                if (head != nullptr)
+                {
+                    head->data++;
+                    if (head->data >= 10)
+                        head->data -= 10;
+                    else
+                        break;
+                }
+                else
+                {
+                    head->appendToTail(1);
+                    break;
+                }
+                head = head->next;
+            }
+            result->joinList(leftOver);
+        }
+        else if (carry == true)
+        {
+            result->appendToTail(1);
+        }
+
+        return result;
+    }
 
     /*
     ** 2.6) Palindrome:
@@ -488,9 +574,11 @@ public:
 
 int main(int argc, char *argv[])
 {
-    std::vector<int> a = {3, 5, 8, 5, 10, 2, 1};
-    Cracking::Node list(a);
-    Cracking::partition(&list, 5);
-    list.printList();
+    std::vector<int> a = {9,9,9};
+    std::vector<int> b = {9,9,9};
+    Cracking::Node list1(a);
+    Cracking::Node list2(b);
+    auto newList = Cracking::sumLists(&list1, &list2);
+    newList->printList();
     return 0;
 }
