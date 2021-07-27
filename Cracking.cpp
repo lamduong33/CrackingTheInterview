@@ -590,6 +590,39 @@ public:
     ** the exact same node (by reference) as the jth node of the second linked
     ** list, then they are intersecting.
     */
+    static bool intersection(Node* list1, Node* list2)
+    {
+        auto result = false;
+        // Create a hashed set of old values
+        std::unordered_set<Node*> encounteredNodes; // list of nodes in 1st node
+        auto head1 = list1;
+        auto head2 = list2;
+
+        while (head1 != nullptr)
+        {
+            if (encounteredNodes.count(head1))
+            {
+                break; // circular loop detected, break
+            }
+            else
+            {
+                encounteredNodes.insert(list1);
+            }
+            head1 = head1->next;
+        }
+
+        while (head2 != nullptr)
+        {
+            if (encounteredNodes.count(head2))
+            {
+                result = true;
+                break;
+            }
+            head2 = head2->next;
+        }
+
+        return result;
+    }
 
     /*
     ** 2.8) Loop Detection:
