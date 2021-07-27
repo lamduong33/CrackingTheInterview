@@ -515,27 +515,26 @@ public:
         }
 
         // Take care of leftovers
-        Node *leftOver;
         if (list1 != nullptr || list2 != nullptr)
         {
-            leftOver = (list1 == nullptr) ? list2 : list1;
-            auto head = leftOver;
+            auto leftOver = (list1 == nullptr) ? list2 : list1;
+            auto temp = leftOver;
             while (carry == true)
             {
-                if (head != nullptr)
+                if (temp != nullptr)
                 {
-                    head->data++;
-                    if (head->data >= 10)
-                        head->data -= 10;
+                    temp->data++;
+                    if (temp->data >= 10)
+                        temp->data -= 10;
                     else
                         break;
                 }
                 else
                 {
-                    head->appendToTail(1);
+                    temp->appendToTail(1);
                     break;
                 }
-                head = head->next;
+                temp = temp->next;
             }
             result->joinList(leftOver);
         }
@@ -655,12 +654,32 @@ public:
         }
         return result;
     }
+
+    static Node* reverseSinglyLinkedList(Node* list)
+    {
+        Node* head = nullptr;
+        while (list != nullptr)
+        {
+            auto newNode = new Node(list->data);
+            newNode->next = head;
+            head = newNode;
+            list = list->next;
+        }
+        return head;
+    }
+
+    // Merge sort for Linked List
+    static void mergeSortLinkedList(Node* list)
+    {
+
+    }
 };
 
 int main(int argc, char *argv[])
 {
-    std::vector<int> a = {1, 2, 1};
+    std::vector<int> a = {1, 2, 3};
     Cracking::Node list1(a);
-    std::cout << Cracking::palindrome(&list1);
+    auto reversed = Cracking::reverseSinglyLinkedList(&list1);
+    reversed->printList();
     return 0;
 }
