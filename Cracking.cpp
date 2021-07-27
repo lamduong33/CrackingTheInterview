@@ -128,7 +128,6 @@ public:
     static void rotateMatrix(std::vector<std::vector<int>> &matrix)
     {
         int N = matrix.size();
-        auto width = N;
         // O(N/2 * N) = O(N^2)
         for (int rowIndex = 0; rowIndex < N / 2; rowIndex++)
         {
@@ -218,7 +217,7 @@ public:
     /* Helper function for finding zeros within an MxN matrix. The first item in
     the pair is the row index and the second item is column index.*/
     static std::pair<std::unordered_set<int>, std::unordered_set<int>>
-    zeroIndices(std::vector<std::vector<int>> &matrix)
+    const zeroIndices(std::vector<std::vector<int>> &matrix)
     {
         std::unordered_set<int> rowIndices;
         std::unordered_set<int> columnIndices;
@@ -271,6 +270,7 @@ public:
             }
         }
 
+        /* Traverse the list and append to the end.*/
         void appendToTail(int t_data)
         {
             auto end = new Node(t_data);
@@ -283,7 +283,7 @@ public:
             end->previous = n;
         }
 
-        void joinList(Node* anotherList)
+        void joinList(Node *anotherList)
         {
             auto n = this;
             while (n->next != nullptr)
@@ -430,10 +430,10 @@ public:
     ** Input:  3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
     ** Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
     */
-    static Node* partition(Node *t_list, int x)
+    static Node *partition(Node *t_list, int x)
     {
         auto node = t_list;
-        Node* previous = nullptr;
+        Node *previous = nullptr;
         while (node != nullptr)
         {
             // Move to the beginning
@@ -468,20 +468,24 @@ public:
     ** Follow up: Suppose the digits are stored in forward order, repeat the
     ** above problem.
     */
-    static Node* sumLists(Node* list1, Node* list2)
+    static Node *sumLists(Node *list1, Node *list2)
     {
-        if ((list1 == nullptr) && (list2 == nullptr)) return nullptr;
-        if ((list1 != nullptr) && (list2 == nullptr)) return list1;
-        if ((list1 == nullptr) && (list2 != nullptr)) return list2;
+        if ((list1 == nullptr) && (list2 == nullptr))
+            return nullptr;
+        if ((list1 != nullptr) && (list2 == nullptr))
+            return list1;
+        if ((list1 == nullptr) && (list2 != nullptr))
+            return list2;
 
         bool carry = false;
         bool first = true;
-        Node* result;
-        Node* head;
+        Node *result;
+        Node *head;
 
+        // O(m + n)
         while ((list1 != nullptr) && (list2 != nullptr))
         {
-            auto addition = list1->data +list2->data + carry;
+            auto addition = list1->data + list2->data + carry;
 
             if (addition >= 10)
             {
@@ -511,8 +515,8 @@ public:
         }
 
         // Take care of leftovers
-        Node* leftOver;
-        if (list1 != nullptr|| list2 != nullptr)
+        Node *leftOver;
+        if (list1 != nullptr || list2 != nullptr)
         {
             leftOver = (list1 == nullptr) ? list2 : list1;
             auto head = leftOver;
@@ -539,7 +543,6 @@ public:
         {
             result->appendToTail(1);
         }
-
         return result;
     }
 
@@ -548,7 +551,35 @@ public:
     ** ----------------------------------------------------------------------
     ** Implement a function to check if a linked list is a
     ** palindrome.
+    ** 1 2 3 4 5 4 3 2 1 -> true
+    ** 1 2 3 2 1 2 -> false
     */
+    static bool palindrome(Node *t_list)
+    {
+        auto result = true;
+        std::vector<int> vector;
+
+        // Turn this into a vector. O(n)
+        auto head = t_list;
+        while (head != nullptr)
+        {
+            vector.push_back(head->data);
+            head = head->next;
+        }
+
+        // Detect palindrome from the vector
+        for (int i = 0; i <= ((int)vector.size()/2); i++)
+        {
+            // 0 1 2 3 4
+            if (vector[i] != vector[vector.size()-(i+1)])
+            {
+                result = false;
+                break;
+            }
+        }
+
+        return result;
+    }
 
     /*
     ** 2.7) Intersection:
@@ -574,11 +605,8 @@ public:
 
 int main(int argc, char *argv[])
 {
-    std::vector<int> a = {9,9,9};
-    std::vector<int> b = {9,9,9};
+    std::vector<int> a = {1, 2, 1};
     Cracking::Node list1(a);
-    Cracking::Node list2(b);
-    auto newList = Cracking::sumLists(&list1, &list2);
-    newList->printList();
+    std::cout << Cracking::palindrome(&list1);
     return 0;
 }
