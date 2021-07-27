@@ -606,7 +606,7 @@ public:
             }
             else
             {
-                encounteredNodes.insert(list1);
+                encounteredNodes.insert(head1);
             }
             head1 = head1->next;
         }
@@ -634,6 +634,27 @@ public:
     Input: A -> B -> C -> D -> E -> C [the same C as earlier]
     Output: C
      */
+    static Node* loopDetection(Node* list)
+    {
+        Node* result = nullptr;
+        std::unordered_set<Node*> nodesSet;
+        auto head = list;
+
+        while (head != nullptr)
+        {
+            if (nodesSet.count(head))
+            {
+                result = head;
+                break;
+            }
+            else
+            {
+                nodesSet.insert(head);
+            }
+            head = head->next;
+        }
+        return result;
+    }
 };
 
 int main(int argc, char *argv[])
