@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <vector>
 #include <stack>
+#include <memory> // For pointers
 
 /*
 ** author: Lam Duong
@@ -218,7 +219,7 @@ public:
     /* Helper function for finding zeros within an MxN matrix. The first item in
     the pair is the row index and the second item is column index.*/
     static std::pair<std::unordered_set<int>, std::unordered_set<int>>
-    const zeroIndices(std::vector<std::vector<int>> &matrix)
+    const zeroIndices(std::vector<std::vector<int>> const &matrix)
     {
         std::unordered_set<int> rowIndices;
         std::unordered_set<int> columnIndices;
@@ -658,65 +659,71 @@ public:
     }
 
     // Merge sort for Linked List
-    static Node* mergeSortLinkedList(Node* list)
+    static void mergeSortLinkedList(Node** list)
     {
-        if (list == nullptr)
-            return nullptr;
-        else if (list->next == nullptr)
-            return list;
+        Node* head = *list;
+        Node* left;
+        Node* right;
 
-        // Split the list into two
-        auto left = list;
-        auto right = getMiddleOfLinked(list);
+        if ((head == nullptr) || (head->next == nullptr))
+            return;
+        split(head, &left, &right);
+        mergeSortLinkedList(&left);
+        mergeSortLinkedList(&right);
 
-        // Sort the two halves
-        mergeSortLinkedList(left);
-        mergeSortLinkedList(right);
-
-        // Merge them together. The leftmost will be the sorted one.
-        auto newList = new Node(0); // dummy node to be deleted
-        auto head = newList;
-        while (left != nullptr && right != nullptr)
-        {
-            if (left->data < right->data)
-            {
-                head->next = new Node(left->data);
-                left = left->next;
-            }
-            else
-            {
-                head->next = new Node(right->data);
-                right = right->next;
-            }
-            head = head->next;
-        }
-        if (left == nullptr) head->next = left;
-        else if (right == nullptr) head->next = right;
-        newList = newList->next; // delete dummy node
-
-        return newList;
+        *list = mergeSorted(left, right);
     }
 
-    static Node* getMiddleOfLinked(Node* list)
+    /* Merge sorted lists for sor */
+    static Node* mergeSorted(Node* left, Node* right)
+    {
+        Node* result = nullptr;
+        if (left == nullptr)
+            return right;
+        else if (right == nullptr)
+            return left;
+
+        if (left->data <= right->data)
+        {
+            result = left;
+            result->next = mergeSorted(left->next, right);
+        }
+        else
+        {
+            result = right;
+            result->next = mergeSorted(left, right->next);
+        }
+        return result;
+
+    }
+
+    static void split(Node* list, Node** left, Node** right)
     {
         auto turtle = list;
-        auto hare = list;
+        auto hare = list->next;
 
-        while (hare->next != nullptr && hare->next->next != nullptr)
+        while (hare != nullptr)
         {
-            turtle = turtle->next;
-            hare = hare->next->next;
+            hare = hare->next;
+            if (hare != nullptr)
+            {
+                turtle = turtle->next;
+                hare = hare->next;
+            }
         }
-        return turtle;
+        *left = list;
+        *right = turtle->next;
+        turtle->next = nullptr;
     }
 
 };
 
 int main()
 {
-    std::vector<int> a = {3, 2, 1};
+    std::vector<int> a = {5, 4, 3, 2, 1};
     Cracking::Node list1(a);
-    auto reversed = Cracking::reverseSinglyLinkedList(&list1);
-    reversed->printList();
+    auto list = &list1;
+    Cracking::mergeSortLinkedList(&list);
+    list->printList();
     return 0;
 }
