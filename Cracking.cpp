@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <stack>
 
 /*
 ** author: Lam Duong
@@ -556,25 +557,13 @@ public:
     static bool palindrome(Node *t_list)
     {
         auto result = true;
-        std::vector<int> vector;
+        std::stack<int> stack;
 
-        // Turn this into a vector. O(n)
-        auto head = t_list;
-        while (head != nullptr)
+        auto turtle = t_list;
+        auto hare = t_list;
+        while (hare != nullptr && hare != hare->next)
         {
-            vector.push_back(head->data);
-            head = head->next;
-        }
-
-        // Detect palindrome from the vector
-        for (int i = 0; i <= ((int)vector.size()/2); i++)
-        {
-            // 0 1 2 3 4
-            if (vector[i] != vector[vector.size()-(i+1)])
-            {
-                result = false;
-                break;
-            }
+            stack.push(turtle->data);
         }
 
         return result;
@@ -669,15 +658,63 @@ public:
     }
 
     // Merge sort for Linked List
-    static void mergeSortLinkedList(Node* list)
+    static Node* mergeSortLinkedList(Node* list)
     {
+        if (list == nullptr)
+            return nullptr;
+        else if (list->next == nullptr)
+            return list;
 
+        // Split the list into two
+        auto left = list;
+        auto right = getMiddleOfLinked(list);
+
+        // Sort the two halves
+        mergeSortLinkedList(left);
+        mergeSortLinkedList(right);
+
+        // Merge them together. The leftmost will be the sorted one.
+        auto newList = new Node(0); // dummy node to be deleted
+        auto head = newList;
+        while (left != nullptr && right != nullptr)
+        {
+            if (left->data < right->data)
+            {
+                head->next = new Node(left->data);
+                left = left->next;
+            }
+            else
+            {
+                head->next = new Node(right->data);
+                right = right->next;
+            }
+            head = head->next;
+        }
+        if (left == nullptr) head->next = left;
+        else if (right == nullptr) head->next = right;
+        newList = newList->next; // delete dummy node
+
+        return newList;
     }
+
+    static Node* getMiddleOfLinked(Node* list)
+    {
+        auto turtle = list;
+        auto hare = list;
+
+        while (hare->next != nullptr && hare->next->next != nullptr)
+        {
+            turtle = turtle->next;
+            hare = hare->next->next;
+        }
+        return turtle;
+    }
+
 };
 
-int main(int argc, char *argv[])
+int main()
 {
-    std::vector<int> a = {1, 2, 3};
+    std::vector<int> a = {3, 2, 1};
     Cracking::Node list1(a);
     auto reversed = Cracking::reverseSinglyLinkedList(&list1);
     reversed->printList();
