@@ -716,6 +716,18 @@ public:
         turtle->next = nullptr;
     }
 
+    // ==============================Chapter 3===============================
+
+    template <class T>
+    class Stack
+    {
+        class StackNode<T>
+        {
+        private:
+            T data;
+        };
+    };
+
 };
 
 int main()
