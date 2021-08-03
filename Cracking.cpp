@@ -718,15 +718,126 @@ public:
 
     // ==============================Chapter 3===============================
 
+    /* Stack data structure */
     template <class T>
     class Stack
     {
-        class StackNode<T>
+    private:
+
+        class StackNode
         {
         private:
             T data;
+            StackNode next;
+        public:
+            explicit StackNode(T t_data) : data{t_data} {}
         };
+
+    public:
+
+        StackNode top;
+        class EmptyStackException : public std::exception
+        {
+            virtual const char* what() const throw()
+            {
+                return "Empty stack!";
+            }
+        };
+
+        T pop()
+        {
+            if (top == nullptr) throw new EmptyStackException;
+            T item = top.data;
+            delete(top); // NOTE: THIS COULD BE BAD
+            top = top.next;
+            return item;
+        }
+
+        void push(T item)
+        {
+            auto t = new StackNode(item);
+            t->next = top;
+            top = t;
+        }
+
+        T peek()
+        {
+            if (top == nullptr) throw new EmptyStackException;
+            return top.data;
+        }
+
+        bool isEmpty()
+        {
+            return top == nullptr;
+        }
+
     };
+
+    /* The queue class is FIFO (first in first out) */
+    template <class T>
+    class Queue
+    {
+    private:
+        class QueueNode
+        {
+        private:
+            T data;
+            QueueNode next;
+        public:
+            explicit QueueNode(T t_data) : data{t_data}{}
+        };
+        QueueNode first;
+        QueueNode last;
+
+    public:
+        class NoSuchElementException : public std::exception
+        {
+            virtual const char* what() const throw()
+            {
+                return "No such element in queue!";
+            }
+        };
+        void add (T item)
+        {
+            auto t = new QueueNode(item);
+            if (last != nullptr)
+                last.next = t;
+            last = t;
+            if (first == nullptr)
+                first = last;
+        }
+
+        T remove()
+        {
+            if (first == nullptr) throw new NoSuchElementException;
+            T data = first.data;
+            first = first.next;
+            if (first == nullptr)
+            {
+                delete(last);
+                last = nullptr;
+            }
+            return data;
+        }
+
+        T peek()
+        {
+            if (first == nullptr) throw new NoSuchElementException;
+            return first.data;
+        }
+
+        bool isEmpty()
+        {
+            return first == nullptr;
+        }
+    };
+
+    /*
+    ** 3.1) Three in One:
+    ** ----------------------------------------------------------------------
+    ** Describe how you could use a single array to implement three stacks.
+    */
+
 
 };
 
