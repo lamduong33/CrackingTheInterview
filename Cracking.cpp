@@ -1,12 +1,12 @@
 #include <exception>
 #include <iostream>
 #include <list>
+#include <memory> // For pointers
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <stack>
-#include <memory> // For pointers
 
 /*
 ** author: Lam Duong
@@ -218,8 +218,8 @@ public:
 
     /* Helper function for finding zeros within an MxN matrix. The first item in
     the pair is the row index and the second item is column index.*/
-    static std::pair<std::unordered_set<int>, std::unordered_set<int>>
-    const zeroIndices(std::vector<std::vector<int>> const &matrix)
+    static std::pair<std::unordered_set<int>, std::unordered_set<int>> const
+    zeroIndices(std::vector<std::vector<int>> const &matrix)
     {
         std::unordered_set<int> rowIndices;
         std::unordered_set<int> columnIndices;
@@ -579,11 +579,11 @@ public:
     ** the exact same node (by reference) as the jth node of the second linked
     ** list, then they are intersecting.
     */
-    static bool intersection(Node* list1, Node* list2)
+    static bool intersection(Node *list1, Node *list2)
     {
         auto result = false;
         // Create a hashed set of old values
-        std::unordered_set<Node*> encounteredNodes; // list of nodes in 1st node
+        std::unordered_set<Node *> encounteredNodes; // list of nodes in 1st node
         auto head1 = list1;
         auto head2 = list2;
 
@@ -623,10 +623,10 @@ public:
     Input: A -> B -> C -> D -> E -> C [the same C as earlier]
     Output: C
      */
-    static Node* loopDetection(Node* list)
+    static Node *loopDetection(Node *list)
     {
-        Node* result = nullptr;
-        std::unordered_set<Node*> nodesSet;
+        Node *result = nullptr;
+        std::unordered_set<Node *> nodesSet;
         auto head = list;
 
         while (head != nullptr)
@@ -645,9 +645,9 @@ public:
         return result;
     }
 
-    static Node* reverseSinglyLinkedList(Node* list)
+    static Node *reverseSinglyLinkedList(Node *list)
     {
-        Node* head = nullptr;
+        Node *head = nullptr;
         while (list != nullptr)
         {
             auto newNode = new Node(list->data);
@@ -659,11 +659,11 @@ public:
     }
 
     // Merge sort for Linked List
-    static void mergeSortLinkedList(Node** list)
+    static void mergeSortLinkedList(Node **list)
     {
-        Node* head = *list;
-        Node* left;
-        Node* right;
+        Node *head = *list;
+        Node *left;
+        Node *right;
 
         if ((head == nullptr) || (head->next == nullptr))
             return;
@@ -675,9 +675,9 @@ public:
     }
 
     /* Merge sorted lists for sor */
-    static Node* mergeSorted(Node* left, Node* right)
+    static Node *mergeSorted(Node *left, Node *right)
     {
-        Node* result = nullptr;
+        Node *result = nullptr;
         if (left == nullptr)
             return right;
         else if (right == nullptr)
@@ -694,10 +694,9 @@ public:
             result->next = mergeSorted(left, right->next);
         }
         return result;
-
     }
 
-    static void split(Node* list, Node** left, Node** right)
+    static void split(Node *list, Node **left, Node **right)
     {
         auto turtle = list;
         auto hare = list->next;
@@ -719,63 +718,58 @@ public:
     // ==============================Chapter 3===============================
 
     /* Stack data structure */
-    template <class T>
     class Stack
     {
-    private:
-
+    public:
         class StackNode
         {
-        private:
-            T data;
-            StackNode next;
+            int data;
+            StackNode *next;
+
         public:
-            explicit StackNode(T t_data) : data{t_data} {}
+            explicit StackNode() : data{0}, next{nullptr} {}
+            explicit StackNode(int t_data) : data{t_data}, next{nullptr} {}
+            explicit StackNode(int t_data, StackNode *t_next)
+                : data{t_data}, next{t_next}{}
+            int getData() { return data; }
+            StackNode *getNext() { return this->next; }
+            void *setNext(StackNode *t_next) { this->next = t_next; }
         };
 
-    public:
-
-        StackNode top;
+        StackNode *top;
         class EmptyStackException : public std::exception
         {
-            virtual const char* what() const throw()
-            {
-                return "Empty stack!";
-            }
+            virtual const char *what() const throw() { return "Empty stack!"; }
         };
 
-        T pop()
+        int pop()
         {
-            if (top == nullptr) throw new EmptyStackException;
-            T item = top.data;
-            delete(top); // NOTE: THIS COULD BE BAD
-            top = top.next;
+            if (top == nullptr)
+                throw new EmptyStackException;
+            int item = top->getData();
+            top = top->getNext();
             return item;
         }
 
-        void push(T item)
+        void push(int item)
         {
             auto t = new StackNode(item);
-            t->next = top;
+            t->setNext(top);
             top = t;
         }
 
-        T peek()
+        int peek()
         {
-            if (top == nullptr) throw new EmptyStackException;
-            return top.data;
+            if (top == nullptr)
+                throw new EmptyStackException;
+            return top->getData();
         }
 
-        bool isEmpty()
-        {
-            return top == nullptr;
-        }
-
+        bool isEmpty() { return top == nullptr; }
     };
 
     /* The queue class is FIFO (first in first out) */
-    template <class T>
-    class Queue
+    template <class T> class Queue
     {
     private:
         class QueueNode
@@ -783,8 +777,9 @@ public:
         private:
             T data;
             QueueNode next;
+
         public:
-            explicit QueueNode(T t_data) : data{t_data}{}
+            explicit QueueNode(T t_data) : data{t_data} {}
         };
         QueueNode first;
         QueueNode last;
@@ -792,12 +787,12 @@ public:
     public:
         class NoSuchElementException : public std::exception
         {
-            virtual const char* what() const throw()
+            virtual const char *what() const throw()
             {
                 return "No such element in queue!";
             }
         };
-        void add (T item)
+        void add(T item)
         {
             auto t = new QueueNode(item);
             if (last != nullptr)
@@ -809,12 +804,13 @@ public:
 
         T remove()
         {
-            if (first == nullptr) throw new NoSuchElementException;
+            if (first == nullptr)
+                throw new NoSuchElementException;
             T data = first.data;
             first = first.next;
             if (first == nullptr)
             {
-                delete(last);
+                delete (last);
                 last = nullptr;
             }
             return data;
@@ -822,16 +818,13 @@ public:
 
         T peek()
         {
-            if (first == nullptr) throw new NoSuchElementException;
+            if (first == nullptr)
+                throw new NoSuchElementException;
             return first.data;
         }
 
-        bool isEmpty()
-        {
-            return first == nullptr;
-        }
+        bool isEmpty() { return first == nullptr; }
     };
-
 
     /*
     ** 3.2) Stack Min:
@@ -841,9 +834,88 @@ public:
     ** all operate in O(1) time.
     */
 
+    class StackMin : public Stack
+    {
+
+        StackNode* minimumStack; // keeping track of all minimum elements
+
+    public:
+
+        int pop()
+        {
+            if (top == nullptr)
+                throw new EmptyStackException;
+            if (top->getData() == minimumStack->getData())
+            {
+                minimumStack = minimumStack->getNext();
+            }
+            int item = top->getData();
+            top = top->getNext();
+            return item;
+        }
+
+        void push(int t_data)
+        {
+            if (t_data < minimumStack->getData())
+            {
+                auto newMinimum = new StackNode(t_data);
+                newMinimum->setNext(minimumStack);
+                minimumStack = newMinimum;
+            }
+            auto newNode = new StackNode(t_data);
+            newNode->setNext(top);
+            top = newNode;
+        }
+
+        int min()
+        {
+            return this->minimumStack->getData();
+        }
+
+    };
+
+    /*
+    ** 3.3) Stack of Plates:
+    ** ----------------------------------------------------------------------
+    ** Stack of Plates: Imagine a (literal) stack of plates. If the stack gets
+    ** too high, it might topple. Therefore, in real life, we would likely start
+    ** a new stack when the previous stack exceeds some threshold. Implement a
+    ** data structure SetOfStacks that mimics this. SetO-fStacks should be
+    ** composed of several stacks and should create a new stack once the previous
+    ** one exceeds capacity. SetOfStacks. push() and SetOfStacks. pop() should
+    ** behave identically to a single stack (that is, pop () should return the
+    ** same values as it would if there were just a single stack).
+    ** FOLLOW UP: Implement a function popAt ( int index) which performs a pop
+    ** operation on a specific sub-stack.
+    */
+
+    /*
+    ** 3.4) Queue of Stacks:
+    ** ----------------------------------------------------------------------
+    ** Implement a Queue class which implements a queue using two stacks.
+    */
+
+    /*
+    ** 3.5) Sort Stack:
+    ** ----------------------------------------------------------------------
+    ** Write a program to sort a stack such that the smallest items are on the
+    ** top. You can use an additional temporary stack, but you may not copy the
+    ** elements into any other data structure (such as an array). The stack
+    ** supports the following operations: push, pop, peek, and is Empty.
+    */
+
+    /*
+    ** 3.6) Animal Shelter:
+    ** ----------------------------------------------------------------------
+    ** An animal shelter, which holds only dogs and cats, operates on a strictly
+    ** "first in, first out" basis. People must adopt either the "oldest"
+    ** (based on arrival time) of all animals at the shelter, or they can select
+    ** whether they would prefer a dog or a cat (and will receive the oldest
+    ** animal of that type). They cannot select which specific animal they would
+    ** like. Create the data structures to maintain this system and implement
+    ** operations such as enqueue, dequeueAny, dequeueDog, and dequeueCat. You
+    ** may use the built-in Linked list data structure.
+    */
 };
 
-int main()
-{
-    return 0;
-}
+int main() { return 0; }
