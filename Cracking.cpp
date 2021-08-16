@@ -733,7 +733,7 @@ public:
                 : data{t_data}, next{t_next}{}
             int getData() { return data; }
             StackNode *getNext() { return this->next; }
-            void *setNext(StackNode *t_next) { this->next = t_next; }
+            void setNext(StackNode *t_next) { this->next = t_next; }
         };
 
         StackNode *top;
@@ -877,14 +877,74 @@ public:
     ** Stack of Plates: Imagine a (literal) stack of plates. If the stack gets
     ** too high, it might topple. Therefore, in real life, we would likely start
     ** a new stack when the previous stack exceeds some threshold. Implement a
-    ** data structure SetOfStacks that mimics this. SetO-fStacks should be
+    ** data structure SetOfStacks that mimics this. SetOfStacks should be
     ** composed of several stacks and should create a new stack once the previous
     ** one exceeds capacity. SetOfStacks. push() and SetOfStacks. pop() should
     ** behave identically to a single stack (that is, pop () should return the
     ** same values as it would if there were just a single stack).
+    **
     ** FOLLOW UP: Implement a function popAt ( int index) which performs a pop
     ** operation on a specific sub-stack.
     */
+
+    class SetOfStacks
+    {
+
+        std::vector<Stack> m_setOfStacks;
+        std::vector<int> m_stackSizes;
+        int m_maxStackSize;
+        Stack lastStack;
+        int lastStackSize;
+
+
+        void createNewStack()
+        {
+            m_setOfStacks.push_back(*(new Stack()));
+            m_stackSizes.push_back(0);
+            getLastStack();
+        }
+
+        void removeLastStack()
+        {
+            m_setOfStacks.pop_back();
+            m_stackSizes.pop_back();
+            getLastStack();
+        }
+
+        void getLastStack()
+        {
+            lastStack = m_setOfStacks[m_setOfStacks.size()-1];
+            lastStackSize = m_stackSizes[m_stackSizes.size()-1];
+        }
+
+    public:
+
+        // Start out with one empty stack
+        SetOfStacks()
+        {
+            m_maxStackSize = 20;
+            m_setOfStacks.push_back(*(new Stack()));
+            m_stackSizes.push_back(0);
+            getLastStack();
+        }
+
+        void push(int t_item)
+        {
+            if (lastStackSize == m_maxStackSize)
+                createNewStack();
+            lastStack.push(t_item);
+            lastStackSize++;
+        }
+
+        int pop()
+        {
+            if (lastStackSize == 0)
+                removeLastStack();
+            auto result = lastStack.pop();
+            lastStackSize--;
+            return result;
+        }
+    };
 
     /*
     ** 3.4) Queue of Stacks:
@@ -915,4 +975,8 @@ public:
     */
 };
 
-int main() { return 0; }
+int main()
+{
+    Cracking::SetOfStacks set;
+    return 0;
+}
