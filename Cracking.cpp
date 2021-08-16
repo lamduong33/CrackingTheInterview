@@ -836,11 +836,8 @@ public:
 
     class StackMin : public Stack
     {
-
-        StackNode* minimumStack; // keeping track of all minimum elements
-
     public:
-
+        StackNode* minimumStack; // keeping track of all minimum elements
         int pop()
         {
             if (top == nullptr)
