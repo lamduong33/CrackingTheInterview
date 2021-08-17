@@ -47,10 +47,10 @@ int x = 5, y = 3;
 int &z = x, &r = y;
 z = r; // x will now have the value of 3. Whatever you do to z will happen to x.
 #+END_SRC
-- There is cannot be null references. References are /NOT/ pointers. They do not
+- There cannot be null references. References are /NOT/ pointers. They do not
 represent addresses like pointers do. References have their own addresses that
 do not change. References need to be initialized to some value.
-- Often used as function paramters, because:
+- Often used as function parameters, because:
   1. It is faster to work with a reference rather than a copy.
   2. We know that it is the object being used instead of a copy being used
      inside the function
