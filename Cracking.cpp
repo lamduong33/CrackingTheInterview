@@ -893,7 +893,7 @@ public:
         std::vector<Stack> m_setOfStacks;
         std::vector<int> m_stackSizes;
         int m_maxStackSize;
-        Stack lastStack;
+        Stack* lastStack;
         int lastStackSize;
 
 
@@ -906,6 +906,7 @@ public:
 
         void removeLastStack()
         {
+            delete &lastStack;
             m_setOfStacks.pop_back();
             m_stackSizes.pop_back();
             getLastStack();
@@ -913,7 +914,7 @@ public:
 
         void getLastStack()
         {
-            lastStack = m_setOfStacks[m_setOfStacks.size()-1];
+            lastStack = &m_setOfStacks[m_setOfStacks.size()-1];
             lastStackSize = m_stackSizes[m_stackSizes.size()-1];
         }
 
@@ -932,7 +933,7 @@ public:
         {
             if (lastStackSize == m_maxStackSize)
                 createNewStack();
-            lastStack.push(t_item);
+            lastStack->push(t_item);
             lastStackSize++;
         }
 
@@ -940,7 +941,7 @@ public:
         {
             if (lastStackSize == 0)
                 removeLastStack();
-            auto result = lastStack.pop();
+            auto result = lastStack->pop();
             lastStackSize--;
             return result;
         }
@@ -978,5 +979,9 @@ public:
 int main()
 {
     Cracking::SetOfStacks set;
+    for (int i = 0; i < 21; i++)
+    {
+        set.push(i);
+    }
     return 0;
 }
