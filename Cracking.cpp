@@ -977,7 +977,47 @@ public:
     ** 3.4) Queue of Stacks:
     ** ----------------------------------------------------------------------
     ** Implement a Queue class which implements a queue using two stacks.
+    ** NOTE: Runtime be damned.
     */
+    class StackQueue
+    {
+        Stack stack1;
+        Stack stack2;
+        int queueSize;
+
+    public:
+
+        StackQueue() : stack1(), stack2()
+        {
+            queueSize = 0;
+        }
+
+        void enqueue(int t_item)
+        {
+            stack1.push(t_item);
+        }
+
+        int dequeue()
+        {
+            // Move everything in stack1 until the last one to stack2
+            if (stack2.isEmpty())
+            {
+                while (!stack1.isEmpty())
+                {
+                    stack2.push(stack1.pop());
+                }
+            }
+            auto result = stack2.pop();
+
+            // Move everything back in place
+            while (!stack2.isEmpty())
+            {
+                stack1.push(stack2.pop());
+            }
+            return result;
+        }
+
+    };
 
     /*
     ** 3.5) Sort Stack:
@@ -1004,5 +1044,4 @@ public:
 
 int main()
 {
-    return 0;
 }
