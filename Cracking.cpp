@@ -731,6 +731,11 @@ public:
             explicit StackNode(int t_data) : data{t_data}, next{nullptr} {}
             explicit StackNode(int t_data, StackNode *t_next)
                 : data{t_data}, next{t_next}{}
+
+            ~StackNode()
+            {
+            }
+
             int getData() { return data; }
             StackNode *getNext() { return this->next; }
             void setNext(StackNode *t_next) { this->next = t_next; }
@@ -766,6 +771,19 @@ public:
         }
 
         bool isEmpty() { return top == nullptr; }
+
+        void printStack()
+        {
+            auto head = top;
+            while (head != nullptr)
+            {
+                std::cout << head->getData();
+                if (head->getNext() != nullptr)
+                    std::cout << "->";
+                head = head->getNext();
+            }
+            std::cout << std::endl;
+        }
     };
 
     /* The queue class is FIFO (first in first out) */
@@ -896,7 +914,6 @@ public:
         Stack* lastStack;
         int lastStackSize;
 
-
         void createNewStack()
         {
             m_setOfStacks.push_back(*(new Stack()));
@@ -906,7 +923,7 @@ public:
 
         void removeLastStack()
         {
-            delete &lastStack;
+            // delete &lastStack;
             m_setOfStacks.pop_back();
             m_stackSizes.pop_back();
             getLastStack();
@@ -939,11 +956,20 @@ public:
 
         int pop()
         {
-            if (lastStackSize == 0)
-                removeLastStack();
             auto result = lastStack->pop();
             lastStackSize--;
+            if (lastStackSize == 0)
+                removeLastStack();
             return result;
+        }
+
+        void printStacks()
+        {
+            for (int i = 0; i < (int)m_setOfStacks.size(); i++)
+            {
+                std::cout << "Stack " << i << ": ";
+                m_setOfStacks[i].printStack();
+            }
         }
     };
 
@@ -978,10 +1004,5 @@ public:
 
 int main()
 {
-    Cracking::SetOfStacks set;
-    for (int i = 0; i < 21; i++)
-    {
-        set.push(i);
-    }
     return 0;
 }
