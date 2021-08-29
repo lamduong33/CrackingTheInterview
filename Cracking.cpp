@@ -742,6 +742,7 @@ public:
         };
 
         StackNode *top;
+        int size = 0;
         class EmptyStackException : public std::exception
         {
             virtual const char *what() const throw() { return "Empty stack!"; }
@@ -753,6 +754,7 @@ public:
                 throw new EmptyStackException;
             int item = top->getData();
             top = top->getNext();
+            size--;
             return item;
         }
 
@@ -761,6 +763,7 @@ public:
             auto t = new StackNode(item);
             t->setNext(top);
             top = t;
+            size++;
         }
 
         int peek()
@@ -770,15 +773,15 @@ public:
             return top->getData();
         }
 
-        bool isEmpty() { return top == nullptr; }
+        bool isEmpty() { return (size == 0); }
 
         void printStack()
         {
             auto head = top;
-            while (head != nullptr)
+            for (auto i = 0; i < size; i++)
             {
                 std::cout << head->getData();
-                if (head->getNext() != nullptr)
+                if (i != size-1)
                     std::cout << "->";
                 head = head->getNext();
             }
@@ -810,6 +813,7 @@ public:
                 return "No such element in queue!";
             }
         };
+
         void add(T item)
         {
             auto t = new QueueNode(item);
@@ -1027,6 +1031,36 @@ public:
     ** elements into any other data structure (such as an array). The stack
     ** supports the following operations: push, pop, peek, and is Empty.
     */
+    static void sortStack(Stack& t_stack)
+    {
+        auto mainStack = t_stack;
+        auto helperStack = *(new Stack());
+
+        while (!mainStack.isEmpty())
+        {
+            auto removed = mainStack.pop();
+            helperStack.push(removed);
+            if (mainStack.isEmpty())
+            {
+                break;
+            }
+            if (removed <= mainStack.peek())
+            {
+                helperStack.push(mainStack.pop());
+            }
+            else
+            {
+                auto tempRemoved = mainStack.pop();
+                mainStack.push(helperStack.pop());
+                mainStack.push(tempRemoved);
+            }
+        }
+
+        while (!helperStack.isEmpty())
+        {
+            mainStack.push(helperStack.pop());
+        }
+    }
 
     /*
     ** 3.6) Animal Shelter:
@@ -1044,4 +1078,13 @@ public:
 
 int main()
 {
+    Cracking::Stack s;
+    //for (int i = 3; i > 0; i--)
+    for (int i = 1; i <= 3; i++)
+    {
+        s.push(i);
+    }
+    Cracking::sortStack(s);
+    s.printStack();
+    return 0;
 }
