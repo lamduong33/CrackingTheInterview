@@ -1033,33 +1033,37 @@ public:
     */
     static void sortStack(Stack& t_stack)
     {
-        auto mainStack = t_stack;
+        if (t_stack.isEmpty() || t_stack.size == 1) return;
         auto helperStack = *(new Stack());
+        auto sorted = false;
 
-        while (!mainStack.isEmpty())
+        while (!sorted)
         {
-            auto removed = mainStack.pop();
-            helperStack.push(removed);
-            if (mainStack.isEmpty())
+            // Load onto helper stack
+            while (helperStack.isEmpty() || (helperStack.peek() <= t_stack.peek()))
             {
-                break;
+                helperStack.push(t_stack.pop());
             }
-            if (removed <= mainStack.peek())
+
+            if (t_stack.isEmpty())
             {
-                helperStack.push(mainStack.pop());
+                sorted = true; // sorted when everything is exhausted
+                while (!helperStack.isEmpty())
+                {
+                    t_stack.push(helperStack.pop());
+                }
             }
-            else
+            else // encountered an imbalance
             {
-                auto tempRemoved = mainStack.pop();
-                mainStack.push(helperStack.pop());
-                mainStack.push(tempRemoved);
+                auto item = t_stack.pop();
+                while (!helperStack.isEmpty())
+                {
+                    t_stack.push(helperStack.pop());
+                }
+                t_stack.push(item);
             }
         }
-
-        while (!helperStack.isEmpty())
-        {
-            mainStack.push(helperStack.pop());
-        }
+        helperStack.~Stack(); // clean up just in case
     }
 
     /*
@@ -1080,10 +1084,11 @@ int main()
 {
     Cracking::Stack s;
     //for (int i = 3; i > 0; i--)
-    for (int i = 1; i <= 3; i++)
+    for (int i = 1; i <= 5; i++)
     {
         s.push(i);
     }
+    s.printStack();
     Cracking::sortStack(s);
     s.printStack();
     return 0;
