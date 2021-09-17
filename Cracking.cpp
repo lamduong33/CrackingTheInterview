@@ -1078,6 +1078,46 @@ public:
     ** operations such as enqueue, dequeueAny, dequeueDog, and dequeueCat. You
     ** may use the built-in Linked list data structure.
     */
+    class AnimalShelter
+    {
+    public:
+        AnimalShelter();
+        ~AnimalShelter();
+    private:
+        enum class AnimalType { Dog, Cat };
+
+        class Animal
+        {
+            int age;
+            AnimalType type;
+        public:
+            Animal();
+            Animal(int t_age, AnimalType t_type) : age{t_age}, type{t_type} {}
+            int getAge() { return age; }
+            void setAge(int t_age) { this->age = t_age; }
+            AnimalType getType() { return this->type; }
+        };
+
+    public:
+        // Add said animal in the queue
+        void enqueue(Animal t_animal)
+        {
+        }
+
+        Animal dequeueAny()
+        {
+        }
+
+        Animal dequeueDog()
+        {
+
+        }
+
+        Animal dequeuCat()
+        {
+
+        }
+    };
 };
 
 int main()
