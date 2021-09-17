@@ -30,13 +30,13 @@ public:
     {
         auto result = false;
         auto charCount = 0;
-        for (int i = 0; i < str.length(); i++)
+        for (int i = 0; i < (int)str.length(); i++)
             if (str.at(i) != ' ')
                 charCount++;
         std::unordered_set<char> occursOnce;
 
         // O(n)
-        for (int i = 0; i < str.length(); i++)
+        for (int i = 0; i < (int)str.length(); i++)
         {
             char c = std::tolower(str.at(i));
             if (c == ' ')
@@ -70,7 +70,7 @@ public:
         int mismatchCount = 0, i = 0, j = 0;
         int difference = bigger.length() - smaller.length();
 
-        while (i < smaller.length() && j < bigger.length())
+        while (i < (int)smaller.length() && j < (int)bigger.length())
         {
             if (bigger.at(j) != smaller.at(i))
             {
@@ -103,7 +103,7 @@ public:
         int charCount = 0;
         char c = '\0';
         // std::unordered_map<char, int> charCounts;
-        for (int i = 0; i < str.length(); i++)
+        for (int i = 0; i < (int)str.length(); i++)
         {
             if (str.at(i) != c)
             {
@@ -197,11 +197,11 @@ public:
     {
         bool result = false;
         auto substringIndex = 0;
-        for (int i = 0; i < str.length(); i++)
+        for (int i = 0; i < (int)str.length(); i++)
         {
             if (str.at(i) == substr.at(substringIndex))
             {
-                if (substringIndex == substr.length() - 1)
+                if (substringIndex == (int)substr.length() - 1)
                 {
                     result = true;
                     break;
@@ -223,9 +223,9 @@ public:
     {
         std::unordered_set<int> rowIndices;
         std::unordered_set<int> columnIndices;
-        for (int i = 0; i < matrix.size(); i++)
+        for (int i = 0; i < (int)matrix.size(); i++)
         {
-            for (int j = 0; j < matrix.size(); j++)
+            for (int j = 0; j < (int)matrix.size(); j++)
             {
                 if (matrix[i][j] == 0)
                 {
@@ -242,9 +242,9 @@ public:
     /* Helper function to print out a matrix for simple debugging */
     static void printMatrix(std::vector<std::vector<int>> &matrix)
     {
-        for (int i = 0; i < matrix.size(); i++)
+        for (int i = 0; i < (int)matrix.size(); i++)
         {
-            for (int j = 0; j < matrix[i].size(); j++)
+            for (int j = 0; j < (int)matrix[i].size(); j++)
             {
                 std::cout << matrix[i][j] << " ";
             }
@@ -259,12 +259,11 @@ public:
         Node *previous = nullptr;
         int data;
 
-        Node(int t_data) : data{t_data} {}
-        Node(std::vector<int> &list)
+        explicit Node(int t_data) : data{t_data} {}
+        explicit Node(std::vector<int> &list) : data{list[0]}
         {
             auto it = this;
-            it->data = list[0];
-            for (int i = 1; i < list.size(); i++)
+            for (int i = 1; i < (int)list.size(); i++)
             {
                 it->next = new Node(list[i]);
                 it->next->previous = it;
@@ -337,7 +336,6 @@ public:
     */
     static void removeDups(Node *list)
     {
-        std::unordered_set<int> duplicates;
         std::unordered_set<int> encountered;
         auto it = list;
         Node *previous;
@@ -367,11 +365,10 @@ public:
     */
     static Node *kthToLast(int k, Node *list)
     {
-        Node *result;
+        Node *result = nullptr;
         auto size = 0;
         auto count = 0;
         auto it = list;
-        auto previous = it;
 
         // Find the size
         while (it != nullptr)
@@ -390,10 +387,6 @@ public:
             {
                 result = it;
                 break;
-            }
-            else
-            {
-                previous = it;
             }
             count++;
             it = it->next;
@@ -1064,23 +1057,22 @@ public:
     ** operations such as enqueue, dequeueAny, dequeueDog, and dequeueCat. You
     ** may use the built-in Linked list data structure.
     */
+    enum class AnimalType
+    {
+        Dog,
+        Cat
+    };
+    class Animal
+    {
+        AnimalType type;
+
+    public:
+        Animal() : type{AnimalType::Dog} {} // dog if no type given
+        explicit Animal(AnimalType t_type) : type{t_type} {}
+        AnimalType getType() { return this->type; }
+    };
     class AnimalShelter
     {
-        enum class AnimalType
-        {
-            Dog,
-            Cat
-        };
-        class Animal
-        {
-            AnimalType type;
-
-        public:
-            Animal() : type{AnimalType::Dog} {} // dog if no type given
-            Animal(AnimalType t_type) : type{t_type} {}
-            AnimalType getType() { return this->type; }
-        };
-
         // A class specifically for queues of animal. Inherit from queue class.
         class AnimalQueue : public Queue<std::pair<Animal, int>>
         {
@@ -1095,7 +1087,10 @@ public:
             };
 
         public:
-            AnimalQueue(AnimalType t_animalType) : animalType{t_animalType} {}
+            explicit AnimalQueue(AnimalType t_animalType)
+                : animalType{t_animalType}
+            {
+            }
             AnimalType getAnimalType() { return this->animalType; }
             void add(std::pair<Animal, int> t_animal)
             {
@@ -1108,28 +1103,34 @@ public:
                     throw new InvalidEnqueue;
                 }
             }
+            void print()
+            {
+                std::string result;
+                this->getAnimalType() == AnimalType::Dog ? result += "Dog"
+                                                         : result += "Cat";
+            }
         };
 
-        AnimalQueue dogQueue;
         AnimalQueue catQueue;
-        int position;
+        AnimalQueue dogQueue;
+        int time;
 
     public:
         AnimalShelter()
-            : catQueue(AnimalType::Cat), dogQueue(AnimalType::Dog), position{0}
+            : catQueue(AnimalType::Cat), dogQueue(AnimalType::Dog), time{0}
         {
         }
 
         void enqueue(Animal t_animal)
         {
-            auto pair = std::pair<Animal, int>(t_animal, position++);
+            auto pair = std::pair<Animal, int>(t_animal, time++);
             t_animal.getType() == AnimalType::Dog ? dogQueue.add(pair)
                                                   : catQueue.add(pair);
         }
 
         void dequeueAny()
         {
-            if (position != 0)
+            if (time != 0)
             {
                 dogQueue.peek().second > catQueue.peek().second
                     ? dogQueue.remove()
@@ -1137,13 +1138,20 @@ public:
             }
         }
 
-        Animal dequeueDog() { dogQueue.remove(); }
+        Animal dequeueDog() { return dogQueue.remove().first; }
+        Animal dequeuCat() { return catQueue.remove().first; }
 
-        Animal dequeuCat() { catQueue.remove(); }
+        void print() {}
     };
 };
 
 int main()
 {
+    Cracking::AnimalShelter shelter;
+    shelter.enqueue(Cracking::Animal(Cracking::AnimalType::Cat));
+    shelter.enqueue(Cracking::Animal(Cracking::AnimalType::Cat));
+    shelter.enqueue(Cracking::Animal(Cracking::AnimalType::Dog));
+    shelter.enqueue(Cracking::Animal(Cracking::AnimalType::Cat));
+
     return 0;
 }
