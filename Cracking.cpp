@@ -730,11 +730,11 @@ public:
             explicit StackNode() : data{0}, next{nullptr} {}
             explicit StackNode(int t_data) : data{t_data}, next{nullptr} {}
             explicit StackNode(int t_data, StackNode *t_next)
-                : data{t_data}, next{t_next}{}
-
-            ~StackNode()
+                : data{t_data}, next{t_next}
             {
             }
+
+            ~StackNode() {}
 
             int getData() { return data; }
             StackNode *getNext() { return this->next; }
@@ -781,7 +781,7 @@ public:
             for (auto i = 0; i < size; i++)
             {
                 std::cout << head->getData();
-                if (i != size-1)
+                if (i != size - 1)
                     std::cout << "->";
                 head = head->getNext();
             }
@@ -793,17 +793,14 @@ public:
     template <class T> class Queue
     {
     private:
-        class QueueNode
+        struct QueueNode
         {
-        private:
             T data;
-            QueueNode next;
-
-        public:
+            QueueNode *next;
             explicit QueueNode(T t_data) : data{t_data} {}
         };
-        QueueNode first;
-        QueueNode last;
+        QueueNode *first;
+        QueueNode *last;
 
     public:
         class NoSuchElementException : public std::exception
@@ -818,7 +815,7 @@ public:
         {
             auto t = new QueueNode(item);
             if (last != nullptr)
-                last.next = t;
+                last->next = t;
             last = t;
             if (first == nullptr)
                 first = last;
@@ -828,8 +825,8 @@ public:
         {
             if (first == nullptr)
                 throw new NoSuchElementException;
-            T data = first.data;
-            first = first.next;
+            T data = first->data;
+            first = first->next;
             if (first == nullptr)
             {
                 delete (last);
@@ -842,7 +839,7 @@ public:
         {
             if (first == nullptr)
                 throw new NoSuchElementException;
-            return first.data;
+            return first->data;
         }
 
         bool isEmpty() { return first == nullptr; }
@@ -859,7 +856,7 @@ public:
     class StackMin : public Stack
     {
     public:
-        StackNode* minimumStack; // keeping track of all minimum elements
+        StackNode *minimumStack; // keeping track of all minimum elements
         int pop()
         {
             if (top == nullptr)
@@ -886,11 +883,7 @@ public:
             top = newNode;
         }
 
-        int min()
-        {
-            return this->minimumStack->getData();
-        }
-
+        int min() { return this->minimumStack->getData(); }
     };
 
     /*
@@ -915,7 +908,7 @@ public:
         std::vector<Stack> m_setOfStacks;
         std::vector<int> m_stackSizes;
         int m_maxStackSize;
-        Stack* lastStack;
+        Stack *lastStack;
         int lastStackSize;
 
         void createNewStack()
@@ -935,12 +928,11 @@ public:
 
         void getLastStack()
         {
-            lastStack = &m_setOfStacks[m_setOfStacks.size()-1];
-            lastStackSize = m_stackSizes[m_stackSizes.size()-1];
+            lastStack = &m_setOfStacks[m_setOfStacks.size() - 1];
+            lastStackSize = m_stackSizes[m_stackSizes.size() - 1];
         }
 
     public:
-
         // Start out with one empty stack
         SetOfStacks()
         {
@@ -990,16 +982,9 @@ public:
         int queueSize;
 
     public:
+        StackQueue() : stack1(), stack2() { queueSize = 0; }
 
-        StackQueue() : stack1(), stack2()
-        {
-            queueSize = 0;
-        }
-
-        void enqueue(int t_item)
-        {
-            stack1.push(t_item);
-        }
+        void enqueue(int t_item) { stack1.push(t_item); }
 
         int dequeue()
         {
@@ -1020,7 +1005,6 @@ public:
             }
             return result;
         }
-
     };
 
     /*
@@ -1031,16 +1015,18 @@ public:
     ** elements into any other data structure (such as an array). The stack
     ** supports the following operations: push, pop, peek, and is Empty.
     */
-    static void sortStack(Stack& t_stack)
+    static void sortStack(Stack &t_stack)
     {
-        if (t_stack.isEmpty() || t_stack.size == 1) return;
+        if (t_stack.isEmpty() || t_stack.size == 1)
+            return;
         auto helperStack = *(new Stack());
         auto sorted = false;
 
         while (!sorted)
         {
             // Load onto helper stack
-            while (helperStack.isEmpty() || (helperStack.peek() <= t_stack.peek()))
+            while (helperStack.isEmpty() ||
+                   (helperStack.peek() <= t_stack.peek()))
             {
                 helperStack.push(t_stack.pop());
             }
@@ -1080,56 +1066,84 @@ public:
     */
     class AnimalShelter
     {
-    public:
-        AnimalShelter();
-        ~AnimalShelter();
-    private:
-        enum class AnimalType { Dog, Cat };
-
+        enum class AnimalType
+        {
+            Dog,
+            Cat
+        };
         class Animal
         {
-            int age;
             AnimalType type;
+
         public:
-            Animal();
-            Animal(int t_age, AnimalType t_type) : age{t_age}, type{t_type} {}
-            int getAge() { return age; }
-            void setAge(int t_age) { this->age = t_age; }
+            Animal() : type{AnimalType::Dog} {} // dog if no type given
+            Animal(AnimalType t_type) : type{t_type} {}
             AnimalType getType() { return this->type; }
         };
 
+        // A class specifically for queues of animal. Inherit from queue class.
+        class AnimalQueue : public Queue<std::pair<Animal, int>>
+        {
+            AnimalType animalType;
+
+            class InvalidEnqueue : public std::exception
+            {
+                virtual const char *what() const throw()
+                {
+                    return "Enqueue operation needs a pair of animal and time";
+                }
+            };
+
+        public:
+            AnimalQueue(AnimalType t_animalType) : animalType{t_animalType} {}
+            AnimalType getAnimalType() { return this->animalType; }
+            void add(std::pair<Animal, int> t_animal)
+            {
+                if (t_animal.first.getType() == animalType)
+                {
+                    Queue::add(t_animal);
+                }
+                else
+                {
+                    throw new InvalidEnqueue;
+                }
+            }
+        };
+
+        AnimalQueue dogQueue;
+        AnimalQueue catQueue;
+        int position;
+
     public:
-        // Add said animal in the queue
+        AnimalShelter()
+            : catQueue(AnimalType::Cat), dogQueue(AnimalType::Dog), position{0}
+        {
+        }
+
         void enqueue(Animal t_animal)
         {
+            auto pair = std::pair<Animal, int>(t_animal, position++);
+            t_animal.getType() == AnimalType::Dog ? dogQueue.add(pair)
+                                                  : catQueue.add(pair);
         }
 
-        Animal dequeueAny()
+        void dequeueAny()
         {
+            if (position != 0)
+            {
+                dogQueue.peek().second > catQueue.peek().second
+                    ? dogQueue.remove()
+                    : catQueue.remove();
+            }
         }
 
-        Animal dequeueDog()
-        {
+        Animal dequeueDog() { dogQueue.remove(); }
 
-        }
-
-        Animal dequeuCat()
-        {
-
-        }
+        Animal dequeuCat() { catQueue.remove(); }
     };
 };
 
 int main()
 {
-    Cracking::Stack s;
-    //for (int i = 3; i > 0; i--)
-    for (int i = 1; i <= 5; i++)
-    {
-        s.push(i);
-    }
-    s.printStack();
-    Cracking::sortStack(s);
-    s.printStack();
     return 0;
 }
