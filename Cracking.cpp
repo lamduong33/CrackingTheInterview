@@ -1229,15 +1229,17 @@ public:
         tree.*/
         bool isValid()
         {
-            return checkValid(this->root);
-        }
-
-        /* isValid() function defines a valid tree. This function actually does
-        the checking. It requires a stack of ancestor nodes to check if it's
-        greater or less. */
-        bool checkValid(TreeNode *node)
-        {
-            if (node == nullptr) return true;
+            auto result = true;
+            if (root->isLeaf()) return result;
+            if (root->hasLeft() && (max(root->getLeft()) > root->getData()))
+            {
+                result = false;
+            }
+            if (result && root->hasRight() && (min(root->getRight()) < root->getData()))
+            {
+                result = false;
+            }
+            return result;
         }
 
         /* Find the minimum element in a tree node*/
