@@ -1227,18 +1227,19 @@ public:
         /* Check to see if all left descendents <= n < all right descendents. In
         other words, check to make sure that this is a valid binary search
         tree.*/
-        bool isValid()
+        bool isValid(TreeNode* node)
         {
             auto result = true;
-            if (root->isLeaf()) return result;
-            if (root->hasLeft() && (max(root->getLeft()) > root->getData()))
+            if (node->isLeaf()) return result;
+            if (node->hasLeft() && (max(node->getLeft()) > node->getData()))
             {
                 result = false;
             }
-            if (result && root->hasRight() && (min(root->getRight()) < root->getData()))
+            if (result && node->hasRight() && (min(node->getRight()) < node->getData()))
             {
                 result = false;
             }
+            if (!isValid(node->getLeft()) || !isValid(node->getRight())) result = false;
             return result;
         }
 
@@ -1280,6 +1281,13 @@ public:
                 }
             }
             return maximum;
+        }
+
+
+        /* Get the height of the tree, which is the number of edges from the
+        deepest leaf node to the root node */
+        int getHeight()
+        {
         }
 
         /* Check if a tree is complete, meaning that every level of the tree is
