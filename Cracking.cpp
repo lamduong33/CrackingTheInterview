@@ -1,3 +1,4 @@
+#include <climits>
 #include <exception>
 #include <iostream>
 #include <list>
@@ -790,7 +791,7 @@ public:
         {
             T data;
             QueueNode *next;
-            explicit QueueNode(T t_data) : data{t_data} {}
+            explicit QueueNode(T t_data) : data{t_data}, next{nullptr} {}
         };
         QueueNode *first;
         QueueNode *last;
@@ -1141,17 +1142,175 @@ public:
         Animal dequeueDog() { return dogQueue.remove().first; }
         Animal dequeuCat() { return catQueue.remove().first; }
 
-        void print() {}
+        void peek()
+        {
+            dogQueue.peek().second < catQueue.peek().second ? std::cout << "Cat"
+                                                            : std::cout << "Dog";
+        }
+    };
+
+    // ==============================Chapter 3=============================== //
+    // ===========================Trees and Graphs ========================== //
+
+    /** A binary search tree, where the children and its descendents on the left
+     ** are smaller than the parent node and the children and its descendents on
+     ** the right are larger than the parent node.
+     ** */
+    class BinaryTree
+    {
+        /* Represents a single node of a tree. */
+        class TreeNode
+        {
+            int data;
+            TreeNode *left;
+            TreeNode *right;
+
+        public:
+            explicit TreeNode(int t_data)
+                : data{t_data}, left{nullptr}, right{nullptr} {}
+            TreeNode(int t_data, TreeNode *t_left, TreeNode *t_right)
+                : data{t_data}, left{t_left}, right{t_right} {}
+            int getData() { return data; }
+            TreeNode *getLeft() { return this->left; }
+            TreeNode *getRight() { return this->right; }
+            bool hasLeft() { return this->left != nullptr ? true: false; }
+            bool hasRight() { return this->right != nullptr ? true: false; }
+            void setData(const int &t_data) { this->data = t_data; }
+            void setLeft(TreeNode *t_left) { this->left = t_left; }
+            void setRight(TreeNode *t_right) { this->right = t_right; }
+            bool isLeaf() { return left == nullptr && right == nullptr; }
+        };
+
+        /* Private recursion function for printing in order*/
+        void inOrderPrint(TreeNode *node)
+        {
+            if (node != nullptr)
+            {
+                inOrderPrint(node->getLeft());
+                std::cout << root->getData();
+                inOrderPrint(node->getRight());
+            }
+        }
+
+        /* Private recursion function for printing Pre-order*/
+        void preOrderPrint(TreeNode *node)
+        {
+            if (node != nullptr)
+            {
+                std::cout << root->getData();
+                preOrderPrint(node->getLeft());
+                preOrderPrint(node->getRight());
+            }
+        }
+
+        /* Private recursion function for printing Post-order*/
+        void postOrderPrint(TreeNode *node)
+        {
+            if (node != nullptr)
+            {
+                postOrderPrint(node->getLeft());
+                postOrderPrint(node->getRight());
+                std::cout << root->getData();
+            }
+        }
+
+        TreeNode *root;
+        size_t size;
+
+    public:
+        BinaryTree() : root{new TreeNode(0)}, size{0} {}
+        explicit BinaryTree(const int initialValue)
+            : root{new TreeNode(initialValue)}, size{1} {}
+
+        size_t getSize() { return this->size; }
+
+        /* Check to see if all left descendents <= n < all right descendents. In
+        other words, check to make sure that this is a valid binary search
+        tree.*/
+        bool isValid()
+        {
+            return checkValid(this->root);
+        }
+
+        /* isValid() function defines a valid tree. This function actually does
+        the checking. It requires a stack of ancestor nodes to check if it's
+        greater or less. */
+        bool checkValid(TreeNode *node)
+        {
+            if (node == nullptr) return true;
+        }
+
+        /* Find the minimum element in a tree node*/
+        int min(TreeNode* node)
+        {
+            auto minimum = node->getData();
+            if (!node->isLeaf())
+            {
+                if (node->getLeft() != nullptr)
+                {
+                    auto leftMin = min(node->getLeft());
+                    minimum = leftMin < minimum ? leftMin : minimum;
+                }
+                if (node->getRight() != nullptr)
+                {
+                    auto rightMin = min(node->getRight());
+                    minimum = rightMin < minimum ? rightMin : minimum;
+                }
+            }
+            return minimum;
+        }
+
+        /* Find the maximum element in a tree node*/
+        int max(TreeNode* node)
+        {
+            auto maximum = node->getData();
+            if (!node->isLeaf())
+            {
+                if (node->getLeft() != nullptr)
+                {
+                    auto leftMin = min(node->getLeft());
+                    maximum = leftMin < maximum ? leftMin : maximum;
+                }
+                if (node->getRight() != nullptr)
+                {
+                    auto rightMin = min(node->getRight());
+                    maximum = rightMin < maximum ? rightMin : maximum;
+                }
+            }
+            return maximum;
+        }
+
+        /* Check if a tree is complete, meaning that every level of the tree is
+        fully filled, except for perhaps the last level. */
+        bool isComplete() { return false; }
+
+        /* A full binary tree is a binary tree in which every node has either
+        zero or two children. That is, no nodes have only one child. */
+        bool isFull() { return false; }
+
+        /* A perfect binary tree is one that is both full and ocmplete. All leaf
+        nodes will be at the same level, and this level has the maximum number
+        of nodes.*/
+        bool isPerfect() { return false; }
+
+        /* TODO: DELETE THIS */
+        TreeNode* getRoot()
+        {
+            return this->root;
+        }
+
+        void balanceTree()
+        {
+
+        }
+
+        void printInOrder() { inOrderPrint(this->root); }
+        void printPreOrder() { preOrderPrint(this->root); }
+        void printPostOrder() { postOrderPrint(this->root); }
+
     };
 };
 
-int main()
-{
-    Cracking::AnimalShelter shelter;
-    shelter.enqueue(Cracking::Animal(Cracking::AnimalType::Cat));
-    shelter.enqueue(Cracking::Animal(Cracking::AnimalType::Cat));
-    shelter.enqueue(Cracking::Animal(Cracking::AnimalType::Dog));
-    shelter.enqueue(Cracking::Animal(Cracking::AnimalType::Cat));
-
+int main() {
     return 0;
 }
