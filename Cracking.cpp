@@ -181,14 +181,16 @@ public:
     **
     ---------------------------------------------------------------------------
     ** Assume you have a method isSubstring which checks if one word is a
-    ** substring of another. Given two strings, s1 and s2, write code to check if
+    ** substring of another. Given two strings, s1 and s2, write code to check
+    if
     ** s2 is a rotation of s1 using only one call to isSubstring(e.g.
     ** "waterbottle" is a rotation of "erbottlewat").
     NOTE: A rotation is simply where a chunk is moved around, in the case of
     "waterbottle", "wat" is moved to the end of the string, creating
     "erbottlewat"
     */
-    static bool stringRotation(const std::string &substr, const std::string &str)
+    static bool stringRotation(const std::string &substr,
+                               const std::string &str)
     {
         return isSubstring(substr, str + str);
     }
@@ -454,7 +456,8 @@ public:
     ** 2.5) Sum Lists:
     ** ----------------------------------------------------------------------
     ** You have two numbers represented by a linked list, where
-    ** each node contains a single digit. The digits are stored in reverse order,
+    ** each node contains a single digit. The digits are stored in reverse
+    *order,
     ** such that the 1-s digit is at the head of the list. Write a function that
     ** adds the two numbers and returns the sum as a linked list.
     **
@@ -577,7 +580,8 @@ public:
     {
         auto result = false;
         // Create a hashed set of old values
-        std::unordered_set<Node *> encounteredNodes; // list of nodes in 1st node
+        std::unordered_set<Node *>
+            encounteredNodes; // list of nodes in 1st node
         auto head1 = list1;
         auto head2 = list2;
 
@@ -887,7 +891,8 @@ public:
     ** too high, it might topple. Therefore, in real life, we would likely start
     ** a new stack when the previous stack exceeds some threshold. Implement a
     ** data structure SetOfStacks that mimics this. SetOfStacks should be
-    ** composed of several stacks and should create a new stack once the previous
+    ** composed of several stacks and should create a new stack once the
+    *previous
     ** one exceeds capacity. SetOfStacks. push() and SetOfStacks. pop() should
     ** behave identically to a single stack (that is, pop () should return the
     ** same values as it would if there were just a single stack).
@@ -1144,8 +1149,9 @@ public:
 
         void peek()
         {
-            dogQueue.peek().second < catQueue.peek().second ? std::cout << "Cat"
-                                                            : std::cout << "Dog";
+            dogQueue.peek().second < catQueue.peek().second
+                ? std::cout << "Cat"
+                : std::cout << "Dog";
         }
     };
 
@@ -1167,14 +1173,18 @@ public:
 
         public:
             explicit TreeNode(int t_data)
-                : data{t_data}, left{nullptr}, right{nullptr} {}
+                : data{t_data}, left{nullptr}, right{nullptr}
+            {
+            }
             TreeNode(int t_data, TreeNode *t_left, TreeNode *t_right)
-                : data{t_data}, left{t_left}, right{t_right} {}
+                : data{t_data}, left{t_left}, right{t_right}
+            {
+            }
             int getData() { return data; }
             TreeNode *getLeft() { return this->left; }
             TreeNode *getRight() { return this->right; }
-            bool hasLeft() { return this->left != nullptr ? true: false; }
-            bool hasRight() { return this->right != nullptr ? true: false; }
+            bool hasLeft() { return this->left != nullptr ? true : false; }
+            bool hasRight() { return this->right != nullptr ? true : false; }
             void setData(const int &t_data) { this->data = t_data; }
             void setLeft(TreeNode *t_left) { this->left = t_left; }
             void setRight(TreeNode *t_right) { this->right = t_right; }
@@ -1220,31 +1230,36 @@ public:
     public:
         BinaryTree() : root{new TreeNode(0)}, size{0} {}
         explicit BinaryTree(const int initialValue)
-            : root{new TreeNode(initialValue)}, size{1} {}
+            : root{new TreeNode(initialValue)}, size{1}
+        {
+        }
 
         size_t getSize() { return this->size; }
 
-        /* Check to see if all left descendents <= n < all right descendents. In
+        /* Check to see if all left descendants <= n < all right descendants. In
         other words, check to make sure that this is a valid binary search
         tree.*/
-        bool isValid(TreeNode* node)
+        bool isValid(TreeNode *node)
         {
             auto result = true;
-            if (node->isLeaf()) return result;
+            if (node->isLeaf())
+                return result;
             if (node->hasLeft() && (max(node->getLeft()) > node->getData()))
             {
                 result = false;
             }
-            if (result && node->hasRight() && (min(node->getRight()) < node->getData()))
+            if (result && node->hasRight() &&
+                (min(node->getRight()) < node->getData()))
             {
                 result = false;
             }
-            if (!isValid(node->getLeft()) || !isValid(node->getRight())) result = false;
+            if (!isValid(node->getLeft()) || !isValid(node->getRight()))
+                result = false;
             return result;
         }
 
         /* Find the minimum element in a tree node*/
-        int min(TreeNode* node)
+        int min(TreeNode *node)
         {
             auto minimum = node->getData();
             if (!node->isLeaf())
@@ -1264,7 +1279,7 @@ public:
         }
 
         /* Find the maximum element in a tree node*/
-        int max(TreeNode* node)
+        int max(TreeNode *node)
         {
             auto maximum = node->getData();
             if (!node->isLeaf())
@@ -1283,16 +1298,35 @@ public:
             return maximum;
         }
 
-
-        /* Get the height of the tree, which is the number of edges from the
-        deepest leaf node to the root node */
-        int getHeight()
+        /* Get the height of a tree, from the specified node (usually root),
+        which is the number of edges from the root node to the deepest leaf
+        node. */
+        int getHeight(TreeNode *node)
         {
+            auto height = 0;
+            if (!node->isLeaf())
+            {
+                int leftHeight = 0, rightHeight = 0;
+                if (node->hasLeft())
+                {
+                    leftHeight = getHeight(node->getLeft());
+                }
+                if (node->hasRight())
+                {
+                    rightHeight = getHeight(node->getRight());
+                }
+                height = leftHeight > rightHeight ? leftHeight : rightHeight;
+                height++;
+            }
+            return height;
         }
 
         /* Check if a tree is complete, meaning that every level of the tree is
         fully filled, except for perhaps the last level. */
-        bool isComplete() { return false; }
+        bool isComplete(TreeNode* node)
+        {
+            return false;
+        }
 
         /* A full binary tree is a binary tree in which every node has either
         zero or two children. That is, no nodes have only one child. */
@@ -1303,24 +1337,12 @@ public:
         of nodes.*/
         bool isPerfect() { return false; }
 
-        /* TODO: DELETE THIS */
-        TreeNode* getRoot()
-        {
-            return this->root;
-        }
-
-        void balanceTree()
-        {
-
-        }
+        void balanceTree() {}
 
         void printInOrder() { inOrderPrint(this->root); }
         void printPreOrder() { preOrderPrint(this->root); }
         void printPostOrder() { postOrderPrint(this->root); }
-
     };
 };
 
-int main() {
-    return 0;
-}
+int main() { return 0; }
