@@ -1051,110 +1051,6 @@ public:
         helperStack.~Stack(); // clean up just in case
     }
 
-    /*
-    ** 3.6) Animal Shelter:
-    ** ----------------------------------------------------------------------
-    ** An animal shelter, which holds only dogs and cats, operates on a strictly
-    ** "first in, first out" basis. People must adopt either the "oldest"
-    ** (based on arrival time) of all animals at the shelter, or they can select
-    ** whether they would prefer a dog or a cat (and will receive the oldest
-    ** animal of that type). They cannot select which specific animal they would
-    ** like. Create the data structures to maintain this system and implement
-    ** operations such as enqueue, dequeueAny, dequeueDog, and dequeueCat. You
-    ** may use the built-in Linked list data structure.
-    */
-    enum class AnimalType
-    {
-        Dog,
-        Cat
-    };
-    class Animal
-    {
-        AnimalType type;
-
-    public:
-        Animal() : type{AnimalType::Dog} {} // dog if no type given
-        explicit Animal(AnimalType t_type) : type{t_type} {}
-        AnimalType getType() { return this->type; }
-    };
-    class AnimalShelter
-    {
-        // A class specifically for queues of animal. Inherit from queue class.
-        class AnimalQueue : public Queue<std::pair<Animal, int>>
-        {
-            AnimalType animalType;
-
-            class InvalidEnqueue : public std::exception
-            {
-                virtual const char *what() const throw()
-                {
-                    return "Enqueue operation needs a pair of animal and time";
-                }
-            };
-
-        public:
-            explicit AnimalQueue(AnimalType t_animalType)
-                : animalType{t_animalType}
-            {
-            }
-            AnimalType getAnimalType() { return this->animalType; }
-            void add(std::pair<Animal, int> t_animal)
-            {
-                if (t_animal.first.getType() == animalType)
-                {
-                    Queue::add(t_animal);
-                }
-                else
-                {
-                    throw new InvalidEnqueue;
-                }
-            }
-            void print()
-            {
-                std::string result;
-                this->getAnimalType() == AnimalType::Dog ? result += "Dog"
-                                                         : result += "Cat";
-            }
-        };
-
-        AnimalQueue catQueue;
-        AnimalQueue dogQueue;
-        int time;
-
-    public:
-        AnimalShelter()
-            : catQueue(AnimalType::Cat), dogQueue(AnimalType::Dog), time{0}
-        {
-        }
-
-        void enqueue(Animal t_animal)
-        {
-            auto pair = std::pair<Animal, int>(t_animal, time++);
-            t_animal.getType() == AnimalType::Dog ? dogQueue.add(pair)
-                                                  : catQueue.add(pair);
-        }
-
-        void dequeueAny()
-        {
-            if (time != 0)
-            {
-                dogQueue.peek().second > catQueue.peek().second
-                    ? dogQueue.remove()
-                    : catQueue.remove();
-            }
-        }
-
-        Animal dequeueDog() { return dogQueue.remove().first; }
-        Animal dequeuCat() { return catQueue.remove().first; }
-
-        void peek()
-        {
-            dogQueue.peek().second < catQueue.peek().second
-                ? std::cout << "Cat"
-                : std::cout << "Dog";
-        }
-    };
-
     // ==============================Chapter 3=============================== //
     // ===========================Trees and Graphs ========================== //
 
@@ -1321,6 +1217,11 @@ public:
             return height;
         }
 
+        virtual void insert(int t_data)
+        {
+            std::cout << "some bullshit";
+        }
+
         /* Check if a tree is complete, meaning that every level of the tree is
         fully filled, except for perhaps the last level. */
         bool isComplete(TreeNode* node)
@@ -1342,6 +1243,14 @@ public:
         void printInOrder() { inOrderPrint(this->root); }
         void printPreOrder() { preOrderPrint(this->root); }
         void printPostOrder() { postOrderPrint(this->root); }
+    };
+
+    class MinHeap : public BinaryTree
+    {
+    public:
+        void insert()
+        {
+        }
     };
 };
 
