@@ -27,7 +27,7 @@ public:
     ** Input: Tact Coa
     ** Output: true (pertmutations: "taco cat", "atco cta", etc.)
     */
-    static bool palindromePermutation(const std::string &str)
+    static bool palindromePermutation(const std::string& str)
     {
         auto result = false;
         auto charCount = 0;
@@ -61,7 +61,7 @@ public:
     ** write a function to check if they are one edit (or zero edits away).
     ** e.g. pale, ple -> true
     */
-    static bool oneAway(const std::string &str1, const std::string &str2)
+    static bool oneAway(const std::string& str1, const std::string& str2)
     {
         auto result = false;
         auto smaller = str1.length() < str2.length() ? str1 : str2;
@@ -94,7 +94,7 @@ public:
     become samller than the original string, your method shoudl return the
     original string. The input is only uppercase and lowecase letters (a-z).
      */
-    static std::string stringCompression(const std::string &str)
+    static std::string stringCompression(const std::string& str)
     {
         std::string result;
         int charCount = 0;
@@ -123,7 +123,7 @@ public:
     ** image is 4 bytes, write a method to rotate the image by 90 degrees. Can
     ** you do this in place?
     */
-    static void rotateMatrix(std::vector<std::vector<int>> &matrix)
+    static void rotateMatrix(std::vector<std::vector<int>>& matrix)
     {
         int N = matrix.size();
         // O(N/2 * N) = O(N^2)
@@ -151,18 +151,18 @@ public:
     ---------------------------------------------------------------------------
     ** Write an algorithm such that if an element in an MxN matrix is 0, its
     entire row and column are set to 0.*/
-    static void zeroMatrix(std::vector<std::vector<int>> &matrix)
+    static void zeroMatrix(std::vector<std::vector<int>>& matrix)
     {
         int M = matrix.size();    // row
         int N = matrix[0].size(); // column
         std::vector<int> emptyRow(N, 0);
         auto indices = zeroIndices(matrix); // Find the indices of zeros (M*N)
 
-        for (auto &rowIndex : indices.first)
+        for (auto& rowIndex : indices.first)
         {
             matrix[rowIndex] = emptyRow;
         }
-        for (auto &columnIndex : indices.second)
+        for (auto& columnIndex : indices.second)
         {
             for (int i = 0; i < M; i++)
             {
@@ -184,14 +184,14 @@ public:
     "waterbottle", "wat" is moved to the end of the string, creating
     "erbottlewat"
     */
-    static bool stringRotation(const std::string &substr,
-                               const std::string &str)
+    static bool stringRotation(const std::string& substr,
+                               const std::string& str)
     {
         return isSubstring(substr, str + str);
     }
 
     /* Helper Method to see if a string is a substring of another. */
-    static bool isSubstring(const std::string &substr, const std::string &str)
+    static bool isSubstring(const std::string& substr, const std::string& str)
     {
         bool result = false;
         auto substringIndex = 0;
@@ -217,7 +217,7 @@ public:
     /* Helper function for finding zeros within an MxN matrix. The first item in
     the pair is the row index and the second item is column index.*/
     static std::pair<std::unordered_set<int>, std::unordered_set<int>> const
-    zeroIndices(std::vector<std::vector<int>> const &matrix)
+    zeroIndices(std::vector<std::vector<int>> const& matrix)
     {
         std::unordered_set<int> rowIndices;
         std::unordered_set<int> columnIndices;
@@ -238,7 +238,7 @@ public:
     }
 
     /* Helper function to print out a matrix for simple debugging */
-    static void printMatrix(std::vector<std::vector<int>> &matrix)
+    static void printMatrix(std::vector<std::vector<int>>& matrix)
     {
         for (int i = 0; i < (int)matrix.size(); i++)
         {
@@ -253,12 +253,12 @@ public:
     /* Class for a simple linked list */
     struct Node
     {
-        Node *next = nullptr;
-        Node *previous = nullptr;
+        Node* next = nullptr;
+        Node* previous = nullptr;
         int data;
 
         explicit Node(int t_data) : data{t_data} {}
-        explicit Node(std::vector<int> &list) : data{list[0]}
+        explicit Node(std::vector<int>& list) : data{list[0]}
         {
             auto it = this;
             for (int i = 1; i < (int)list.size(); i++)
@@ -282,7 +282,7 @@ public:
             end->previous = n;
         }
 
-        void joinList(Node *anotherList)
+        void joinList(Node* anotherList)
         {
             auto n = this;
             while (n->next != nullptr)
@@ -293,7 +293,7 @@ public:
             anotherList->previous = n;
         }
 
-        Node *deleteNode(Node *t_head, int t_data)
+        Node* deleteNode(Node* t_head, int t_data)
         {
             auto n = t_head;
             if (n->data == t_data)
@@ -332,11 +332,11 @@ public:
     ** -----------------------------------------------------------------
     ** Write code to remove duplicates from an unsorted linked list.
     */
-    static void removeDups(Node *list)
+    static void removeDups(Node* list)
     {
         std::unordered_set<int> encountered;
         auto it = list;
-        Node *previous;
+        Node* previous;
 
         // Find duplicates
         while (it != nullptr)
@@ -361,9 +361,9 @@ public:
     ** Implement an algorithm to find the kth to last last element of a singly
     ** linked list.
     */
-    static Node *kthToLast(int k, Node *list)
+    static Node* kthToLast(int k, Node* list)
     {
-        Node *result = nullptr;
+        Node* result = nullptr;
         auto size = 0;
         auto count = 0;
         auto it = list;
@@ -403,7 +403,7 @@ public:
     ** Result: nothing is returned, but the new linked list looks like
     ** a->b->d->e->f
     */
-    static void deleteMiddleNode(Node *c)
+    static void deleteMiddleNode(Node* c)
     {
         // This is assuming that the function is never used on the last element
         // or the first element
@@ -423,10 +423,10 @@ public:
     ** Input:  3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
     ** Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
     */
-    static Node *partition(Node *t_list, int x)
+    static Node* partition(Node* t_list, int x)
     {
         auto node = t_list;
-        Node *previous = nullptr;
+        Node* previous = nullptr;
         while (node != nullptr)
         {
             // Move to the beginning
@@ -462,7 +462,7 @@ public:
     ** Follow up: Suppose the digits are stored in forward order, repeat the
     ** above problem.
     */
-    static Node *sumLists(Node *list1, Node *list2)
+    static Node* sumLists(Node* list1, Node* list2)
     {
         if ((list1 == nullptr) && (list2 == nullptr)) return nullptr;
         if ((list1 != nullptr) && (list2 == nullptr)) return list1;
@@ -470,8 +470,8 @@ public:
 
         bool carry = false;
         bool first = true;
-        Node *result;
-        Node *head;
+        Node* result;
+        Node* head;
 
         // O(m + n)
         while ((list1 != nullptr) && (list2 != nullptr))
@@ -544,7 +544,7 @@ public:
     ** 1 2 3 4 5 4 3 2 1 -> true
     ** 1 2 3 2 1 2 -> false
     */
-    static bool palindrome(Node *t_list)
+    static bool palindrome(Node* t_list)
     {
         auto result = true;
         std::stack<int> stack;
@@ -568,12 +568,11 @@ public:
     ** the exact same node (by reference) as the jth node of the second linked
     ** list, then they are intersecting.
     */
-    static bool intersection(Node *list1, Node *list2)
+    static bool intersection(Node* list1, Node* list2)
     {
         auto result = false;
         // Create a hashed set of old values
-        std::unordered_set<Node *>
-            encounteredNodes; // list of nodes in 1st node
+        std::unordered_set<Node*> encounteredNodes; // list of nodes in 1st node
         auto head1 = list1;
         auto head2 = list2;
 
@@ -613,10 +612,10 @@ public:
     Input: A -> B -> C -> D -> E -> C [the same C as earlier]
     Output: C
      */
-    static Node *loopDetection(Node *list)
+    static Node* loopDetection(Node* list)
     {
-        Node *result = nullptr;
-        std::unordered_set<Node *> nodesSet;
+        Node* result = nullptr;
+        std::unordered_set<Node*> nodesSet;
         auto head = list;
 
         while (head != nullptr)
@@ -635,9 +634,9 @@ public:
         return result;
     }
 
-    static Node *reverseSinglyLinkedList(Node *list)
+    static Node* reverseSinglyLinkedList(Node* list)
     {
-        Node *head = nullptr;
+        Node* head = nullptr;
         while (list != nullptr)
         {
             auto newNode = new Node(list->data);
@@ -649,11 +648,11 @@ public:
     }
 
     // Merge sort for Linked List
-    static void mergeSortLinkedList(Node **list)
+    static void mergeSortLinkedList(Node** list)
     {
-        Node *head = *list;
-        Node *left;
-        Node *right;
+        Node* head = *list;
+        Node* left;
+        Node* right;
 
         if ((head == nullptr) || (head->next == nullptr)) return;
         split(head, &left, &right);
@@ -664,9 +663,9 @@ public:
     }
 
     /* Merge sorted lists for sor */
-    static Node *mergeSorted(Node *left, Node *right)
+    static Node* mergeSorted(Node* left, Node* right)
     {
-        Node *result = nullptr;
+        Node* result = nullptr;
         if (left == nullptr)
             return right;
         else if (right == nullptr)
@@ -685,7 +684,7 @@ public:
         return result;
     }
 
-    static void split(Node *list, Node **left, Node **right)
+    static void split(Node* list, Node** left, Node** right)
     {
         auto turtle = list;
         auto hare = list->next;
@@ -713,27 +712,27 @@ public:
         class StackNode
         {
             int data;
-            StackNode *next;
+            StackNode* next;
 
         public:
             explicit StackNode() : data{0}, next{nullptr} {}
             explicit StackNode(int t_data) : data{t_data}, next{nullptr} {}
-            explicit StackNode(int t_data, StackNode *t_next)
+            explicit StackNode(int t_data, StackNode* t_next)
                 : data{t_data}, next{t_next}
             {}
 
             ~StackNode() {}
 
             int getData() { return data; }
-            StackNode *getNext() { return this->next; }
-            void setNext(StackNode *t_next) { this->next = t_next; }
+            StackNode* getNext() { return this->next; }
+            void setNext(StackNode* t_next) { this->next = t_next; }
         };
 
-        StackNode *top;
+        StackNode* top;
         int size = 0;
         class EmptyStackException : public std::exception
         {
-            virtual const char *what() const throw() { return "Empty stack!"; }
+            virtual const char* what() const throw() { return "Empty stack!"; }
         };
 
         int pop()
@@ -781,17 +780,17 @@ public:
         struct QueueNode
         {
             T data;
-            QueueNode *next;
+            QueueNode* next;
             explicit QueueNode(T t_data) : data{t_data}, next{nullptr} {}
         };
-        QueueNode *first;
-        QueueNode *last;
+        QueueNode* first;
+        QueueNode* last;
 
     public:
         Queue();
         class NoSuchElementException : public std::exception
         {
-            virtual const char *what() const throw()
+            virtual const char* what() const throw()
             {
                 return "No such element in queue!";
             }
@@ -838,7 +837,7 @@ public:
     class StackMin : public Stack
     {
     public:
-        StackNode *minimumStack; // keeping track of all minimum elements
+        StackNode* minimumStack; // keeping track of all minimum elements
         int pop()
         {
             if (top == nullptr) throw new EmptyStackException;
@@ -890,7 +889,7 @@ public:
         std::vector<Stack> m_setOfStacks;
         std::vector<int> m_stackSizes;
         int m_maxStackSize;
-        Stack *lastStack;
+        Stack* lastStack;
         int lastStackSize;
 
         void createNewStack()
@@ -995,7 +994,7 @@ public:
     ** elements into any other data structure (such as an array). The stack
     ** supports the following operations: push, pop, peek, and is Empty.
     */
-    static void sortStack(Stack &t_stack)
+    static void sortStack(Stack& t_stack)
     {
         if (t_stack.isEmpty() || t_stack.size == 1) return;
         auto helperStack = *(new Stack());
@@ -1042,96 +1041,52 @@ public:
     {
 
         /* Represents a single node of a tree. */
-        class TreeNode
+        struct TreeNode
         {
             int data;
-            TreeNode *left;
-            TreeNode *right;
+            TreeNode* left;
+            TreeNode* right;
 
-        public:
             TreeNode() : left{nullptr}, right{nullptr} {}
             explicit TreeNode(int t_data)
-                : data{t_data}, left{nullptr}, right{nullptr}
-            {}
-            TreeNode(int t_data, TreeNode *t_left, TreeNode *t_right)
-                : data{t_data}, left{t_left}, right{t_right}
-            {}
-
-            class NoSuchElementException : public std::exception
-            {
-                virtual const char *what() const throw()
-                {
-                    return "No such element in queue!";
-                }
-            };
-
-            int getData() { return data; }
-            TreeNode *getLeft() { return this->left; }
-            TreeNode *getRight() { return this->right; }
-            bool hasLeft() { return this->left != nullptr ? true : false; }
-            bool hasRight() { return this->right != nullptr ? true : false; }
-            void setData(const int &t_data) { this->data = t_data; }
-            void setLeft(TreeNode *t_left) { this->left = t_left; }
-            void setRight(TreeNode *t_right) { this->right = t_right; }
-            bool isLeaf() { return left == nullptr && right == nullptr; }
-            int getLeftData()
-            {
-                if (this->hasLeft())
-                {
-                    return this->getLeft()->getData();
-                }
-                else
-                {
-                    throw new NoSuchElementException;
-                }
-            }
-            int getRightData()
-            {
-                if (this->hasRight())
-                {
-                    return this->getRight()->getData();
-                }
-                else
-                {
-                    throw new NoSuchElementException;
-                }
-            }
+                : data{t_data}, left{nullptr}, right{nullptr} {}
+            bool isLeaf() { return (left == nullptr) && (right == nullptr); }
         };
 
         /* Private recursion function for printing in order*/
-        void inOrderPrint(TreeNode *node)
+        void inOrderPrint(TreeNode* node)
         {
             if (node != nullptr)
             {
-                inOrderPrint(node->getLeft());
-                std::cout << root->getData();
-                inOrderPrint(node->getRight());
+                inOrderPrint(node->left);
+                std::cout << root->data;
+                inOrderPrint(node->right);
             }
         }
 
         /* Private recursion function for printing Pre-order*/
-        void preOrderPrint(TreeNode *node)
+        void preOrderPrint(TreeNode* node)
         {
             if (node != nullptr)
             {
-                std::cout << root->getData();
-                preOrderPrint(node->getLeft());
-                preOrderPrint(node->getRight());
+                std::cout << root->data;
+                preOrderPrint(node->left);
+                preOrderPrint(node->right);
             }
         }
 
         /* Private recursion function for printing Post-order*/
-        void postOrderPrint(TreeNode *node)
+        void postOrderPrint(TreeNode* node)
         {
             if (node != nullptr)
             {
-                postOrderPrint(node->getLeft());
-                postOrderPrint(node->getRight());
-                std::cout << root->getData();
+                postOrderPrint(node->left);
+                postOrderPrint(node->right);
+                std::cout << root->data;
             }
         }
 
-        TreeNode *root;
+        TreeNode* root;
         size_t size;
 
     public:
@@ -1141,43 +1096,43 @@ public:
         {}
 
         size_t getSize() { return this->size; }
-        TreeNode *getRoot() { return this->root; }
+        TreeNode* getRoot() { return this->root; }
 
         /* Check to see if all left descendants <= n < all right descendants. In
         other words, check to make sure that this is a valid binary search
         tree.*/
-        bool isValid(TreeNode *node)
+        bool isValid(TreeNode* node)
         {
             auto result = true;
             if (node->isLeaf()) return result;
-            if (node->hasLeft() && (max(node->getLeft()) > node->getData()))
+            if (node->left != nullptr && (max(node->left) > node->data))
             {
                 result = false;
             }
-            if (result && node->hasRight() &&
-                (min(node->getRight()) < node->getData()))
+            if (result && node->right != nullptr &&
+                (min(node->right) < node->data))
             {
                 result = false;
             }
-            if (!isValid(node->getLeft()) || !isValid(node->getRight()))
+            if (!isValid(node->left) || !isValid(node->right))
                 result = false;
             return result;
         }
 
         /* Find the minimum element in a tree node*/
-        int min(TreeNode *node)
+        int min(TreeNode* node)
         {
-            auto minimum = node->getData();
+            auto minimum = node->data;
             if (!node->isLeaf())
             {
-                if (node->getLeft() != nullptr)
+                if (node->left != nullptr)
                 {
-                    auto leftMin = min(node->getLeft());
+                    auto leftMin = min(node->left);
                     minimum = leftMin < minimum ? leftMin : minimum;
                 }
-                if (node->getRight() != nullptr)
+                if (node->right != nullptr)
                 {
-                    auto rightMin = min(node->getRight());
+                    auto rightMin = min(node->right);
                     minimum = rightMin < minimum ? rightMin : minimum;
                 }
             }
@@ -1185,19 +1140,19 @@ public:
         }
 
         /* Find the maximum element in a tree node*/
-        int max(TreeNode *node)
+        int max(TreeNode* node)
         {
-            auto maximum = node->getData();
+            auto maximum = node->data;
             if (!node->isLeaf())
             {
-                if (node->getLeft() != nullptr)
+                if (node->left != nullptr)
                 {
-                    auto leftMin = min(node->getLeft());
+                    auto leftMin = min(node->left);
                     maximum = leftMin < maximum ? leftMin : maximum;
                 }
-                if (node->getRight() != nullptr)
+                if (node->right != nullptr)
                 {
-                    auto rightMin = min(node->getRight());
+                    auto rightMin = min(node->right);
                     maximum = rightMin < maximum ? rightMin : maximum;
                 }
             }
@@ -1207,14 +1162,14 @@ public:
         /* Get the height of a tree, from the specified node (usually root),
         which is the number of edges from the root node to the deepest leaf
         node. */
-        int getHeight(TreeNode *node)
+        int getHeight(TreeNode* node)
         {
             auto height = 0;
             if (!node->isLeaf())
             {
                 int leftHeight = 0, rightHeight = 0;
-                if (node->hasLeft()) leftHeight = getHeight(node->getLeft());
-                if (node->hasRight()) rightHeight = getHeight(node->getRight());
+                if (node->left != nullptr) leftHeight = getHeight(node->left);
+                if (node->right != nullptr) rightHeight = getHeight(node->right);
                 height = leftHeight > rightHeight ? leftHeight : rightHeight;
                 height++;
             }
@@ -1223,25 +1178,26 @@ public:
 
         void insert(int t_data)
         {
-            this->root = insert(t_data, this->root);
+            insert(t_data, this->root);
             this->size++;
         }
 
         /* Function for recursively inserting at one node, to be used by the
         insert function. This does not take balancing into account. This runtime
         is O(log n)*/
-        TreeNode *insert(int t_data, TreeNode *node)
+        TreeNode* insert(int t_data, TreeNode* node)
         {
-            if (node == nullptr) return new TreeNode(t_data);
-            if (t_data <= node->getData())
-                return insert(t_data, node->getLeft());
+            if (node == nullptr)
+                return new TreeNode(t_data);
+            else if (t_data <= node->data)
+                return insert (t_data, node->left);
             else
-                return insert(t_data, node->getRight());
+                return insert(t_data, node->right);
         }
 
         /* Check if a tree is complete, meaning that every level of the tree is
         fully filled, except for perhaps the last level. */
-        bool isComplete(TreeNode *node) { return false; }
+        bool isComplete(TreeNode* node) { return false; }
 
         /* A full binary tree is a binary tree in which every node has either
         zero or two children. That is, no nodes have only one child. */
