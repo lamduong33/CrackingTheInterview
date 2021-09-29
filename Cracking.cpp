@@ -801,6 +801,7 @@ public:
         QueueNode *last;
 
     public:
+        Queue();
         class NoSuchElementException : public std::exception
         {
             virtual const char *what() const throw()
@@ -1060,6 +1061,7 @@ public:
      ** */
     class BinaryTree
     {
+
         /* Represents a single node of a tree. */
         class TreeNode
         {
@@ -1076,6 +1078,15 @@ public:
                 : data{t_data}, left{t_left}, right{t_right}
             {
             }
+
+            class NoSuchElementException : public std::exception
+            {
+                virtual const char *what() const throw()
+                {
+                    return "No such element in queue!";
+                }
+            };
+
             int getData() { return data; }
             TreeNode *getLeft() { return this->left; }
             TreeNode *getRight() { return this->right; }
@@ -1085,6 +1096,28 @@ public:
             void setLeft(TreeNode *t_left) { this->left = t_left; }
             void setRight(TreeNode *t_right) { this->right = t_right; }
             bool isLeaf() { return left == nullptr && right == nullptr; }
+            int getLeftData()
+            {
+                if (this->hasLeft())
+                {
+                    return this->getLeft()->getData();
+                }
+                else
+                {
+                    throw new NoSuchElementException;
+                }
+            }
+            int getRightData()
+            {
+                if (this->hasRight())
+                {
+                    return this->getRight()->getData();
+                }
+                else
+                {
+                    throw new NoSuchElementException;
+                }
+            }
         };
 
         /* Private recursion function for printing in order*/
@@ -1131,6 +1164,7 @@ public:
         }
 
         size_t getSize() { return this->size; }
+        TreeNode* getRoot() { return this->root; }
 
         /* Check to see if all left descendants <= n < all right descendants. In
         other words, check to make sure that this is a valid binary search
@@ -1217,9 +1251,46 @@ public:
             return height;
         }
 
-        virtual void insert(int t_data)
+        void insert(int t_data)
         {
-            std::cout << "some bullshit";
+            insert(t_data, this->root);
+        }
+
+        /* Function for recursively inserting at one node, to be used by the
+        insert function.*/
+        void insert(int t_data, TreeNode* node)
+        {
+            if (t_data <= node->getData())
+            {
+                if (node->hasLeft())
+                {
+                    if (t_data <= node->getLeftData())
+                    {
+                        insert(t_data, node->getLeft());
+                    }
+                    else
+                    {
+                        auto newNode = new TreeNode(t_data);
+                        auto tempNode = node->getLeft();
+                        node->setLeft(newNode);
+                        newNode->setLeft(tempNode);
+                    }
+                }
+                else
+                {
+                    node->setLeft(new TreeNode(t_data));
+                }
+            }
+            else
+            {
+                if (node->hasRight())
+                {
+                }
+                else
+                {
+                    node->setRight(new TreeNode(t_data));
+                }
+            }
         }
 
         /* Check if a tree is complete, meaning that every level of the tree is
@@ -1247,10 +1318,6 @@ public:
 
     class MinHeap : public BinaryTree
     {
-    public:
-        void insert()
-        {
-        }
     };
 };
 
