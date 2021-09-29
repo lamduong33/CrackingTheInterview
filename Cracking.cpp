@@ -32,16 +32,14 @@ public:
         auto result = false;
         auto charCount = 0;
         for (int i = 0; i < (int)str.length(); i++)
-            if (str.at(i) != ' ')
-                charCount++;
+            if (str.at(i) != ' ') charCount++;
         std::unordered_set<char> occursOnce;
 
         // O(n)
         for (int i = 0; i < (int)str.length(); i++)
         {
             char c = std::tolower(str.at(i));
-            if (c == ' ')
-                continue;
+            if (c == ' ') continue;
             if (!occursOnce.count(c))
                 occursOnce.insert(c);
             else
@@ -76,8 +74,7 @@ public:
             if (bigger.at(j) != smaller.at(i))
             {
                 mismatchCount++;
-                if (difference == 0)
-                    i++;
+                if (difference == 0) i++;
             }
             else
             {
@@ -86,8 +83,7 @@ public:
             j++;
         }
 
-        if (mismatchCount <= 1)
-            result = true;
+        if (mismatchCount <= 1) result = true;
         return result;
     }
 
@@ -108,8 +104,7 @@ public:
         {
             if (str.at(i) != c)
             {
-                if (i != 0)
-                    result += c + std::to_string(charCount);
+                if (i != 0) result += c + std::to_string(charCount);
                 c = str.at(i);
                 charCount = 0;
             }
@@ -469,12 +464,9 @@ public:
     */
     static Node *sumLists(Node *list1, Node *list2)
     {
-        if ((list1 == nullptr) && (list2 == nullptr))
-            return nullptr;
-        if ((list1 != nullptr) && (list2 == nullptr))
-            return list1;
-        if ((list1 == nullptr) && (list2 != nullptr))
-            return list2;
+        if ((list1 == nullptr) && (list2 == nullptr)) return nullptr;
+        if ((list1 != nullptr) && (list2 == nullptr)) return list1;
+        if ((list1 == nullptr) && (list2 != nullptr)) return list2;
 
         bool carry = false;
         bool first = true;
@@ -663,8 +655,7 @@ public:
         Node *left;
         Node *right;
 
-        if ((head == nullptr) || (head->next == nullptr))
-            return;
+        if ((head == nullptr) || (head->next == nullptr)) return;
         split(head, &left, &right);
         mergeSortLinkedList(&left);
         mergeSortLinkedList(&right);
@@ -729,8 +720,7 @@ public:
             explicit StackNode(int t_data) : data{t_data}, next{nullptr} {}
             explicit StackNode(int t_data, StackNode *t_next)
                 : data{t_data}, next{t_next}
-            {
-            }
+            {}
 
             ~StackNode() {}
 
@@ -748,8 +738,7 @@ public:
 
         int pop()
         {
-            if (top == nullptr)
-                throw new EmptyStackException;
+            if (top == nullptr) throw new EmptyStackException;
             int item = top->getData();
             top = top->getNext();
             size--;
@@ -766,8 +755,7 @@ public:
 
         int peek()
         {
-            if (top == nullptr)
-                throw new EmptyStackException;
+            if (top == nullptr) throw new EmptyStackException;
             return top->getData();
         }
 
@@ -779,8 +767,7 @@ public:
             for (auto i = 0; i < size; i++)
             {
                 std::cout << head->getData();
-                if (i != size - 1)
-                    std::cout << "->";
+                if (i != size - 1) std::cout << "->";
                 head = head->getNext();
             }
             std::cout << std::endl;
@@ -813,17 +800,14 @@ public:
         void add(T item)
         {
             auto t = new QueueNode(item);
-            if (last != nullptr)
-                last->next = t;
+            if (last != nullptr) last->next = t;
             last = t;
-            if (first == nullptr)
-                first = last;
+            if (first == nullptr) first = last;
         }
 
         T remove()
         {
-            if (first == nullptr)
-                throw new NoSuchElementException;
+            if (first == nullptr) throw new NoSuchElementException;
             T data = first->data;
             first = first->next;
             if (first == nullptr)
@@ -836,8 +820,7 @@ public:
 
         T peek()
         {
-            if (first == nullptr)
-                throw new NoSuchElementException;
+            if (first == nullptr) throw new NoSuchElementException;
             return first->data;
         }
 
@@ -858,8 +841,7 @@ public:
         StackNode *minimumStack; // keeping track of all minimum elements
         int pop()
         {
-            if (top == nullptr)
-                throw new EmptyStackException;
+            if (top == nullptr) throw new EmptyStackException;
             if (top->getData() == minimumStack->getData())
             {
                 minimumStack = minimumStack->getNext();
@@ -944,8 +926,7 @@ public:
 
         void push(int t_item)
         {
-            if (lastStackSize == m_maxStackSize)
-                createNewStack();
+            if (lastStackSize == m_maxStackSize) createNewStack();
             lastStack->push(t_item);
             lastStackSize++;
         }
@@ -954,8 +935,7 @@ public:
         {
             auto result = lastStack->pop();
             lastStackSize--;
-            if (lastStackSize == 0)
-                removeLastStack();
+            if (lastStackSize == 0) removeLastStack();
             return result;
         }
 
@@ -1017,8 +997,7 @@ public:
     */
     static void sortStack(Stack &t_stack)
     {
-        if (t_stack.isEmpty() || t_stack.size == 1)
-            return;
+        if (t_stack.isEmpty() || t_stack.size == 1) return;
         auto helperStack = *(new Stack());
         auto sorted = false;
 
@@ -1070,14 +1049,13 @@ public:
             TreeNode *right;
 
         public:
+            TreeNode() : left{nullptr}, right{nullptr} {}
             explicit TreeNode(int t_data)
                 : data{t_data}, left{nullptr}, right{nullptr}
-            {
-            }
+            {}
             TreeNode(int t_data, TreeNode *t_left, TreeNode *t_right)
                 : data{t_data}, left{t_left}, right{t_right}
-            {
-            }
+            {}
 
             class NoSuchElementException : public std::exception
             {
@@ -1157,14 +1135,13 @@ public:
         size_t size;
 
     public:
-        BinaryTree() : root{new TreeNode(0)}, size{0} {}
+        BinaryTree() : root{nullptr}, size{0} {}
         explicit BinaryTree(const int initialValue)
             : root{new TreeNode(initialValue)}, size{1}
-        {
-        }
+        {}
 
         size_t getSize() { return this->size; }
-        TreeNode* getRoot() { return this->root; }
+        TreeNode *getRoot() { return this->root; }
 
         /* Check to see if all left descendants <= n < all right descendants. In
         other words, check to make sure that this is a valid binary search
@@ -1172,8 +1149,7 @@ public:
         bool isValid(TreeNode *node)
         {
             auto result = true;
-            if (node->isLeaf())
-                return result;
+            if (node->isLeaf()) return result;
             if (node->hasLeft() && (max(node->getLeft()) > node->getData()))
             {
                 result = false;
@@ -1237,14 +1213,8 @@ public:
             if (!node->isLeaf())
             {
                 int leftHeight = 0, rightHeight = 0;
-                if (node->hasLeft())
-                {
-                    leftHeight = getHeight(node->getLeft());
-                }
-                if (node->hasRight())
-                {
-                    rightHeight = getHeight(node->getRight());
-                }
+                if (node->hasLeft()) leftHeight = getHeight(node->getLeft());
+                if (node->hasRight()) rightHeight = getHeight(node->getRight());
                 height = leftHeight > rightHeight ? leftHeight : rightHeight;
                 height++;
             }
@@ -1253,52 +1223,25 @@ public:
 
         void insert(int t_data)
         {
-            insert(t_data, this->root);
+            this->root = insert(t_data, this->root);
+            this->size++;
         }
 
         /* Function for recursively inserting at one node, to be used by the
-        insert function.*/
-        void insert(int t_data, TreeNode* node)
+        insert function. This does not take balancing into account. This runtime
+        is O(log n)*/
+        TreeNode *insert(int t_data, TreeNode *node)
         {
+            if (node == nullptr) return new TreeNode(t_data);
             if (t_data <= node->getData())
-            {
-                if (node->hasLeft())
-                {
-                    if (t_data <= node->getLeftData())
-                    {
-                        insert(t_data, node->getLeft());
-                    }
-                    else
-                    {
-                        auto newNode = new TreeNode(t_data);
-                        auto tempNode = node->getLeft();
-                        node->setLeft(newNode);
-                        newNode->setLeft(tempNode);
-                    }
-                }
-                else
-                {
-                    node->setLeft(new TreeNode(t_data));
-                }
-            }
+                return insert(t_data, node->getLeft());
             else
-            {
-                if (node->hasRight())
-                {
-                }
-                else
-                {
-                    node->setRight(new TreeNode(t_data));
-                }
-            }
+                return insert(t_data, node->getRight());
         }
 
         /* Check if a tree is complete, meaning that every level of the tree is
         fully filled, except for perhaps the last level. */
-        bool isComplete(TreeNode* node)
-        {
-            return false;
-        }
+        bool isComplete(TreeNode *node) { return false; }
 
         /* A full binary tree is a binary tree in which every node has either
         zero or two children. That is, no nodes have only one child. */
@@ -1321,4 +1264,12 @@ public:
     };
 };
 
-int main() { return 0; }
+int main()
+{
+    Cracking::BinaryTree bt;
+    bt.insert(5);
+    bt.insert(3);
+    bt.insert(6);
+    bt.printInOrder();
+    return 0;
+}
