@@ -162,6 +162,9 @@ namespace DataStructures
         node. */
         int getHeight(TreeNode* node);
 
+        /* Inserting one element in the tree. This consists of calling the
+        recursive function with the same name (overridden), which is O(log n).
+        Balancing the tree after the recursive function is O(n) worst case.*/
         void insert(int t_data);
 
         /* Function for recursively inserting at one node, to be used by the
