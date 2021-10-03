@@ -1059,7 +1059,7 @@ public:
             if (node != nullptr)
             {
                 inOrderPrint(node->left);
-                std::cout << root->data;
+                std::cout << node->data;
                 inOrderPrint(node->right);
             }
         }
@@ -1069,7 +1069,7 @@ public:
         {
             if (node != nullptr)
             {
-                std::cout << root->data;
+                std::cout << node->data;
                 preOrderPrint(node->left);
                 preOrderPrint(node->right);
             }
@@ -1082,7 +1082,7 @@ public:
             {
                 postOrderPrint(node->left);
                 postOrderPrint(node->right);
-                std::cout << root->data;
+                std::cout << node->data;
             }
         }
 
@@ -1098,12 +1098,24 @@ public:
         size_t getSize() { return this->size; }
         TreeNode* getRoot() { return this->root; }
 
+        class EmptyTreeException : public std::exception
+        {
+            virtual const char* what() const throw() { return "The tree is empty!"; }
+        };
+
+        /* Check to see if the tree is a valid BST. */
+        bool validTree()
+        {
+            return isValid(this->root);
+        }
+
         /* Check to see if all left descendants <= n < all right descendants. In
         other words, check to make sure that this is a valid binary search
-        tree.*/
+        tree, given a node.*/
         bool isValid(TreeNode* node)
         {
             auto result = true;
+            if (node == nullptr) return result;
             if (node->isLeaf()) return result;
             if (node->left != nullptr && (max(node->left) > node->data))
             {
@@ -1122,6 +1134,7 @@ public:
         /* Find the minimum element in a tree node*/
         int min(TreeNode* node)
         {
+            if (node == nullptr) throw new EmptyTreeException;
             auto minimum = node->data;
             if (!node->isLeaf())
             {
@@ -1142,6 +1155,7 @@ public:
         /* Find the maximum element in a tree node*/
         int max(TreeNode* node)
         {
+            if (node == nullptr) throw new EmptyTreeException;
             auto maximum = node->data;
             if (!node->isLeaf())
             {
@@ -1165,13 +1179,16 @@ public:
         int getHeight(TreeNode* node)
         {
             auto height = 0;
-            if (!node->isLeaf())
+            if (node != nullptr)
             {
-                int leftHeight = 0, rightHeight = 0;
-                if (node->left != nullptr) leftHeight = getHeight(node->left);
-                if (node->right != nullptr) rightHeight = getHeight(node->right);
-                height = leftHeight > rightHeight ? leftHeight : rightHeight;
-                height++;
+                if (!node->isLeaf())
+                {
+                    int leftHeight = 0, rightHeight = 0;
+                    if (node->left != nullptr) leftHeight = getHeight(node->left);
+                    if (node->right != nullptr) rightHeight = getHeight(node->right);
+                    height = leftHeight > rightHeight ? leftHeight : rightHeight;
+                    height++;
+                }
             }
             return height;
         }
@@ -1185,14 +1202,38 @@ public:
         /* Function for recursively inserting at one node, to be used by the
         insert function. This does not take balancing into account. This runtime
         is O(log n)*/
-        TreeNode* insert(int t_data, TreeNode* node)
+        void insert(int t_data, TreeNode* node)
         {
-            if (node == nullptr)
-                return new TreeNode(t_data);
-            else if (t_data <= node->data)
-                return insert (t_data, node->left);
+            if (node != nullptr)
+            {
+                if (t_data <= node->data)
+                {
+                    if (node->left == nullptr)
+                        node->left = new TreeNode(t_data);
+                    else
+                        insert(t_data, node->left);
+                }
+                else
+                {
+                    if (node->right == nullptr)
+                        node->right = new TreeNode(t_data);
+                    else
+                        insert(t_data, node->right);
+                }
+            }
             else
-                return insert(t_data, node->right);
+            {
+                if (this->root == nullptr)
+                {
+                    this->root = new TreeNode(t_data);
+                }
+                else
+                {
+                    // Shouldn't encounter a null node unless it's the root.
+                    throw new std::exception;
+                }
+            }
+
         }
 
         /* Check if a tree is complete, meaning that every level of the tree is
@@ -1223,9 +1264,20 @@ public:
 int main()
 {
     Cracking::BinaryTree bt;
-    bt.insert(5);
+    bt.insert(1);
+    bt.insert(2);
     bt.insert(3);
+    bt.insert(4);
+    bt.insert(5);
     bt.insert(6);
     bt.printInOrder();
+    if (bt.validTree())
+    {
+        std::cout << "THis is a valid BST";
+    }
+    else
+    {
+        std::cout << "This is NOT a valid BST";
+    }
     return 0;
 }
