@@ -2,9 +2,104 @@
 #define __DATASTRUCTURES_H_
 
 #include <iostream>
+#include <vector>
 
 namespace DataStructures
 {
+    /* Class for a simple linked list */
+    struct Node
+    {
+        Node* next = nullptr;
+        Node* previous = nullptr;
+        int data;
+
+        explicit Node(int t_data) : data{t_data} {}
+        explicit Node(std::vector<int>& list) : data{list[0]}
+        {
+            auto it = this;
+            for (int i = 1; i < (int)list.size(); i++)
+            {
+                it->next = new Node(list[i]);
+                it->next->previous = it;
+                it = it->next;
+            }
+        }
+
+        /* Traverse the list and append to the end.*/
+        void appendToTail(int t_data);
+
+        void joinList(Node* anotherList);
+
+        Node* deleteNode(Node* t_head, int t_data);
+
+        void printList();
+    };
+
+    /* Stack data structure */
+    class Stack
+    {
+    public:
+        class StackNode
+        {
+            int data;
+            StackNode* next;
+
+        public:
+            explicit StackNode() : data{0}, next{nullptr} {}
+            explicit StackNode(int t_data) : data{t_data}, next{nullptr} {}
+            explicit StackNode(int t_data, StackNode* t_next)
+                : data{t_data}, next{t_next}
+            {}
+
+            ~StackNode() {}
+            int getData() { return data; }
+            StackNode* getNext() { return this->next; }
+            void setNext(StackNode* t_next) { this->next = t_next; }
+        };
+
+        StackNode* top;
+        int size = 0;
+        class EmptyStackException : public std::exception
+        {
+            virtual const char* what() const throw() { return "Empty stack!"; }
+        };
+
+        int pop();
+        void push(int item);
+        int peek();
+        bool isEmpty();
+        void printStack();
+    };
+
+    /* The queue class is FIFO (first in first out) */
+    template <class T> class Queue
+    {
+    private:
+        struct QueueNode
+        {
+            T data;
+            QueueNode* next;
+            explicit QueueNode(T t_data) : data{t_data}, next{nullptr} {}
+        };
+        QueueNode* first;
+        QueueNode* last;
+
+    public:
+        Queue();
+        class NoSuchElementException : public std::exception
+        {
+            virtual const char* what() const throw()
+            {
+                return "No such element in queue!";
+            }
+        };
+
+        void add(T item);
+        T remove();
+        T peek();
+        bool isEmpty();
+    };
+
     /** A binary search tree, where the children and its descendents on the left
      ** are smaller than the parent node and the children and its descendents on
      ** the right are larger than the parent node.
@@ -110,6 +205,10 @@ namespace DataStructures
         void printInOrder();
         void printPreOrder();
         void printPostOrder();
+    };
+
+    class MinHeap : public BinaryTree
+    {
     };
 }
 

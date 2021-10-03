@@ -1,17 +1,140 @@
 #include "DataStructures.hpp"
 
-/*-------------------------------BINARY TREE---------------------------------*/
+using namespace DataStructures;
 
-size_t DataStructures::BinaryTree::getSize() { return this->size; }
+/*-------------------------------LINKED LIST---------------------------------*/
 
-DataStructures::BinaryTree::TreeNode* DataStructures::BinaryTree::getRoot()
+void Node::appendToTail(int t_data)
 {
-    return this->root;
+    auto end = new Node(t_data);
+    auto n = this;
+    while (n->next != nullptr)
+    {
+        n = n->next;
+    }
+    n->next = end;
+    end->previous = n;
 }
 
-bool DataStructures::BinaryTree::validTree() { return isValid(this->root); }
+void Node::joinList(Node* anotherList)
+{
+    auto n = this;
+    while (n->next != nullptr)
+    {
+        n = n->next;
+    }
+    n->next = anotherList;
+    anotherList->previous = n;
+}
 
-bool DataStructures::BinaryTree::isValid(TreeNode* node)
+Node* Node::deleteNode(Node* t_head, int t_data)
+{
+    auto n = t_head;
+    if (n->data == t_data)
+    {
+        t_head->next->previous = nullptr;
+        return t_head->next; // head moved
+    }
+
+    while (n->next != nullptr)
+    {
+        if (n->next->data == t_data)
+        {
+            n->next = n->next->next;
+            n->next->next->previous = n;
+            return t_head; // head didn't change
+        }
+        n = n->next;
+    }
+    return t_head;
+}
+
+void Node::printList()
+{
+    auto it = this;
+    while (it != nullptr)
+    {
+        std::cout << it->data;
+        it = it->next;
+    }
+}
+
+/*-------------------------------STACK---------------------------------------*/
+int Stack::pop()
+{
+    if (top == nullptr) throw new EmptyStackException;
+    int item = top->getData();
+    top = top->getNext();
+    size--;
+    return item;
+}
+
+void Stack::push(int item)
+{
+    auto t = new StackNode(item);
+    t->setNext(top);
+    top = t;
+    size++;
+}
+
+int Stack::peek()
+{
+    if (top == nullptr) throw new EmptyStackException;
+    return top->getData();
+}
+
+bool Stack::isEmpty() { return (size == 0); }
+void Stack::printStack()
+{
+    auto head = top;
+    for (auto i = 0; i < size; i++)
+    {
+        std::cout << head->getData();
+        if (i != size - 1) std::cout << "->";
+        head = head->getNext();
+    }
+    std::cout << std::endl;
+}
+
+/*-------------------------------QUEUE---------------------------------------*/
+template <class T> void Queue<T>::add(T item)
+{
+    auto t = new QueueNode(item);
+    if (last != nullptr) last->next = t;
+    last = t;
+    if (first == nullptr) first = last;
+}
+
+template <class T> T Queue<T>::remove()
+{
+    if (first == nullptr) throw new NoSuchElementException;
+    T data = first->data;
+    first = first->next;
+    if (first == nullptr)
+    {
+        delete (last);
+        last = nullptr;
+    }
+    return data;
+}
+
+template <class T> T Queue<T>::peek()
+{
+    if (first == nullptr) throw new NoSuchElementException;
+    return first->data;
+}
+
+template <class T> bool Queue<T>::isEmpty() { return first == nullptr; }
+
+/*-------------------------------BINARY TREE---------------------------------*/
+
+size_t BinaryTree::getSize() { return this->size; }
+
+BinaryTree::TreeNode* BinaryTree::getRoot() { return this->root; }
+
+bool BinaryTree::validTree() { return isValid(this->root); }
+
+bool BinaryTree::isValid(TreeNode* node)
 {
     auto result = true;
     if (node == nullptr) return result;
@@ -28,7 +151,7 @@ bool DataStructures::BinaryTree::isValid(TreeNode* node)
     return result;
 }
 
-int DataStructures::BinaryTree::min(TreeNode* node)
+int BinaryTree::min(TreeNode* node)
 {
     if (node == nullptr) throw new EmptyTreeException;
     auto minimum = node->data;
@@ -48,7 +171,7 @@ int DataStructures::BinaryTree::min(TreeNode* node)
     return minimum;
 }
 
-int DataStructures::BinaryTree::max(TreeNode* node)
+int BinaryTree::max(TreeNode* node)
 {
 
     if (node == nullptr) throw new EmptyTreeException;
@@ -69,7 +192,7 @@ int DataStructures::BinaryTree::max(TreeNode* node)
     return maximum;
 }
 
-int DataStructures::BinaryTree::getHeight(TreeNode* node)
+int BinaryTree::getHeight(TreeNode* node)
 {
     auto height = 0;
     if (node != nullptr)
@@ -86,13 +209,13 @@ int DataStructures::BinaryTree::getHeight(TreeNode* node)
     return height;
 }
 
-void DataStructures::BinaryTree::insert(int t_data)
+void BinaryTree::insert(int t_data)
 {
     insert(t_data, this->root);
     this->size++;
 }
 
-void DataStructures::BinaryTree::insert(int t_data, TreeNode* node)
+void BinaryTree::insert(int t_data, TreeNode* node)
 {
     if (node != nullptr)
     {
@@ -125,9 +248,9 @@ void DataStructures::BinaryTree::insert(int t_data, TreeNode* node)
     }
 }
 
-bool DataStructures::BinaryTree::fullTree() { return isFull(this->root); }
+bool BinaryTree::fullTree() { return isFull(this->root); }
 
-bool DataStructures::BinaryTree::isFull(TreeNode* node)
+bool BinaryTree::isFull(TreeNode* node)
 {
     auto result = true;
     if (node == nullptr) throw new EmptyTreeException;
@@ -146,7 +269,7 @@ bool DataStructures::BinaryTree::isFull(TreeNode* node)
     return result;
 }
 
-void DataStructures::BinaryTree::inOrderPrint(TreeNode* node)
+void BinaryTree::inOrderPrint(TreeNode* node)
 {
     if (node != nullptr)
     {
@@ -156,7 +279,7 @@ void DataStructures::BinaryTree::inOrderPrint(TreeNode* node)
     }
 }
 
-void DataStructures::BinaryTree::preOrderPrint(TreeNode* node)
+void BinaryTree::preOrderPrint(TreeNode* node)
 {
     if (node != nullptr)
     {
@@ -166,7 +289,7 @@ void DataStructures::BinaryTree::preOrderPrint(TreeNode* node)
     }
 }
 
-void DataStructures::BinaryTree::postOrderPrint(TreeNode* node)
+void BinaryTree::postOrderPrint(TreeNode* node)
 {
     if (node != nullptr)
     {
@@ -176,9 +299,6 @@ void DataStructures::BinaryTree::postOrderPrint(TreeNode* node)
     }
 }
 
-void DataStructures::BinaryTree::printInOrder() { inOrderPrint(this->root); }
-void DataStructures::BinaryTree::printPreOrder() { preOrderPrint(this->root); }
-void DataStructures::BinaryTree::printPostOrder()
-{
-    postOrderPrint(this->root);
-}
+void BinaryTree::printInOrder() { inOrderPrint(this->root); }
+void BinaryTree::printPreOrder() { preOrderPrint(this->root); }
+void BinaryTree::printPostOrder() { postOrderPrint(this->root); }

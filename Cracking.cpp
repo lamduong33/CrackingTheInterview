@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include "DataStructures.hpp"
+#include "DataStructures.cpp"
 
 using namespace DataStructures;
 
@@ -252,82 +252,6 @@ public:
             std::cout << std::endl;
         }
     }
-
-    /* Class for a simple linked list */
-    struct Node
-    {
-        Node* next = nullptr;
-        Node* previous = nullptr;
-        int data;
-
-        explicit Node(int t_data) : data{t_data} {}
-        explicit Node(std::vector<int>& list) : data{list[0]}
-        {
-            auto it = this;
-            for (int i = 1; i < (int)list.size(); i++)
-            {
-                it->next = new Node(list[i]);
-                it->next->previous = it;
-                it = it->next;
-            }
-        }
-
-        /* Traverse the list and append to the end.*/
-        void appendToTail(int t_data)
-        {
-            auto end = new Node(t_data);
-            auto n = this;
-            while (n->next != nullptr)
-            {
-                n = n->next;
-            }
-            n->next = end;
-            end->previous = n;
-        }
-
-        void joinList(Node* anotherList)
-        {
-            auto n = this;
-            while (n->next != nullptr)
-            {
-                n = n->next;
-            }
-            n->next = anotherList;
-            anotherList->previous = n;
-        }
-
-        Node* deleteNode(Node* t_head, int t_data)
-        {
-            auto n = t_head;
-            if (n->data == t_data)
-            {
-                t_head->next->previous = nullptr;
-                return t_head->next; // head moved
-            }
-
-            while (n->next != nullptr)
-            {
-                if (n->next->data == t_data)
-                {
-                    n->next = n->next->next;
-                    n->next->next->previous = n;
-                    return t_head; // head didn't change
-                }
-                n = n->next;
-            }
-            return t_head;
-        }
-
-        void printList()
-        {
-            auto it = this;
-            while (it != nullptr)
-            {
-                std::cout << it->data;
-                it = it->next;
-            }
-        }
-    };
 
     /*
     ** 2.1) Remove Dups:
@@ -707,128 +631,6 @@ public:
     }
 
     // ==============================Chapter 3===============================
-
-    /* Stack data structure */
-    class Stack
-    {
-    public:
-        class StackNode
-        {
-            int data;
-            StackNode* next;
-
-        public:
-            explicit StackNode() : data{0}, next{nullptr} {}
-            explicit StackNode(int t_data) : data{t_data}, next{nullptr} {}
-            explicit StackNode(int t_data, StackNode* t_next)
-                : data{t_data}, next{t_next}
-            {}
-
-            ~StackNode() {}
-
-            int getData() { return data; }
-            StackNode* getNext() { return this->next; }
-            void setNext(StackNode* t_next) { this->next = t_next; }
-        };
-
-        StackNode* top;
-        int size = 0;
-        class EmptyStackException : public std::exception
-        {
-            virtual const char* what() const throw() { return "Empty stack!"; }
-        };
-
-        int pop()
-        {
-            if (top == nullptr) throw new EmptyStackException;
-            int item = top->getData();
-            top = top->getNext();
-            size--;
-            return item;
-        }
-
-        void push(int item)
-        {
-            auto t = new StackNode(item);
-            t->setNext(top);
-            top = t;
-            size++;
-        }
-
-        int peek()
-        {
-            if (top == nullptr) throw new EmptyStackException;
-            return top->getData();
-        }
-
-        bool isEmpty() { return (size == 0); }
-
-        void printStack()
-        {
-            auto head = top;
-            for (auto i = 0; i < size; i++)
-            {
-                std::cout << head->getData();
-                if (i != size - 1) std::cout << "->";
-                head = head->getNext();
-            }
-            std::cout << std::endl;
-        }
-    };
-
-    /* The queue class is FIFO (first in first out) */
-    template <class T> class Queue
-    {
-    private:
-        struct QueueNode
-        {
-            T data;
-            QueueNode* next;
-            explicit QueueNode(T t_data) : data{t_data}, next{nullptr} {}
-        };
-        QueueNode* first;
-        QueueNode* last;
-
-    public:
-        Queue();
-        class NoSuchElementException : public std::exception
-        {
-            virtual const char* what() const throw()
-            {
-                return "No such element in queue!";
-            }
-        };
-
-        void add(T item)
-        {
-            auto t = new QueueNode(item);
-            if (last != nullptr) last->next = t;
-            last = t;
-            if (first == nullptr) first = last;
-        }
-
-        T remove()
-        {
-            if (first == nullptr) throw new NoSuchElementException;
-            T data = first->data;
-            first = first->next;
-            if (first == nullptr)
-            {
-                delete (last);
-                last = nullptr;
-            }
-            return data;
-        }
-
-        T peek()
-        {
-            if (first == nullptr) throw new NoSuchElementException;
-            return first->data;
-        }
-
-        bool isEmpty() { return first == nullptr; }
-    };
-
     /*
     ** 3.2) Stack Min:
     ** ----------------------------------------------------------------------
@@ -1035,9 +837,6 @@ public:
 
     // ==============================Chapter 3=============================== //
     // ===========================Trees and Graphs ========================== //
-    class MinHeap : public BinaryTree
-    {
-    };
 };
 
 int main()
