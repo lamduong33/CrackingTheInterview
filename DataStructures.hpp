@@ -1,110 +1,116 @@
 #ifndef __DATASTRUCTURES_H_
 #define __DATASTRUCTURES_H_
 
-/*
-** A Vector that changes size by +50% every time an insertion request exceed its
-** size.
-*/
-template <class T> class Vector
+#include <iostream>
+
+namespace DataStructures
 {
-public:
-    // Default constructor that will create an empty array for 10 items.
-    Vector();
+    /** A binary search tree, where the children and its descendents on the left
+     ** are smaller than the parent node and the children and its descendents on
+     ** the right are larger than the parent node.
+     ** */
+    class BinaryTree
+    {
+    public:
+        /* Represents a single node of a tree. */
+        struct TreeNode
+        {
+            int data;
+            TreeNode* left;
+            TreeNode* right;
 
-    // Constructor for Vector that specifies the size
-    Vector(const int t_capacity);
+            TreeNode() : left{nullptr}, right{nullptr} {}
+            explicit TreeNode(int t_data)
+                : data{t_data}, left{nullptr}, right{nullptr}
+            {}
+            bool isLeaf() { return (left == nullptr) && (right == nullptr); }
+            bool hasBoth() { return (left != nullptr) && (right != nullptr); }
+        };
 
-    // Constructor for turning a static array into a vector
-    Vector(const T *t_array, const int t_arraySize);
+    private:
+        TreeNode* root;
+        size_t size;
 
-    // Expand when too small
-    void expand();
-    const T get(int index);
+    public:
+        BinaryTree() : root{nullptr}, size{0} {}
+        explicit BinaryTree(const int initialValue)
+            : root{new TreeNode(initialValue)}, size{1}
+        {}
 
-    /*
-    ** Function to insert an element at the end of the list
-    */
-    void insert(T t_item, int t_positionIndex);
-    void push_back(T t_item);
-    T pop();
-    T remove(int t_positionIndex);
-    void toString();
-    int getSize();
-    int getCapacity();
+        size_t getSize();
+        TreeNode* getRoot();
 
-    // Destructor
-    ~Vector() { delete[] container; }
+        class EmptyTreeException : public std::exception
+        {
+            virtual const char* what() const throw()
+            {
+                return "The tree is empty!";
+            }
+        };
 
-private:
-    int size, capacity;
-    T *container; // the actual container of the object
-    void adjustSize();
-};
+        /* Check to see if the tree is a valid BST. */
+        bool validTree();
 
-/* ============================= NODE ======================================= */
-template <class T> class Node
-{
-public:
-    Node() : val{0}, next{0} {}; // Has to be 0 and not nullptr for templates.
-    Node(T t_val) : val{t_val}, next{0} {};
-    Node(T t_val, Node *t_next) : val{t_val}, next{t_next} {};
-    T getVal() { return this->val; };
-    Node<T> *getNext() { return this->next; };
-    void setNext(Node<T> *t_nextNode) { this->next = t_nextNode; };
-    //~Node() { delete next; };
+        /* Check to see if all left descendants <= n < all right descendants. In
+        other words, check to make sure that this is a valid binary search
+        tree, given a node.*/
+        bool isValid(TreeNode* node);
 
-private:
-    T val;
-    Node<T> *next;
-};
+        /* Find the minimum element in a tree node*/
+        int min(TreeNode* node);
 
-/* LinkedContainer superclass for linked data structures such as LinkedList,
- * Queue, Stack. This is an abstract class. */
-template <class T> class LinkedContainer
-{
-public:
-    LinkedContainer(); // the only concrete thing about the class
-    LinkedContainer(Node<T> *t_node);
-    virtual int getSize();
-    virtual Node<T> *getHead();
-    virtual void setHead(Node<T> *t_node);
-    virtual void printContainer();
-    virtual ~LinkedContainer() = 0;
+        /* Find the maximum element in a tree node*/
+        int max(TreeNode* node);
 
-private:
-    int size;
-    Node<T> *head;
-};
+        /* Get the height of a tree, from the specified node (usually root),
+        which is the number of edges from the root node to the deepest leaf
+        node. */
+        int getHeight(TreeNode* node);
 
-// Queue: first in - first out
-template <class T> class Queue : public LinkedContainer<T>
-{
-public:
-    Queue();
-    Queue(Node<T> *t_node);
-    void enqueue(T t_item);
-    Node<T> *getTail();
-    T dequeue();
-    ~Queue();
+        void insert(int t_data);
 
-private:
-    Node<T> *tail;
-};
+        /* Function for recursively inserting at one node, to be used by the
+        insert function. This does not take balancing into account. This runtime
+        is O(log n)*/
+        void insert(int t_data, TreeNode* node);
 
-template <class T> class Stack
-{
-};
+        /* TODO: A BST is balanced if the two child subtrees of any node differ by at
+        most one. */
+        bool isBalanced();
 
-template <class T> class LinkedList
-{
-};
+        /* TODO: Check if a tree is complete, meaning that every level of the tree is
+        fully filled, except for perhaps the last level. */
+        bool isComplete(TreeNode* node);
 
-template <class T> class BinaryTree
-{
-};
+        /* A full binary tree is a binary tree in which every node has either
+        zero or two children. That is, no nodes have only one child. */
+        bool fullTree();
 
-template <class T> class RedBlackTree
-{
-};
+        /* Recursive function to see if a node and all its descendents are
+         * "full" */
+        bool isFull(TreeNode* node);
+
+        /* TODO: A perfect binary tree is one that is both full and ocmplete. All leaf
+        nodes will be at the same level, and this level has the maximum number
+        of nodes.*/
+        bool isPerfect();
+
+        /* TODO: Balance the tree */
+        void balanceTree();
+
+        /* Recursive function for printing in order*/
+        void inOrderPrint(TreeNode* node);
+
+        /* Recursive function for printing Pre-order*/
+        void preOrderPrint(TreeNode* node);
+
+        /* Recursive function for printing Post-order*/
+        void postOrderPrint(TreeNode* node);
+
+        void printInOrder();
+        void printPreOrder();
+        void printPostOrder();
+    };
+}
 
 #endif // __DATASTRUCTURES_H_

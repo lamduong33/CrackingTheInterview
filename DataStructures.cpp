@@ -1,202 +1,184 @@
 #include "DataStructures.hpp"
-#include <iostream>
-#include <string>
 
-// ==================================VECTOR=====================================
+/*-------------------------------BINARY TREE---------------------------------*/
 
-template <class T>
-Vector<T>::Vector() : size{0}, capacity{10}, container{new T[10]}
+size_t DataStructures::BinaryTree::getSize() { return this->size; }
+
+DataStructures::BinaryTree::TreeNode* DataStructures::BinaryTree::getRoot()
 {
+    return this->root;
 }
 
-template <class T> Vector<T>::Vector(const int t_maxSize)
-{
-    this->size = 0;
-    if (t_maxSize <= 0)
-    {
-        std::string errorMessage = "The size of the Vector has to be";
-        errorMessage += "non-negative integer greater than 1";
-        throw std::invalid_argument(errorMessage);
-    }
-    this->container = (t_maxSize >= 10) ? new T[t_maxSize] : new T[10];
-}
+bool DataStructures::BinaryTree::validTree() { return isValid(this->root); }
 
-template <class T> Vector<T>::Vector(const T *t_array, const int t_arraySize)
+bool DataStructures::BinaryTree::isValid(TreeNode* node)
 {
-    this->size = t_arraySize / sizeof(t_array[0]);
-    this->capacity = (int)this->size * 1.5;
-    this->container = new T[this->capacity];
-    for (int i = 0; i < this->size; i++)
+    auto result = true;
+    if (node == nullptr) return result;
+    if (node->isLeaf()) return result;
+    if (node->left != nullptr && (max(node->left) > node->data))
     {
-        this->container[i] = t_array[i];
+        result = false;
     }
-}
-
-/* expand():
- * -------------------------------------------------------------------------
- * Expand the vector by +50% every time this is called. This is meant to be
- * used by insertion member functions to expand the vector. Do not call
- * unless there's an if check.
- */
-template <class T> void Vector<T>::expand()
-{
-    this->capacity = (int)(this->capacity * 1.5);
-    auto newContainer = new T[this->capacity];
-    for (int i = 0; i < this->size; i++)
+    if (result && node->right != nullptr && (min(node->right) < node->data))
     {
-        newContainer[i] = container[i];
+        result = false;
     }
-    this->container = newContainer;
-}
-
-template <class T> void Vector<T>::insert(T t_item, int t_positionIndex)
-{
-    if (this->size == this->capacity)
-    {
-        expand(); // O(n)
-    }
-
-    if (t_positionIndex <= this->size)
-    {
-        T temp;
-        // Expansion process, only if it's not the last element. Else just add.
-        if (t_positionIndex != this->size)
-        {
-            for (int i = t_positionIndex; i < this->capacity; i++)
-            {
-                temp = this->container[i + 1];
-                this->container[i + 1] = this->container[i]; // NOTE: segfault
-            }
-        }
-        this->container[t_positionIndex] = t_item;
-    }
-    else
-    {
-        throw std::out_of_range("Index out of bound for Vector.\n");
-    }
-    this->size++;
-}
-
-template <class T> void Vector<T>::push_back(T t_item)
-{
-    this->insert(t_item, this->size);
-}
-
-template <class T> T Vector<T>::remove(int t_positionIndex)
-{
-    T result = this->container[t_positionIndex];
-    // Reduction needed if not the last element in the array
-    if (t_positionIndex != this->size)
-    {
-        for (int i = t_positionIndex; i < this->size; i++)
-        {
-            this->container[i] = this->container[i + 1]; // remove
-        }
-    }
-    this->size--;
+    if (!isValid(node->left) || !isValid(node->right)) result = false;
     return result;
 }
 
-template <class T> T Vector<T>::pop() { return this->remove(this->size - 1); }
-
-template <class T> int Vector<T>::getSize() { return this->size; }
-
-template <class T> int Vector<T>::getCapacity() { return this->capacity; }
-
-template <class T> void Vector<T>::toString()
+int DataStructures::BinaryTree::min(TreeNode* node)
 {
-    for (int i = 0; i < this->size; i++)
+    if (node == nullptr) throw new EmptyTreeException;
+    auto minimum = node->data;
+    if (!node->isLeaf())
     {
-        std::cout << " " << this->container[i];
+        if (node->left != nullptr)
+        {
+            auto leftMin = min(node->left);
+            minimum = leftMin < minimum ? leftMin : minimum;
+        }
+        if (node->right != nullptr)
+        {
+            auto rightMin = min(node->right);
+            minimum = rightMin < minimum ? rightMin : minimum;
+        }
     }
+    return minimum;
 }
 
-template <class T> const T Vector<T>::get(int t_index)
+int DataStructures::BinaryTree::max(TreeNode* node)
 {
-    return this->container[t_index];
-}
-// ========================= LINKED CONTAINER ==================================
-template <class T> LinkedContainer<T>::LinkedContainer()
-{
-    this->size = 0;
-    this->head = new Node<T>();
-}
 
-template <class T> LinkedContainer<T>::LinkedContainer(Node<T> *t_node)
-{
-    head = *t_node;
-    while (t_node != nullptr)
+    if (node == nullptr) throw new EmptyTreeException;
+    auto maximum = node->data;
+    if (!node->isLeaf())
     {
-        this->size++;
-        t_node = t_node->getNext();
+        if (node->left != nullptr)
+        {
+            auto leftMin = min(node->left);
+            maximum = leftMin < maximum ? leftMin : maximum;
+        }
+        if (node->right != nullptr)
+        {
+            auto rightMin = min(node->right);
+            maximum = rightMin < maximum ? rightMin : maximum;
+        }
     }
+    return maximum;
 }
 
-template <class T> Node<T> *LinkedContainer<T>::getHead() { return this->head; }
-template <class T> int LinkedContainer<T>::getSize() { return this->size; }
-
-template <class T> void LinkedContainer<T>::setHead(Node<T> *t_node)
+int DataStructures::BinaryTree::getHeight(TreeNode* node)
 {
-    this->head = t_node;
-}
-
-template <class T> LinkedContainer<T>::~LinkedContainer()
-{
-    Node<T> *headPtr = this->getHead();
-    while (headPtr != 0)
+    auto height = 0;
+    if (node != nullptr)
     {
-        Node<T> *next = headPtr->getNext();
-        delete headPtr;
-        if (next != 0)
-            headPtr = next;
+        if (!node->isLeaf())
+        {
+            int leftHeight = 0, rightHeight = 0;
+            if (node->left != nullptr) leftHeight = getHeight(node->left);
+            if (node->right != nullptr) rightHeight = getHeight(node->right);
+            height = leftHeight > rightHeight ? leftHeight : rightHeight;
+            height++;
+        }
     }
+    return height;
 }
 
-/* Only if the class is printable */
-template <class T> void LinkedContainer<T>::printContainer()
+void DataStructures::BinaryTree::insert(int t_data)
 {
-    Node<T> *traversalNode = this->head;
-    while (traversalNode != 0)
+    insert(t_data, this->root);
+    this->size++;
+}
+
+void DataStructures::BinaryTree::insert(int t_data, TreeNode* node)
+{
+    if (node != nullptr)
     {
-        std::cout << this->head->getVal();
-        Node<T> *nextNode = traversalNode->getNext();
-        if (nextNode != 0)
-            traversalNode = nextNode;
+        if (t_data <= node->data)
+        {
+            if (node->left == nullptr)
+                node->left = new TreeNode(t_data);
+            else
+                insert(t_data, node->left);
+        }
         else
-            break;
+        {
+            if (node->right == nullptr)
+                node->right = new TreeNode(t_data);
+            else
+                insert(t_data, node->right);
+        }
     }
-}
-
-// ========================= QUEUE =============================================
-
-template <class T> Queue<T>::Queue() { this->tail = this->getHead(); }
-
-template <class T> Queue<T>::~Queue() {}
-
-template <class T> Queue<T>::Queue(Node<T> *t_item)
-{
-    if (this->getTail() == 0)
+    else
     {
+        if (this->root == nullptr)
+        {
+            this->root = new TreeNode(t_data);
+        }
+        else
+        {
+            // Shouldn't encounter a null node unless it's the root.
+            throw new std::exception;
+        }
     }
-    this->tail = this->getHead();
 }
 
-/* Enqueue process - add an item to the end of the queue. */
-template <class T> void Queue<T>::enqueue(T t_item)
+bool DataStructures::BinaryTree::fullTree() { return isFull(this->root); }
+
+bool DataStructures::BinaryTree::isFull(TreeNode* node)
 {
-    Node<T> *newNode = new Node<T>(t_item);
-    this->tail->setNext(newNode);
-    this->tail = this->tail->getNext();
-    if (this->getHead()->getVal() == "")
+    auto result = true;
+    if (node == nullptr) throw new EmptyTreeException;
+    if (!node->isLeaf())
     {
-        this->setHead(tail);
+        if (!node->hasBoth())
+        {
+            result = false;
+        }
+        else
+        {
+            isFull(node->left);
+            isFull(node->right);
+        }
+    }
+    return result;
+}
+
+void DataStructures::BinaryTree::inOrderPrint(TreeNode* node)
+{
+    if (node != nullptr)
+    {
+        inOrderPrint(node->left);
+        std::cout << node->data;
+        inOrderPrint(node->right);
     }
 }
 
-int main(int argc, char *argv[])
+void DataStructures::BinaryTree::preOrderPrint(TreeNode* node)
 {
-    Queue<std::string> queue = Queue<std::string>();
-    queue.enqueue(std::string("Lam"));
-    queue.printContainer();
-    return 0;
+    if (node != nullptr)
+    {
+        std::cout << node->data;
+        preOrderPrint(node->left);
+        preOrderPrint(node->right);
+    }
+}
+
+void DataStructures::BinaryTree::postOrderPrint(TreeNode* node)
+{
+    if (node != nullptr)
+    {
+        postOrderPrint(node->left);
+        postOrderPrint(node->right);
+        std::cout << node->data;
+    }
+}
+
+void DataStructures::BinaryTree::printInOrder() { inOrderPrint(this->root); }
+void DataStructures::BinaryTree::printPreOrder() { preOrderPrint(this->root); }
+void DataStructures::BinaryTree::printPostOrder()
+{
+    postOrderPrint(this->root);
 }
