@@ -1236,14 +1236,34 @@ public:
 
         }
 
+        /* A BST is balanced if the two child subtrees of any node differ by at
+        most one. */
+        bool isBalanced()
+        {
+
+        }
+
         /* Check if a tree is complete, meaning that every level of the tree is
         fully filled, except for perhaps the last level. */
         bool isComplete(TreeNode* node) { return false; }
 
         /* A full binary tree is a binary tree in which every node has either
         zero or two children. That is, no nodes have only one child. */
-        bool isFull() { return false; }
+        bool fullTree()
+        {
+            return isFull(this->root);
+        }
 
+        /* Recursive function to see if a node and all its descendents are "full" */
+        bool isFull(TreeNode* node)
+        {
+            auto result = true;
+            if (node == nullptr) throw new EmptyTreeException;
+            else
+            {
+            }
+            return result;
+        }
         /* A perfect binary tree is one that is both full and ocmplete. All leaf
         nodes will be at the same level, and this level has the maximum number
         of nodes.*/
@@ -1273,11 +1293,11 @@ int main()
     bt.printInOrder();
     if (bt.validTree())
     {
-        std::cout << "THis is a valid BST";
+        std::cout << std::endl << "This is a valid BST";
     }
     else
     {
-        std::cout << "This is NOT a valid BST";
+        std::cout << std::endl << "This is NOT a valid BST";
     }
     return 0;
 }
