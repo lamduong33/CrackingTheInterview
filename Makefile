@@ -9,9 +9,10 @@ CXXFLAGS = -std=c++20 -g
 CC = clang++
 
 TARGET = Cracking
+DATASTRUCTURES = DataStructures
 all: $ (TARGET)
 $ (TARGET): $(TARGET).cpp
-	$(CC) $(CXXFLAGS) -o $(TARGET) $(TARGET).cpp
+	$(CC) $(CXXFLAGS) -o $(TARGET) $(TARGET).cpp $(DATASTRUCTURES).cpp
 clean:
 	$(RM) $(TARGET)
 

@@ -248,6 +248,7 @@ void BinaryTree::insert(int t_data, TreeNode* node)
     }
 }
 
+
 bool BinaryTree::fullTree() { return isFull(this->root); }
 
 bool BinaryTree::isFull(TreeNode* node)
@@ -302,3 +303,16 @@ void BinaryTree::postOrderPrint(TreeNode* node)
 void BinaryTree::printInOrder() { inOrderPrint(this->root); }
 void BinaryTree::printPreOrder() { preOrderPrint(this->root); }
 void BinaryTree::printPostOrder() { postOrderPrint(this->root); }
+
+/*-------------------------------BINARY TREE---------------------------------*/
+
+void BinarySearchTree::insert(int t_data)
+{
+    BinaryTree::insert(t_data);
+    this->balanceTree();
+}
+
+void BinarySearchTree::balanceTree()
+{
+
+}
