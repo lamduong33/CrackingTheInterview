@@ -804,7 +804,6 @@ void sortStack(Stack& t_stack)
         {
             helperStack.push(t_stack.pop());
         }
-
         if (t_stack.isEmpty())
         {
             sorted = true; // sorted when everything is exhausted
@@ -829,23 +828,3 @@ void sortStack(Stack& t_stack)
 // ==============================Chapter 3=============================== //
 // ===========================Trees and Graphs ========================== //
 
-int main()
-{
-    BinaryTree bt;
-    bt.insert(1);
-    bt.insert(2);
-    bt.insert(3);
-    bt.insert(4);
-    bt.insert(5);
-    bt.insert(6);
-    bt.printInOrder();
-    if (bt.validTree())
-    {
-        std::cout << std::endl << "This is a valid BST";
-    }
-    else
-    {
-        std::cout << std::endl << "This is NOT a valid BST";
-    }
-    return 0;
-}
