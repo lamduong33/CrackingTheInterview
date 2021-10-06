@@ -3,6 +3,4 @@
 !src/*.cpp
 !tests/*.cpp
 !include/*.hpp
-!bin
-bin/*
 !Makefile
