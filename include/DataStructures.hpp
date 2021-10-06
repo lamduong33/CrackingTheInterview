@@ -175,7 +175,7 @@ public:
 
     /* TODO: A BST is balanced if the two child subtrees of any node differ by at
     most one. */
-    bool isBalanced();
+    bool balanced();
 
     /* TODO: Check if a tree is complete, meaning that every level of the tree is
     fully filled, except for perhaps the last level. */

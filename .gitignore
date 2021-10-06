@@ -1,6 +1,7 @@
-*
+/*
 !.gitignore
-!*.cpp
-!*.hpp
+!src/
+!tests/
+!include/
 !Makefile
 !compile_flags.txt

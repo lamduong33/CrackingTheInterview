@@ -314,5 +314,8 @@ void BinarySearchTree::insert(int t_data)
 
 void BinarySearchTree::balanceTree()
 {
+    if (not balanced())
+    {
 
+    }
 }
