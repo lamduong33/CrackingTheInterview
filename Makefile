@@ -17,12 +17,11 @@ BINDIR := bin
 TARGET = Cracking
 SRCFILES = $(SRCDIR)/*.cpp
 INCFILES = $(INCDIR)/*.hpp
-BIN = $(BINDIR)$(TARGET)
 
 all: $(TARGET)
 $(TARGET): $(SRCDIR)/$(TARGET).cpp
-	$(CXX) $(CXXFLAGS) -o $(BIN) $(SRCFILES)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCFILES)
 clean:
-	$(RM) $(BIN)
+	$(RM) $(TARGET)
 
 # end
