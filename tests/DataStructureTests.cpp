@@ -1,4 +1,4 @@
-#include "DataStructures.hpp"
+#include "../include/DataStructures.hpp"
 #define BOOST_TEST_MODULE CrackingTest
 #include <boost/test/unit_test.hpp>
 
