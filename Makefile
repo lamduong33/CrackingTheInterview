@@ -5,15 +5,24 @@
 # @file
 # @version 0.1
 
-CXXFLAGS = -std=c++20 -g
-CC = clang++
+# Compiler setup
+CXXFLAGS = -std=c++20 -g -Wall -I $(INCDIR)
+CXX = clang++
+
+# Directory setup
+INCDIR := include
+SRCDIR := src
+BINDIR := bin
 
 TARGET = Cracking
-DATASTRUCTURES = DataStructures
-all: $ (TARGET)
-$ (TARGET): $(TARGET).cpp
-	$(CC) $(CXXFLAGS) -o $(TARGET) $(TARGET).cpp $(DATASTRUCTURES).cpp
+SRCFILES = $(SRCDIR)/*.cpp
+INCFILES = $(INCDIR)/*.hpp
+BIN = $(BINDIR)$(TARGET)
+
+all: $(TARGET)
+$(TARGET): $(SRCDIR)/$(TARGET).cpp
+	$(CXX) $(CXXFLAGS) -o $(BIN) $(SRCFILES)
 clean:
-	$(RM) $(TARGET)
+	$(RM) $(BIN)
 
 # end
