@@ -67,13 +67,14 @@ public:
     };
 
     int pop();
-    void push(int item);
+    void push(int t_data);
     int peek();
     bool isEmpty();
     void printStack();
 };
 
-/* The queue class is FIFO (first in first out) */
+/* The queue class is FIFO (first in first out). Notice that this requires a
+ * template class, */
 template <class T> class Queue
 {
 private:
@@ -98,7 +99,8 @@ public:
 
     void add(T item);
     T remove();
-    T peek();
+    T peekFirst();
+    T peekLast();
     bool isEmpty();
 };
 
@@ -194,6 +196,7 @@ public:
     of nodes.*/
     bool isPerfect();
 
+private:
     /* Recursive function for printing in order*/
     void inOrderPrint(TreeNode *node);
 
@@ -203,6 +206,7 @@ public:
     /* Recursive function for printing Post-order*/
     void postOrderPrint(TreeNode *node);
 
+public:
     void printInOrder();
     void printPreOrder();
     void printPostOrder();
@@ -211,7 +215,7 @@ public:
 /*
 ** A Binary Search Tree is simply a binary tree that is sorted. This tree is
 ** also balanced as well.
- */
+*/
 class BinarySearchTree : public BinaryTree
 {
     void insert(int t_data);
