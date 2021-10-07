@@ -1,6 +1,6 @@
 /*
 !.gitignore
 !src/*.cpp
-!tests/*.cpp
+!test/*.cpp
 !include/*.hpp
 !Makefile
