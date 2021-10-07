@@ -12,20 +12,27 @@
 namespace DataStructures
 {
 
-/* Class for a simple linked list */
+/* Represents a node of a graph and it is directed. */
 struct Node
 {
-    Node *next = nullptr;
-    Node *previous = nullptr;
+    Node* next = nullptr;
+    int data;
+};
+
+/* Class for a simple linked list */
+struct DoublyLinkedNode
+{
+    DoublyLinkedNode *next = nullptr;
+    DoublyLinkedNode *previous = nullptr;
     int data;
 
-    explicit Node(int t_data) : data{t_data} {}
-    explicit Node(std::vector<int> &list) : data{list[0]}
+    explicit DoublyLinkedNode(int t_data) : data{t_data} {}
+    explicit DoublyLinkedNode(std::vector<int> &list) : data{list[0]}
     {
         auto it = this;
         for (int i = 1; i < (int)list.size(); i++)
         {
-            it->next = new Node(list[i]);
+            it->next = new DoublyLinkedNode(list[i]);
             it->next->previous = it;
             it = it->next;
         }
@@ -34,9 +41,9 @@ struct Node
     /* Traverse the list and append to the end.*/
     void appendToTail(int t_data);
 
-    void joinList(Node *anotherList);
+    void joinList(DoublyLinkedNode *anotherList);
 
-    Node *deleteNode(Node *t_head, int t_data);
+    DoublyLinkedNode *deleteNode(DoublyLinkedNode *t_head, int t_data);
 
     void printList();
 };
