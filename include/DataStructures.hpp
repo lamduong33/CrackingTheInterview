@@ -1,3 +1,8 @@
+/* NOTE: Data structures were made using raw pointers for quick implementation
+ * and learning purposes.
+ * @author: Lam Duong
+ */
+
 #ifndef __DATASTRUCTURES_H_
 #define __DATASTRUCTURES_H_
 
@@ -175,6 +180,15 @@ public:
     is O(log n)*/
     void insert(int t_data, TreeNode *node);
 
+    TreeNode* childrenHave(int t_data, TreeNode* node);
+
+    /* Determine if the BinaryTree has the given value in it.*/
+    bool contains(int t_data);
+
+    /* Recursively determine whether if the given data is in the tree node or
+     * not. */
+    bool in(int t_data, TreeNode* node);
+
     /* TODO: A BST is balanced if the two child subtrees of any node differ by at
     most one. */
     bool balanced();
@@ -197,6 +211,7 @@ public:
     bool isPerfect();
 
 private:
+
     /* Recursive function for printing in order*/
     void inOrderPrint(TreeNode *node);
 
@@ -218,10 +233,19 @@ public:
 */
 class BinarySearchTree : public BinaryTree
 {
+    /* Insert the element into the BST and balance the tree. */
     void insert(int t_data);
 
     /* TODO: Balance the tree */
     void balanceTree();
+
+    /* Remove the first node encountered with the same data in the tree. */
+    void remove(int t_data);
+
+    /* TODO: Recursively remove the first node encountered with the same data
+     * in the tree node. */
+    TreeNode* remove(int t_data, TreeNode* node);
+
 };
 
 class MinHeap : public BinaryTree

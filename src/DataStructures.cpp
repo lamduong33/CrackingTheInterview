@@ -265,7 +265,6 @@ int BinaryTree::getHeight(TreeNode *node)
     return height;
 }
 
-/* Insert  */
 void BinaryTree::insert(int t_data)
 {
     insert(t_data, this->root);
@@ -303,6 +302,23 @@ void BinaryTree::insert(int t_data, TreeNode *node)
             throw new std::exception;
         }
     }
+}
+
+bool BinaryTree::contains(int t_data) { return in(t_data, this->root); }
+
+bool BinaryTree::in(int t_data, TreeNode *node)
+{
+    bool found = false;
+    if (node != nullptr)
+    {
+        if (t_data == node->data)
+            found = true;
+        else if (t_data <= node->data)
+            found = in(t_data, node->left);
+        else
+            found = in(t_data, node->right);
+    }
+    return found;
 }
 
 /* A full binary tree is a binary tree in which every node has either
@@ -371,6 +387,4 @@ void BinarySearchTree::insert(int t_data)
     this->balanceTree();
 }
 
-void BinarySearchTree::balanceTree()
-{
-}
+void BinarySearchTree::balanceTree() {}
