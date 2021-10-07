@@ -253,11 +253,11 @@ void printMatrix(std::vector<std::vector<int>> &matrix)
 ** -----------------------------------------------------------------
 ** Write code to remove duplicates from an unsorted linked list.
 */
-void removeDups(Node *list)
+void removeDups(DoublyLinkedNode *list)
 {
     std::unordered_set<int> encountered;
     auto it = list;
-    Node *previous;
+    DoublyLinkedNode *previous;
 
     // Find duplicates
     while (it != nullptr)
@@ -282,9 +282,9 @@ void removeDups(Node *list)
 ** Implement an algorithm to find the kth to last last element of a singly
 ** linked list.
 */
-Node *kthToLast(int k, Node *list)
+DoublyLinkedNode *kthToLast(int k, DoublyLinkedNode *list)
 {
-    Node *result = nullptr;
+    DoublyLinkedNode *result = nullptr;
     auto size = 0;
     auto count = 0;
     auto it = list;
@@ -324,7 +324,7 @@ Node *kthToLast(int k, Node *list)
 ** Result: nothing is returned, but the new linked list looks like
 ** a->b->d->e->f
 */
-void deleteMiddleNode(Node *c)
+void deleteMiddleNode(DoublyLinkedNode *c)
 {
     // This is assuming that the function is never used on the last element
     // or the first element
@@ -344,10 +344,10 @@ void deleteMiddleNode(Node *c)
 ** Input:  3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
 ** Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
 */
-Node *partition(Node *t_list, int x)
+DoublyLinkedNode *partition(DoublyLinkedNode *t_list, int x)
 {
     auto node = t_list;
-    Node *previous = nullptr;
+    DoublyLinkedNode *previous = nullptr;
     while (node != nullptr)
     {
         // Move to the beginning
@@ -383,7 +383,7 @@ Node *partition(Node *t_list, int x)
 ** Follow up: Suppose the digits are stored in forward order, repeat the
 ** above problem.
 */
-Node *sumLists(Node *list1, Node *list2)
+DoublyLinkedNode *sumLists(DoublyLinkedNode *list1, DoublyLinkedNode *list2)
 {
     if ((list1 == nullptr) && (list2 == nullptr))
         return nullptr;
@@ -394,8 +394,8 @@ Node *sumLists(Node *list1, Node *list2)
 
     bool carry = false;
     bool first = true;
-    Node *result;
-    Node *head;
+    DoublyLinkedNode *result;
+    DoublyLinkedNode *head;
 
     // O(m + n)
     while ((list1 != nullptr) && (list2 != nullptr))
@@ -414,13 +414,13 @@ Node *sumLists(Node *list1, Node *list2)
 
         if (first)
         {
-            result = new Node(addition);
+            result = new DoublyLinkedNode(addition);
             head = result;
             first = false;
         }
         else
         {
-            head->next = new Node(addition);
+            head->next = new DoublyLinkedNode(addition);
             head = head->next;
         }
 
@@ -468,7 +468,7 @@ Node *sumLists(Node *list1, Node *list2)
 ** 1 2 3 4 5 4 3 2 1 -> true
 ** 1 2 3 2 1 2 -> false
 */
-bool palindrome(Node *t_list)
+bool palindrome(DoublyLinkedNode *t_list)
 {
     auto result = true;
     std::stack<int> stack;
@@ -492,11 +492,11 @@ bool palindrome(Node *t_list)
 ** the exact same node (by reference) as the jth node of the second linked
 ** list, then they are intersecting.
 */
-bool intersection(Node *list1, Node *list2)
+bool intersection(DoublyLinkedNode *list1, DoublyLinkedNode *list2)
 {
     auto result = false;
     // Create a hashed set of old values
-    std::unordered_set<Node *> encounteredNodes; // list of nodes in 1st node
+    std::unordered_set<DoublyLinkedNode *> encounteredNodes; // list of nodes in 1st node
     auto head1 = list1;
     auto head2 = list2;
 
@@ -536,10 +536,10 @@ a loop in the linked list.
 Input: A -> B -> C -> D -> E -> C [the same C as earlier]
 Output: C
  */
-Node *loopDetection(Node *list)
+DoublyLinkedNode *loopDetection(DoublyLinkedNode *list)
 {
-    Node *result = nullptr;
-    std::unordered_set<Node *> nodesSet;
+    DoublyLinkedNode *result = nullptr;
+    std::unordered_set<DoublyLinkedNode *> nodesSet;
     auto head = list;
 
     while (head != nullptr)
@@ -558,12 +558,12 @@ Node *loopDetection(Node *list)
     return result;
 }
 
-Node *reverseSinglyLinkedList(Node *list)
+DoublyLinkedNode *reverseSinglyLinkedList(DoublyLinkedNode *list)
 {
-    Node *head = nullptr;
+    DoublyLinkedNode *head = nullptr;
     while (list != nullptr)
     {
-        auto newNode = new Node(list->data);
+        auto newNode = new DoublyLinkedNode(list->data);
         newNode->next = head;
         head = newNode;
         list = list->next;
@@ -571,7 +571,7 @@ Node *reverseSinglyLinkedList(Node *list)
     return head;
 }
 
-void split(Node *list, Node **left, Node **right)
+void split(DoublyLinkedNode *list, DoublyLinkedNode **left, DoublyLinkedNode **right)
 {
     auto turtle = list;
     auto hare = list->next;
@@ -591,9 +591,9 @@ void split(Node *list, Node **left, Node **right)
 }
 
 /* Merge sorted lists recursively given two linked lists. */
-Node *mergeSorted(Node *left, Node *right)
+DoublyLinkedNode *mergeSorted(DoublyLinkedNode *left, DoublyLinkedNode *right)
 {
-    Node *result = nullptr;
+    DoublyLinkedNode *result = nullptr;
     if (left == nullptr)
         return right;
     else if (right == nullptr)
@@ -613,11 +613,11 @@ Node *mergeSorted(Node *left, Node *right)
 }
 
 // Merge sort for Linked List
-void mergeSortLinkedList(Node **list)
+void mergeSortLinkedList(DoublyLinkedNode **list)
 {
-    Node *head = *list;
-    Node *left;
-    Node *right;
+    DoublyLinkedNode *head = *list;
+    DoublyLinkedNode *left;
+    DoublyLinkedNode *right;
 
     if ((head == nullptr) || (head->next == nullptr))
         return;
@@ -835,8 +835,28 @@ void sortStack(Stack &t_stack)
     helperStack.~Stack(); // clean up just in case
 }
 
-// ==============================Chapter 3=============================== //
+
+// ==============================Chapter 4=============================== //
 // ===========================Trees and Graphs ========================== //
+//
+/* 4.1) Route Between Nodes:
+ * -----------------------------------------------------------------------------
+ * Given a directed graph, design an algorithm to find out whether there is a
+ * route between two nodes*/
+bool routeBetweenNodes(TreeNode *node1, TreeNode *node2)
+{
+    bool result = false;
+    if ((node1->left->data == node2->data) ||
+        (node1->right->data == node2->data))
+    {
+        result = true;
+    }
+    else if (node1->left->data <= node2->data)
+    {
+        result = node2->data;
+    }
+    return result;
+}
 
 // Just an entry point
 int main() { return 0; }
