@@ -13,15 +13,21 @@ CXX = clang++
 INCDIR := include
 SRCDIR := src
 BINDIR := bin
+TESTDIR := test
 
 TARGET = Cracking
+TESTS = Tests
 SRCFILES = $(SRCDIR)/*.cpp
 INCFILES = $(INCDIR)/*.hpp
 
 all: $(TARGET)
 $(TARGET): $(SRCDIR)/$(TARGET).cpp
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCFILES)
+test: $(TESTS)
+$(TESTS): $(TESTDIR)/$(TESTS).cpp
+	$(CXX) $(TESTDIR)/$(TESTS).cpp -o $(TESTS) $(SRCDIR)/DataStructures.cpp
 clean:
 	$(RM) $(TARGET)
+	$(RM) $(TESTS)
 
 # end

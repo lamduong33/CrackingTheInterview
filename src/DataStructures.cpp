@@ -265,18 +265,13 @@ int BinaryTree::getHeight(TreeNode *node)
     return height;
 }
 
-/* Inserting one element in the tree. This consists of calling the
-recursive function with the same name (overridden), which is O(log n).
-Balancing the tree after the recursive function is O(n) worst case.*/
+/* Insert  */
 void BinaryTree::insert(int t_data)
 {
     insert(t_data, this->root);
     this->size++;
 }
 
-/* Function for recursively inserting at one node, to be used by the
-insert function. This does not take balancing into account. This runtime
-is O(log n)*/
 void BinaryTree::insert(int t_data, TreeNode *node)
 {
     if (node != nullptr)
@@ -378,8 +373,4 @@ void BinarySearchTree::insert(int t_data)
 
 void BinarySearchTree::balanceTree()
 {
-    // if (not balanced())
-    // {
-
-    // }
 }
