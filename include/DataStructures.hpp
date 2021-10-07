@@ -109,33 +109,30 @@ public:
     bool isEmpty();
 };
 
+/* Represents a single node of a tree. */
+struct TreeNode
+{
+    int data;
+    TreeNode *left;
+    TreeNode *right;
+
+    TreeNode() : left{nullptr}, right{nullptr} {}
+    explicit TreeNode(int t_data)
+        : data{t_data}, left{nullptr}, right{nullptr}
+    {
+    }
+    bool isLeaf() { return (left == nullptr) && (right == nullptr); }
+    bool hasBoth() { return (left != nullptr) && (right != nullptr); }
+};
+
 /** A binary search tree, where the children and its descendents on the left
  ** are smaller than the parent node and the children and its descendents on
  ** the right are larger than the parent node.
  ** */
 class BinaryTree
 {
-public:
-    /* Represents a single node of a tree. */
-    struct TreeNode
-    {
-        int data;
-        TreeNode *left;
-        TreeNode *right;
-
-        TreeNode() : left{nullptr}, right{nullptr} {}
-        explicit TreeNode(int t_data)
-            : data{t_data}, left{nullptr}, right{nullptr}
-        {
-        }
-        bool isLeaf() { return (left == nullptr) && (right == nullptr); }
-        bool hasBoth() { return (left != nullptr) && (right != nullptr); }
-    };
-
-private:
     TreeNode *root;
     size_t size;
-
 public:
     BinaryTree() : root{nullptr}, size{0} {}
     explicit BinaryTree(const int initialValue)
@@ -233,6 +230,14 @@ public:
 */
 class BinarySearchTree : public BinaryTree
 {
+    /* Search recursively for the minimum element. This more efficient since a
+     * BST is sorted already and it is the leftmost element.*/
+    int min(TreeNode* node);
+
+    /* Search recursively for the maximum element. This more efficient since a
+     * BST is sorted already and it is the rightmost element.*/
+    int max(TreeNode* node);
+
     /* Insert the element into the BST and balance the tree. */
     void insert(int t_data);
 
