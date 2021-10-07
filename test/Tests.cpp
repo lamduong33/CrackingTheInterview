@@ -23,7 +23,7 @@ TEST_CASE("Binary Tree Order Test")
     REQUIRE(root->right->right->right->data == 4);
 }
 
-int main(int argc, char** argv)
+int main(int argc, char *argv[])
 {
     int result = Catch::Session().run(argc, argv);
     return result;
