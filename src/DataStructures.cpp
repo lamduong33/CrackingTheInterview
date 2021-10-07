@@ -231,13 +231,13 @@ int BinaryTree::max(TreeNode *node)
     {
         if (node->left != nullptr)
         {
-            auto leftMin = min(node->left);
-            maximum = leftMin < maximum ? leftMin : maximum;
+            auto leftMax = max(node->left);
+            maximum = leftMax < maximum ? leftMax : maximum;
         }
         if (node->right != nullptr)
         {
-            auto rightMin = min(node->right);
-            maximum = rightMin < maximum ? rightMin : maximum;
+            auto rightMax = max(node->right);
+            maximum = rightMax < maximum ? rightMax : maximum;
         }
     }
     return maximum;
