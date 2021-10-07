@@ -9,7 +9,7 @@
 
 using namespace DataStructures;
 
-TEST_CASE("Binary Tree Order Test")
+TEST_CASE("BinaryTree Order Test 1")
 {
     BinaryTree bt;
     bt.insert(1);
@@ -21,6 +21,12 @@ TEST_CASE("Binary Tree Order Test")
     REQUIRE(root->right->data == 2);
     REQUIRE(root->right->right->data == 3);
     REQUIRE(root->right->right->right->data == 4);
+}
+
+TEST_CASE("BinaryTree")
+{
+    BinaryTree bt;
+    bt.insert(230);
 }
 
 int main(int argc, char *argv[])

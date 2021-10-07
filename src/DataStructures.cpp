@@ -170,7 +170,7 @@ template <class T> bool Queue<T>::isEmpty()
 size_t BinaryTree::getSize() { return this->size; }
 
 /*Get the TreeNode that is at the root of the binary tree.*/
-BinaryTree::TreeNode *BinaryTree::getRoot() { return this->root; }
+TreeNode *BinaryTree::getRoot() { return this->root; }
 
 /* Check to see if the tree is a valid BST. */
 bool BinaryTree::validTree() { return isValid(this->root); }
@@ -385,6 +385,20 @@ void BinarySearchTree::insert(int t_data)
 {
     BinaryTree::insert(t_data);
     this->balanceTree();
+}
+
+int BinarySearchTree::min(TreeNode *node)
+{
+    if (node == nullptr) throw new EmptyTreeException;
+    if (node->left != nullptr) return this->min(node->left);
+    else {return node->data; }
+}
+
+int BinarySearchTree::max(TreeNode *node)
+{
+    if (node == nullptr) throw new EmptyTreeException;
+    if (node->right != nullptr) return this->max(node->right);
+    else {return node->data; }
 }
 
 void BinarySearchTree::balanceTree() {}
