@@ -838,23 +838,14 @@ void sortStack(Stack &t_stack)
 
 // ==============================Chapter 4=============================== //
 // ===========================Trees and Graphs ========================== //
-//
+
 /* 4.1) Route Between Nodes:
  * -----------------------------------------------------------------------------
  * Given a directed graph, design an algorithm to find out whether there is a
  * route between two nodes*/
-bool routeBetweenNodes(TreeNode *node1, TreeNode *node2)
+bool routeBetweenNodes(Node* node1, Node* node2)
 {
     bool result = false;
-    if ((node1->left->data == node2->data) ||
-        (node1->right->data == node2->data))
-    {
-        result = true;
-    }
-    else if (node1->left->data <= node2->data)
-    {
-        result = node2->data;
-    }
     return result;
 }
 
