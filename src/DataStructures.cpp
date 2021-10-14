@@ -5,9 +5,9 @@ using namespace DataStructures;
 /*-------------------------------LINKED LIST---------------------------------*/
 
 /* Traverse the list and append to the end.*/
-void Node::appendToTail(int t_data)
+void DoublyLinkedNode::appendToTail(int t_data)
 {
-    auto end = new Node(t_data);
+    auto end = new DoublyLinkedNode(t_data);
     auto n = this;
     while (n->next != nullptr)
     {
@@ -18,7 +18,7 @@ void Node::appendToTail(int t_data)
 }
 
 /*Join the current list with another list*/
-void Node::joinList(Node *anotherList)
+void DoublyLinkedNode::joinList(DoublyLinkedNode *anotherList)
 {
     auto n = this;
     while (n->next != nullptr)
@@ -30,7 +30,7 @@ void Node::joinList(Node *anotherList)
 }
 
 /* Delete the first node that contains t_data in the list given by t_head */
-Node *Node::deleteNode(Node *t_head, int t_data)
+DoublyLinkedNode *DoublyLinkedNode::deleteNode(DoublyLinkedNode *t_head, int t_data)
 {
     auto n = t_head;
     if (n->data == t_data)
@@ -53,7 +53,7 @@ Node *Node::deleteNode(Node *t_head, int t_data)
 }
 
 /*Print the list iteratively */
-void Node::printList()
+void DoublyLinkedNode::printList()
 {
     auto it = this;
     while (it != nullptr)
