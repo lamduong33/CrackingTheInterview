@@ -7,6 +7,7 @@
 #define __DATASTRUCTURES_H_
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 namespace DataStructures
@@ -15,8 +16,27 @@ namespace DataStructures
 /* Represents a node of a graph and it is directed. */
 struct Node
 {
-    Node* next = nullptr;
+    std::string name;
+    std::vector<Node> children;
+};
+
+/* Represents a basic tree */
+struct Tree
+{
+    Node root;
+};
+
+/* Represents a linked list node */
+struct LinkedListNode
+{
+    LinkedListNode* next = nullptr;
     int data;
+};
+
+/* Represents a graph with a list of nodes */
+struct Graph
+{
+    std::vector<Node> nodes;
 };
 
 /* Class for a simple linked list */
