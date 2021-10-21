@@ -379,7 +379,7 @@ void BinaryTree::printInOrder() { inOrderPrint(this->root); }
 void BinaryTree::printPreOrder() { preOrderPrint(this->root); }
 void BinaryTree::printPostOrder() { postOrderPrint(this->root); }
 
-/*-------------------------------BINARY TREE---------------------------------*/
+/*-------------------------------BST---------------------------------*/
 
 void BinarySearchTree::insert(int t_data)
 {
@@ -402,3 +402,19 @@ int BinarySearchTree::max(TreeNode *node)
 }
 
 void BinarySearchTree::balanceTree() {}
+
+/*-------------------------------MIN HEAP---------------------------------*/
+
+/* This takes O(log n) time. */
+void MinHeap::insert(int t_data, TreeNode* node)
+{
+    // Insert at the right most spot.
+    if (node->right != nullptr) insert(t_data, node->right);
+    // Fix the tree
+
+}
+
+int MinHeap::extract_min()
+{
+    return this->getRoot()->data;
+}

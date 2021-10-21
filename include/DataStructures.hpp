@@ -280,8 +280,11 @@ class BinarySearchTree : public BinaryTree
 
 };
 
-class MinHeap : public BinaryTree
+struct MinHeap : public BinaryTree
 {
+    /* TODO: Implement the overriden recursive function for MinHeap. */
+    void insert(int t_data, TreeNode* node);
+    int extract_min();
 };
 
 } // namespace DataStructures

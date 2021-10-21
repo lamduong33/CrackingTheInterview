@@ -843,7 +843,7 @@ void sortStack(Stack &t_stack)
  * -----------------------------------------------------------------------------
  * Given a directed graph, design an algorithm to find out whether there is a
  * route between two nodes*/
-bool routeBetweenNodes(Node* node1, Node* node2)
+bool routeBetweenNodes(Graph t_graph, Node* node1, Node* node2)
 {
     bool result = false;
     return result;
