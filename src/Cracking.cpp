@@ -839,14 +839,30 @@ void sortStack(Stack &t_stack)
 // ==============================Chapter 4=============================== //
 // ===========================Trees and Graphs ========================== //
 
+
+bool BFSPath(Node* firstNode, Node* targetNode, Node* destination)
+{
+    for (int i = 0; i < (int)firstNode->children.size(); i++)
+    {
+        if ((firstNode == targetNode) && (firstNode->children[i] == destination) ||
+            (firstNode == destination)
+    }
+    return false;
+}
+
 /* 4.1) Route Between Nodes:
  * -----------------------------------------------------------------------------
  * Given a directed graph, design an algorithm to find out whether there is a
  * route between two nodes*/
-bool routeBetweenNodes(Graph t_graph, Node* node1, Node* node2)
+bool routeBetweenNodes(Graph& t_graph, Node* node1, Node* node2)
 {
-    bool result = false;
-    return result;
+    // Implement a BFS algorithm. This will visit all child nodes first before
+    // moving on to the next one.
+    for (int i = 0; i < (int)t_graph.nodes.size(); i++)
+    {
+        if(BFSPath(t_graph.nodes[i], node1, node2)) return true;
+    }
+    return false;
 }
 
 // Just an entry point
