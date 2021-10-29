@@ -29,6 +29,11 @@ TEST_CASE("BinaryTree")
     bt.insert(230);
 }
 
+TEST_CASE("4.1")
+{
+    auto node1 = new Node("0");
+}
+
 int main(int argc, char *argv[])
 {
     int result = Catch::Session().run(argc, argv);
