@@ -839,13 +839,19 @@ void sortStack(Stack &t_stack)
 // ==============================Chapter 4=============================== //
 // ===========================Trees and Graphs ========================== //
 
-
-bool BFSPath(Node* firstNode, Node* targetNode, Node* destination)
+/* BFS algorithm to determine if there's a path between two nodes.*/
+bool BFSPath(Node* targetNode, Node* destination)
 {
-    for (int i = 0; i < (int)firstNode->children.size(); i++)
+    if (targetNode != nullptr)
     {
-        if ((firstNode == targetNode) && (firstNode->children[i] == destination) ||
-            (firstNode == destination)
+        for (int i = 0; i < (int)targetNode->children.size(); i++)
+        {
+            if (targetNode->children[i] == destination) return true;
+        }
+        for (int i = 0; i < (int)targetNode->children.size(); i++)
+        {
+            if (BFSPath(targetNode->children[i], destination)) return true;
+        }
     }
     return false;
 }
@@ -858,9 +864,16 @@ bool routeBetweenNodes(Graph& t_graph, Node* node1, Node* node2)
 {
     // Implement a BFS algorithm. This will visit all child nodes first before
     // moving on to the next one.
-    for (int i = 0; i < (int)t_graph.nodes.size(); i++)
+    for (int i = 0; i < (int) t_graph.nodes.size(); i++)
     {
-        if(BFSPath(t_graph.nodes[i], node1, node2)) return true;
+        if (t_graph.nodes[i] == node1)
+        {
+            if (BFSPath(node1, node2)) return true;
+        } 
+        else if (t_graph.nodes[i] == node2)
+        {
+            if (BFSPath(node2, node1)) return true;
+        }
     }
     return false;
 }
