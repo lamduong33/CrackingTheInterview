@@ -18,6 +18,7 @@ struct Node
 {
     std::string name;
     std::vector<Node*> children;
+    Node(std::string t_name) : name{t_name} {}
 };
 
 /* Represents a basic tree */
