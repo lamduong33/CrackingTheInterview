@@ -17,13 +17,13 @@ namespace DataStructures
 struct Node
 {
     std::string name;
-    std::vector<Node> children;
+    std::vector<Node*> children;
 };
 
 /* Represents a basic tree */
 struct Tree
 {
-    Node root;
+    Node* root;
 };
 
 /* Represents a linked list node */
@@ -36,7 +36,7 @@ struct LinkedListNode
 /* Represents a graph with a list of nodes */
 struct Graph
 {
-    std::vector<Node> nodes;
+    std::vector<Node*> nodes;
 };
 
 /* Class for a simple linked list */
