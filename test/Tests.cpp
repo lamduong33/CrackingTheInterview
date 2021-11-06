@@ -6,6 +6,7 @@
 #include <catch2/catch.hpp> // NOTE: assuming intalled via package manager.
 //#include "catch2.hpp" // NOTE: assuming catch.hpp is in local dir
 #include "../include/DataStructures.hpp"
+#include "../src/Cracking.cpp"
 
 using namespace DataStructures;
 
@@ -59,9 +60,23 @@ Graph makeGraph()
     return newGraph;
 }
 
-TEST_CASE("4.1")
+TEST_CASE("Cracking The Interview: Question #4.1")
 {
-    auto node1 = new Node("0");
+    auto newGraph = makeGraph();
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[1]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[2]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[3]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[4]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[5]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[1], newGraph.nodes[5]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[2], newGraph.nodes[5]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[3], newGraph.nodes[5]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[4], newGraph.nodes[5]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[0]) == false);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[1]) == false);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[2]) == false);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[3]) == false);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[4]) == false);
 }
 
 int main(int argc, char *argv[])
