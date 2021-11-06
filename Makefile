@@ -25,7 +25,7 @@ $(TARGET): $(SRCDIR)/$(TARGET).cpp
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCFILES)
 test: $(TESTS)
 $(TESTS): $(TESTDIR)/$(TESTS).cpp
-	$(CXX) $(TESTDIR)/$(TESTS).cpp -o $(TESTS) $(SRCDIR)/DataStructures.cpp
+	$(CXX) $(CXXFLAGS) $(TESTDIR)/$(TESTS).cpp -o $(TESTS) $(SRCDIR)/DataStructures.cpp
 clean:
 	$(RM) $(TARGET)
 	$(RM) $(TESTS)
