@@ -38,6 +38,7 @@ struct LinkedListNode
 struct Graph
 {
     std::vector<Node*> nodes;
+    Graph(std::vector<Node*> t_node) : nodes{t_node} {}
 };
 
 /* Class for a simple linked list */
