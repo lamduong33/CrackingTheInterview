@@ -64,11 +64,15 @@ TEST_CASE("Cracking The Interview: Question #4.1")
 {
     auto newGraph = makeGraph();
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[1]) == true);
+
+    // FIXME: newGraph.nodesp[1] and possibly other nodes will have millions of children
+    // after this. Check to make sure that they are not modifying data.
+
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[2]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[3]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[4]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[5]) == true);
-    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[1], newGraph.nodes[5]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[1], newGraph.nodes[5]) == true); // FIXME: Test case failed
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[2], newGraph.nodes[5]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[3], newGraph.nodes[5]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[4], newGraph.nodes[5]) == true);
