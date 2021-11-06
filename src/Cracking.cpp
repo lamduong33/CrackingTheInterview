@@ -878,5 +878,3 @@ bool routeBetweenNodes(Graph& t_graph, Node* node1, Node* node2)
     return false;
 }
 
-// Just an entry point
-int main() { return 0; }
