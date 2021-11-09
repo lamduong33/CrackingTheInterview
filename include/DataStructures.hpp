@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace DataStructures
 {
@@ -17,14 +18,14 @@ namespace DataStructures
 struct Node
 {
     std::string name;
-    std::vector<Node*> children;
+    std::vector<std::unique_ptr<Node>> children;
     Node(std::string t_name) : name{t_name} {}
 };
 
 /* Represents a basic tree */
 struct Tree
 {
-    Node* root;
+    std::unique_ptr<Node> root;
 };
 
 /* Represents a linked list node */

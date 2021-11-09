@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <memory> // Smart pointers
 
 using namespace DataStructures;
 /*
@@ -840,7 +841,7 @@ void sortStack(Stack &t_stack)
 // ===========================Trees and Graphs ========================== //
 
 /* BFS algorithm to determine if there's a path between two nodes.*/
-bool BFSPath(Node* targetNode, Node* destination)
+bool BFSPath(std::unique_ptr<Node> targetNode, std::unique_ptr<Node> destination)
 {
     if (targetNode != nullptr)
     {
