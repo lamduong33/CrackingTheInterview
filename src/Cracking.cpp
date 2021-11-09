@@ -2,12 +2,12 @@
 #include <exception>
 #include <iostream>
 #include <list>
+#include <memory> // Smart pointers
 #include <stack>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <memory> // Smart pointers
 
 using namespace DataStructures;
 /*
@@ -21,21 +21,19 @@ using namespace DataStructures;
 ** Input: Tact Coa
 ** Output: true (pertmutations: "taco cat", "atco cta", etc.)
 */
-bool palindromePermutation(const std::string &str)
+bool palindromePermutation(const std::string& str)
 {
     auto result = false;
     auto charCount = 0;
     for (int i = 0; i < (int)str.length(); i++)
-        if (str.at(i) != ' ')
-            charCount++;
+        if (str.at(i) != ' ') charCount++;
     std::unordered_set<char> occursOnce;
 
     // O(n)
     for (int i = 0; i < (int)str.length(); i++)
     {
         char c = std::tolower(str.at(i));
-        if (c == ' ')
-            continue;
+        if (c == ' ') continue;
         if (!occursOnce.count(c))
             occursOnce.insert(c);
         else
@@ -57,7 +55,7 @@ bool palindromePermutation(const std::string &str)
 ** write a function to check if they are one edit (or zero edits away).
 ** e.g. pale, ple -> true
 */
-bool oneAway(const std::string &str1, const std::string &str2)
+bool oneAway(const std::string& str1, const std::string& str2)
 {
     auto result = false;
     auto smaller = str1.length() < str2.length() ? str1 : str2;
@@ -70,8 +68,7 @@ bool oneAway(const std::string &str1, const std::string &str2)
         if (bigger.at(j) != smaller.at(i))
         {
             mismatchCount++;
-            if (difference == 0)
-                i++;
+            if (difference == 0) i++;
         }
         else
         {
@@ -80,8 +77,7 @@ bool oneAway(const std::string &str1, const std::string &str2)
         j++;
     }
 
-    if (mismatchCount <= 1)
-        result = true;
+    if (mismatchCount <= 1) result = true;
     return result;
 }
 
@@ -92,7 +88,7 @@ aabcccccaaa would become a2b1c5a3. If the "compressed" string wouldn ot
 become samller than the original string, your method shoudl return the
 original string. The input is only uppercase and lowecase letters (a-z).
  */
-std::string stringCompression(const std::string &str)
+std::string stringCompression(const std::string& str)
 {
     std::string result;
     int charCount = 0;
@@ -102,8 +98,7 @@ std::string stringCompression(const std::string &str)
     {
         if (str.at(i) != c)
         {
-            if (i != 0)
-                result += c + std::to_string(charCount);
+            if (i != 0) result += c + std::to_string(charCount);
             c = str.at(i);
             charCount = 0;
         }
@@ -122,7 +117,7 @@ std::string stringCompression(const std::string &str)
 ** image is 4 bytes, write a method to rotate the image by 90 degrees. Can
 ** you do this in place?
 */
-void rotateMatrix(std::vector<std::vector<int>> &matrix)
+void rotateMatrix(std::vector<std::vector<int>>& matrix)
 {
     int N = matrix.size();
     // O(N/2 * N) = O(N^2)
@@ -148,7 +143,7 @@ void rotateMatrix(std::vector<std::vector<int>> &matrix)
 the pair is the row index and the second item is column index. This is for
 problem 1.8.*/
 std::pair<std::unordered_set<int>, std::unordered_set<int>> const
-zeroIndices(std::vector<std::vector<int>> const &matrix)
+zeroIndices(std::vector<std::vector<int>> const& matrix)
 {
     std::unordered_set<int> rowIndices;
     std::unordered_set<int> columnIndices;
@@ -173,18 +168,18 @@ zeroIndices(std::vector<std::vector<int>> const &matrix)
 ---------------------------------------------------------------------------
 ** Write an algorithm such that if an element in an MxN matrix is 0, its
 entire row and column are set to 0.*/
-void zeroMatrix(std::vector<std::vector<int>> &matrix)
+void zeroMatrix(std::vector<std::vector<int>>& matrix)
 {
     int M = matrix.size();    // row
     int N = matrix[0].size(); // column
     std::vector<int> emptyRow(N, 0);
     auto indices = zeroIndices(matrix); // Find the indices of zeros (M*N)
 
-    for (auto &rowIndex : indices.first)
+    for (auto& rowIndex : indices.first)
     {
         matrix[rowIndex] = emptyRow;
     }
-    for (auto &columnIndex : indices.second)
+    for (auto& columnIndex : indices.second)
     {
         for (int i = 0; i < M; i++)
         {
@@ -193,8 +188,9 @@ void zeroMatrix(std::vector<std::vector<int>> &matrix)
     }
 }
 
-/* Helper Method to see if a string is a substring of another for problem 1.9. */
-bool isSubstring(const std::string &substr, const std::string &str)
+/* Helper Method to see if a string is a substring of another for problem 1.9.
+ */
+bool isSubstring(const std::string& substr, const std::string& str)
 {
     bool result = false;
     auto substringIndex = 0;
@@ -230,13 +226,13 @@ NOTE: A rotation is simply where a chunk is moved around, in the case of
 "waterbottle", "wat" is moved to the end of the string, creating
 "erbottlewat"
 */
-bool stringRotation(const std::string &substr, const std::string &str)
+bool stringRotation(const std::string& substr, const std::string& str)
 {
     return isSubstring(substr, str + str);
 }
 
 /* Helper function to print out a matrix for simple debugging */
-void printMatrix(std::vector<std::vector<int>> &matrix)
+void printMatrix(std::vector<std::vector<int>>& matrix)
 {
     for (int i = 0; i < (int)matrix.size(); i++)
     {
@@ -254,11 +250,11 @@ void printMatrix(std::vector<std::vector<int>> &matrix)
 ** -----------------------------------------------------------------
 ** Write code to remove duplicates from an unsorted linked list.
 */
-void removeDups(DoublyLinkedNode *list)
+void removeDups(DoublyLinkedNode* list)
 {
     std::unordered_set<int> encountered;
     auto it = list;
-    DoublyLinkedNode *previous;
+    DoublyLinkedNode* previous;
 
     // Find duplicates
     while (it != nullptr)
@@ -283,9 +279,9 @@ void removeDups(DoublyLinkedNode *list)
 ** Implement an algorithm to find the kth to last last element of a singly
 ** linked list.
 */
-DoublyLinkedNode *kthToLast(int k, DoublyLinkedNode *list)
+DoublyLinkedNode* kthToLast(int k, DoublyLinkedNode* list)
 {
-    DoublyLinkedNode *result = nullptr;
+    DoublyLinkedNode* result = nullptr;
     auto size = 0;
     auto count = 0;
     auto it = list;
@@ -325,7 +321,7 @@ DoublyLinkedNode *kthToLast(int k, DoublyLinkedNode *list)
 ** Result: nothing is returned, but the new linked list looks like
 ** a->b->d->e->f
 */
-void deleteMiddleNode(DoublyLinkedNode *c)
+void deleteMiddleNode(DoublyLinkedNode* c)
 {
     // This is assuming that the function is never used on the last element
     // or the first element
@@ -345,10 +341,10 @@ void deleteMiddleNode(DoublyLinkedNode *c)
 ** Input:  3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
 ** Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
 */
-DoublyLinkedNode *partition(DoublyLinkedNode *t_list, int x)
+DoublyLinkedNode* partition(DoublyLinkedNode* t_list, int x)
 {
     auto node = t_list;
-    DoublyLinkedNode *previous = nullptr;
+    DoublyLinkedNode* previous = nullptr;
     while (node != nullptr)
     {
         // Move to the beginning
@@ -384,19 +380,16 @@ DoublyLinkedNode *partition(DoublyLinkedNode *t_list, int x)
 ** Follow up: Suppose the digits are stored in forward order, repeat the
 ** above problem.
 */
-DoublyLinkedNode *sumLists(DoublyLinkedNode *list1, DoublyLinkedNode *list2)
+DoublyLinkedNode* sumLists(DoublyLinkedNode* list1, DoublyLinkedNode* list2)
 {
-    if ((list1 == nullptr) && (list2 == nullptr))
-        return nullptr;
-    if ((list1 != nullptr) && (list2 == nullptr))
-        return list1;
-    if ((list1 == nullptr) && (list2 != nullptr))
-        return list2;
+    if ((list1 == nullptr) && (list2 == nullptr)) return nullptr;
+    if ((list1 != nullptr) && (list2 == nullptr)) return list1;
+    if ((list1 == nullptr) && (list2 != nullptr)) return list2;
 
     bool carry = false;
     bool first = true;
-    DoublyLinkedNode *result;
-    DoublyLinkedNode *head;
+    DoublyLinkedNode* result;
+    DoublyLinkedNode* head;
 
     // O(m + n)
     while ((list1 != nullptr) && (list2 != nullptr))
@@ -469,7 +462,7 @@ DoublyLinkedNode *sumLists(DoublyLinkedNode *list1, DoublyLinkedNode *list2)
 ** 1 2 3 4 5 4 3 2 1 -> true
 ** 1 2 3 2 1 2 -> false
 */
-bool palindrome(DoublyLinkedNode *t_list)
+bool palindrome(DoublyLinkedNode* t_list)
 {
     auto result = true;
     std::stack<int> stack;
@@ -493,11 +486,12 @@ bool palindrome(DoublyLinkedNode *t_list)
 ** the exact same node (by reference) as the jth node of the second linked
 ** list, then they are intersecting.
 */
-bool intersection(DoublyLinkedNode *list1, DoublyLinkedNode *list2)
+bool intersection(DoublyLinkedNode* list1, DoublyLinkedNode* list2)
 {
     auto result = false;
     // Create a hashed set of old values
-    std::unordered_set<DoublyLinkedNode *> encounteredNodes; // list of nodes in 1st node
+    std::unordered_set<DoublyLinkedNode*>
+        encounteredNodes; // list of nodes in 1st node
     auto head1 = list1;
     auto head2 = list2;
 
@@ -537,10 +531,10 @@ a loop in the linked list.
 Input: A -> B -> C -> D -> E -> C [the same C as earlier]
 Output: C
  */
-DoublyLinkedNode *loopDetection(DoublyLinkedNode *list)
+DoublyLinkedNode* loopDetection(DoublyLinkedNode* list)
 {
-    DoublyLinkedNode *result = nullptr;
-    std::unordered_set<DoublyLinkedNode *> nodesSet;
+    DoublyLinkedNode* result = nullptr;
+    std::unordered_set<DoublyLinkedNode*> nodesSet;
     auto head = list;
 
     while (head != nullptr)
@@ -559,9 +553,9 @@ DoublyLinkedNode *loopDetection(DoublyLinkedNode *list)
     return result;
 }
 
-DoublyLinkedNode *reverseSinglyLinkedList(DoublyLinkedNode *list)
+DoublyLinkedNode* reverseSinglyLinkedList(DoublyLinkedNode* list)
 {
-    DoublyLinkedNode *head = nullptr;
+    DoublyLinkedNode* head = nullptr;
     while (list != nullptr)
     {
         auto newNode = new DoublyLinkedNode(list->data);
@@ -572,7 +566,8 @@ DoublyLinkedNode *reverseSinglyLinkedList(DoublyLinkedNode *list)
     return head;
 }
 
-void split(DoublyLinkedNode *list, DoublyLinkedNode **left, DoublyLinkedNode **right)
+void split(DoublyLinkedNode* list, DoublyLinkedNode** left,
+           DoublyLinkedNode** right)
 {
     auto turtle = list;
     auto hare = list->next;
@@ -592,9 +587,9 @@ void split(DoublyLinkedNode *list, DoublyLinkedNode **left, DoublyLinkedNode **r
 }
 
 /* Merge sorted lists recursively given two linked lists. */
-DoublyLinkedNode *mergeSorted(DoublyLinkedNode *left, DoublyLinkedNode *right)
+DoublyLinkedNode* mergeSorted(DoublyLinkedNode* left, DoublyLinkedNode* right)
 {
-    DoublyLinkedNode *result = nullptr;
+    DoublyLinkedNode* result = nullptr;
     if (left == nullptr)
         return right;
     else if (right == nullptr)
@@ -614,14 +609,13 @@ DoublyLinkedNode *mergeSorted(DoublyLinkedNode *left, DoublyLinkedNode *right)
 }
 
 // Merge sort for Linked List
-void mergeSortLinkedList(DoublyLinkedNode **list)
+void mergeSortLinkedList(DoublyLinkedNode** list)
 {
-    DoublyLinkedNode *head = *list;
-    DoublyLinkedNode *left;
-    DoublyLinkedNode *right;
+    DoublyLinkedNode* head = *list;
+    DoublyLinkedNode* left;
+    DoublyLinkedNode* right;
 
-    if ((head == nullptr) || (head->next == nullptr))
-        return;
+    if ((head == nullptr) || (head->next == nullptr)) return;
     split(head, &left, &right);
     mergeSortLinkedList(&left);
     mergeSortLinkedList(&right);
@@ -641,11 +635,10 @@ void mergeSortLinkedList(DoublyLinkedNode **list)
 class StackMin : public Stack
 {
 public:
-    StackNode *minimumStack; // keeping track of all minimum elements
+    StackNode* minimumStack; // keeping track of all minimum elements
     int pop()
     {
-        if (top == nullptr)
-            throw new EmptyStackException;
+        if (top == nullptr) throw new EmptyStackException;
         if (top->getData() == minimumStack->getData())
         {
             minimumStack = minimumStack->getNext();
@@ -694,7 +687,7 @@ class SetOfStacks
     std::vector<Stack> m_setOfStacks;
     std::vector<int> m_stackSizes;
     int m_maxStackSize;
-    Stack *lastStack;
+    Stack* lastStack;
     int lastStackSize;
 
     void createNewStack()
@@ -730,8 +723,7 @@ public:
 
     void push(int t_item)
     {
-        if (lastStackSize == m_maxStackSize)
-            createNewStack();
+        if (lastStackSize == m_maxStackSize) createNewStack();
         lastStack->push(t_item);
         lastStackSize++;
     }
@@ -740,8 +732,7 @@ public:
     {
         auto result = lastStack->pop();
         lastStackSize--;
-        if (lastStackSize == 0)
-            removeLastStack();
+        if (lastStackSize == 0) removeLastStack();
         return result;
     }
 
@@ -801,10 +792,9 @@ public:
 ** elements into any other data structure (such as an array). The stack
 ** supports the following operations: push, pop, peek, and is Empty.
 */
-void sortStack(Stack &t_stack)
+void sortStack(Stack& t_stack)
 {
-    if (t_stack.isEmpty() || t_stack.size == 1)
-        return;
+    if (t_stack.isEmpty() || t_stack.size == 1) return;
     auto helperStack = *(new Stack());
     auto sorted = false;
 
@@ -836,12 +826,12 @@ void sortStack(Stack &t_stack)
     helperStack.~Stack(); // clean up just in case
 }
 
-
 // ==============================Chapter 4=============================== //
 // ===========================Trees and Graphs ========================== //
 
 /* BFS algorithm to determine if there's a path between two nodes.*/
-bool BFSPath(std::unique_ptr<Node> targetNode, std::unique_ptr<Node> destination)
+bool BFSPath(std::unique_ptr<Node>& targetNode,
+             std::unique_ptr<Node>& destination)
 {
     if (targetNode != nullptr)
     {
@@ -865,12 +855,12 @@ bool routeBetweenNodes(Graph& t_graph, Node* node1, Node* node2)
 {
     // Implement a BFS algorithm. This will visit all child nodes first before
     // moving on to the next one.
-    for (int i = 0; i < (int) t_graph.nodes.size(); i++)
+    for (int i = 0; i < (int)t_graph.nodes.size(); i++)
     {
         if (t_graph.nodes[i] == node1)
         {
             if (BFSPath(node1, node2)) return true;
-        } 
+        }
         else if (t_graph.nodes[i] == node2)
         {
             if (BFSPath(node2, node1)) return true;
@@ -878,4 +868,3 @@ bool routeBetweenNodes(Graph& t_graph, Node* node1, Node* node2)
     }
     return false;
 }
-
