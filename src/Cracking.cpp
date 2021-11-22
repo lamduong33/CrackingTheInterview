@@ -830,8 +830,7 @@ void sortStack(Stack& t_stack)
 // ===========================Trees and Graphs ========================== //
 
 /* BFS algorithm to determine if there's a path between two nodes.*/
-bool BFSPath(std::unique_ptr<Node>& targetNode,
-             std::unique_ptr<Node>& destination)
+bool BFSPath(Node* targetNode, Node* destination)
 {
     if (targetNode != nullptr)
     {
@@ -852,7 +851,7 @@ bool BFSPath(std::unique_ptr<Node>& targetNode,
  * -----------------------------------------------------------------------------
  * Given a directed graph, design an algorithm to find out whether there is a
  * route between two nodes*/
-bool routeBetweenNodes(Graph& t_graph, std::unique_ptr<Node> node1, std::unique_ptr<Node> node2)
+bool routeBetweenNodes(Graph& t_graph, Node* node1, Node* node2)
 {
     // Implement a BFS algorithm. This will visit all child nodes first before
     // moving on to the next one.

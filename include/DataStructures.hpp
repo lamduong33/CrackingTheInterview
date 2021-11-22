@@ -18,14 +18,14 @@ namespace DataStructures
 struct Node
 {
     std::string name;
-    std::vector<std::unique_ptr<Node>> children;
+    std::vector<Node*> children;
     Node(std::string t_name) : name{t_name} {}
 };
 
 /* Represents a basic tree */
 struct Tree
 {
-    std::unique_ptr<Node> root;
+    Node* root;
 };
 
 /* Represents a linked list node */
@@ -38,8 +38,8 @@ struct LinkedListNode
 /* Represents a graph with a list of nodes */
 struct Graph
 {
-    std::vector<std::unique_ptr<Node>> nodes;
-    Graph(std::vector<std::unique_ptr<Node>> t_node) : nodes{t_node} {}
+    std::vector<Node*> nodes;
+    Graph(std::vector<Node*> t_node) : nodes{t_node} {}
 };
 
 /* Class for a simple linked list */
