@@ -30,7 +30,7 @@ TEST_CASE("BinaryTree")
     bt.insert(230);
 }
 
-Graph makeGraph()
+Graph makeTestGraph1()
 {
     // Graph taken from
     // https://i2.wp.com/algorithms.tutorialhorizon.com/files/2015/05/Graph-BFS.png
@@ -60,9 +60,14 @@ Graph makeGraph()
     return newGraph;
 }
 
+TEST_CASE("DFS Test")
+{
+    auto newGraph = makeTestGraph1();
+}
+
 TEST_CASE("Cracking The Interview: Question #4.1")
 {
-    auto newGraph = makeGraph();
+    auto newGraph = makeTestGraph1();
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[1]) == true);
 
     // FIXME: newGraph.nodesp[1] and possibly other nodes will have millions of children
