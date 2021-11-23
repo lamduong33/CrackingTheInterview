@@ -38,7 +38,7 @@ struct LinkedListNode
 };
 
 /* Represents a graph with a list of nodes. This is essentially an adjacency
- * list.*/
+ * list. This graph is a directed graph.*/
 struct Graph
 {
     std::vector<Node*> nodes;
