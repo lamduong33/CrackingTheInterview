@@ -18,7 +18,7 @@ void DoublyLinkedNode::appendToTail(int t_data)
 }
 
 /*Join the current list with another list*/
-void DoublyLinkedNode::joinList(DoublyLinkedNode *anotherList)
+void DoublyLinkedNode::joinList(DoublyLinkedNode* anotherList)
 {
     auto n = this;
     while (n->next != nullptr)
@@ -30,7 +30,8 @@ void DoublyLinkedNode::joinList(DoublyLinkedNode *anotherList)
 }
 
 /* Delete the first node that contains t_data in the list given by t_head */
-DoublyLinkedNode *DoublyLinkedNode::deleteNode(DoublyLinkedNode *t_head, int t_data)
+DoublyLinkedNode* DoublyLinkedNode::deleteNode(DoublyLinkedNode* t_head,
+                                               int t_data)
 {
     auto n = t_head;
     if (n->data == t_data)
@@ -65,29 +66,56 @@ void DoublyLinkedNode::printList()
 
 /*-------------------------------GRAPH---------------------------------------*/
 
-
-Node* Graph::BFSearch(Node* root)
+bool Graph::BFSearch(Node* root, std::string value)
 {
-    std::queue<Node*> nodeQueue;
+    std::queue<Node*> nodesQueue;
     std::unordered_set<Node*> visitedNodes;
     visitedNodes.insert(root);
-    while (!nodeQueue.empty())
+    nodesQueue.push(root);
+
+    while (!nodesQueue.empty())
     {
+        Node* node = nodesQueue.front();
+        nodesQueue.pop();
+        if (node->name == value) return true;
+        for (auto& child : node->children)
+        {
+            if (!visitedNodes.count(child))
+            {
+                visitedNodes.insert(child);
+                nodesQueue.push(child);
+            }
+        }
+    }
+    return false;
+}
+
+bool Graph::DFSearch(Node* root, std::string value)
+{
+    std::unordered_set<Node*> visited;
+    return recursiveDFS(root, value, visited);
+}
+
+bool Graph::recursiveDFS(Node* node, std::string value,
+                          std::unordered_set<Node*>& visited)
+{
+    if (node != nullptr)
+    {
+        if (value == node->name) return true; // visit the node
+    }
+    visited.insert(node);
+    for (auto& child : node->children)
+    {
+        if (!visited.count(child)) recursiveDFS(child, value, visited);
     }
 }
 
-Node* Graph::DFSearch(Node* root)
-{
-
-}
-
 /*-------------------------------STACK---------------------------------------*/
-
+k
 /* Remove the node and return the value contained by that node. */
 int Stack::pop()
 {
-    if (top == nullptr)
-        throw new EmptyStackException;
+    if (top == nullptr) throw new EmptyStackException;
     int item = top->getData();
     top = top->getNext();
     size--;
@@ -107,8 +135,7 @@ void Stack::push(int t_data)
  * empty */
 int Stack::peek()
 {
-    if (top == nullptr)
-        throw new EmptyStackException;
+    if (top == nullptr) throw new EmptyStackException;
     return top->getData();
 }
 
@@ -122,8 +149,7 @@ void Stack::printStack()
     for (auto i = 0; i < size; i++)
     {
         std::cout << head->getData();
-        if (i != size - 1)
-            std::cout << "->";
+        if (i != size - 1) std::cout << "->";
         head = head->getNext();
     }
     std::cout << std::endl;
@@ -135,18 +161,15 @@ void Stack::printStack()
 template <class T> void Queue<T>::add(T item)
 {
     auto t = new QueueNode(item);
-    if (last != nullptr)
-        last->next = t;
+    if (last != nullptr) last->next = t;
     last = t;
-    if (first == nullptr)
-        first = last;
+    if (first == nullptr) first = last;
 }
 
 /*Remove the node from the queue and return the data that node contains.*/
 template <class T> T Queue<T>::remove()
 {
-    if (first == nullptr)
-        throw new NoSuchElementException;
+    if (first == nullptr) throw new NoSuchElementException;
     T data = first->data;
     first = first->next;
     if (first == nullptr)
@@ -160,16 +183,14 @@ template <class T> T Queue<T>::remove()
 /* Show the first element on the queue. */
 template <class T> T Queue<T>::peekFirst()
 {
-    if (first == nullptr)
-        throw new NoSuchElementException;
+    if (first == nullptr) throw new NoSuchElementException;
     return first->data;
 }
 
 /* Show the last element on the queue. */
 template <class T> T Queue<T>::peekLast()
 {
-    if (first == nullptr)
-        throw new NoSuchElementException;
+    if (first == nullptr) throw new NoSuchElementException;
     return last->data;
 }
 
@@ -188,7 +209,7 @@ template <class T> bool Queue<T>::isEmpty()
 size_t BinaryTree::getSize() { return this->size; }
 
 /*Get the TreeNode that is at the root of the binary tree.*/
-TreeNode *BinaryTree::getRoot() { return this->root; }
+TreeNode* BinaryTree::getRoot() { return this->root; }
 
 /* Check to see if the tree is a valid BST. */
 bool BinaryTree::validTree() { return isValid(this->root); }
@@ -196,13 +217,11 @@ bool BinaryTree::validTree() { return isValid(this->root); }
 /* Check to see if all left descendants <= n < all right descendants. In
 other words, check to make sure that this is a valid binary search
 tree, given a node.*/
-bool BinaryTree::isValid(TreeNode *node)
+bool BinaryTree::isValid(TreeNode* node)
 {
     auto result = true;
-    if (node == nullptr)
-        return result;
-    if (node->isLeaf())
-        return result;
+    if (node == nullptr) return result;
+    if (node->isLeaf()) return result;
     if (node->left != nullptr && (max(node->left) > node->data))
     {
         result = false;
@@ -211,16 +230,14 @@ bool BinaryTree::isValid(TreeNode *node)
     {
         result = false;
     }
-    if (!isValid(node->left) || !isValid(node->right))
-        result = false;
+    if (!isValid(node->left) || !isValid(node->right)) result = false;
     return result;
 }
 
 /* Find the minimum element in a tree node*/
-int BinaryTree::min(TreeNode *node)
+int BinaryTree::min(TreeNode* node)
 {
-    if (node == nullptr)
-        throw new EmptyTreeException;
+    if (node == nullptr) throw new EmptyTreeException;
     auto minimum = node->data;
     if (!node->isLeaf())
     {
@@ -239,11 +256,10 @@ int BinaryTree::min(TreeNode *node)
 }
 
 /* Find the maximum element in a tree node*/
-int BinaryTree::max(TreeNode *node)
+int BinaryTree::max(TreeNode* node)
 {
 
-    if (node == nullptr)
-        throw new EmptyTreeException;
+    if (node == nullptr) throw new EmptyTreeException;
     auto maximum = node->data;
     if (!node->isLeaf())
     {
@@ -264,7 +280,7 @@ int BinaryTree::max(TreeNode *node)
 /* Get the height of a tree, from the specified node (usually root),
 which is the number of edges from the root node to the deepest leaf
 node. */
-int BinaryTree::getHeight(TreeNode *node)
+int BinaryTree::getHeight(TreeNode* node)
 {
     auto height = 0;
     if (node != nullptr)
@@ -272,10 +288,8 @@ int BinaryTree::getHeight(TreeNode *node)
         if (!node->isLeaf())
         {
             int leftHeight = 0, rightHeight = 0;
-            if (node->left != nullptr)
-                leftHeight = getHeight(node->left);
-            if (node->right != nullptr)
-                rightHeight = getHeight(node->right);
+            if (node->left != nullptr) leftHeight = getHeight(node->left);
+            if (node->right != nullptr) rightHeight = getHeight(node->right);
             height = leftHeight > rightHeight ? leftHeight : rightHeight;
             height++;
         }
@@ -289,7 +303,7 @@ void BinaryTree::insert(int t_data)
     this->size++;
 }
 
-void BinaryTree::insert(int t_data, TreeNode *node)
+void BinaryTree::insert(int t_data, TreeNode* node)
 {
     if (node != nullptr)
     {
@@ -324,7 +338,7 @@ void BinaryTree::insert(int t_data, TreeNode *node)
 
 bool BinaryTree::contains(int t_data) { return in(t_data, this->root); }
 
-bool BinaryTree::in(int t_data, TreeNode *node)
+bool BinaryTree::in(int t_data, TreeNode* node)
 {
     bool found = false;
     if (node != nullptr)
@@ -343,11 +357,10 @@ bool BinaryTree::in(int t_data, TreeNode *node)
 zero or two children. That is, no nodes have only one child. */
 bool BinaryTree::fullTree() { return isFull(this->root); }
 
-bool BinaryTree::isFull(TreeNode *node)
+bool BinaryTree::isFull(TreeNode* node)
 {
     auto result = true;
-    if (node == nullptr)
-        throw new EmptyTreeException;
+    if (node == nullptr) throw new EmptyTreeException;
     if (!node->isLeaf())
     {
         if (!node->hasBoth())
@@ -363,7 +376,7 @@ bool BinaryTree::isFull(TreeNode *node)
     return result;
 }
 
-void BinaryTree::inOrderPrint(TreeNode *node)
+void BinaryTree::inOrderPrint(TreeNode* node)
 {
     if (node != nullptr)
     {
@@ -373,7 +386,7 @@ void BinaryTree::inOrderPrint(TreeNode *node)
     }
 }
 
-void BinaryTree::preOrderPrint(TreeNode *node)
+void BinaryTree::preOrderPrint(TreeNode* node)
 {
     if (node != nullptr)
     {
@@ -383,7 +396,7 @@ void BinaryTree::preOrderPrint(TreeNode *node)
     }
 }
 
-void BinaryTree::postOrderPrint(TreeNode *node)
+void BinaryTree::postOrderPrint(TreeNode* node)
 {
     if (node != nullptr)
     {
@@ -405,18 +418,26 @@ void BinarySearchTree::insert(int t_data)
     this->balanceTree();
 }
 
-int BinarySearchTree::min(TreeNode *node)
+int BinarySearchTree::min(TreeNode* node)
 {
     if (node == nullptr) throw new EmptyTreeException;
-    if (node->left != nullptr) return this->min(node->left);
-    else {return node->data; }
+    if (node->left != nullptr)
+        return this->min(node->left);
+    else
+    {
+        return node->data;
+    }
 }
 
-int BinarySearchTree::max(TreeNode *node)
+int BinarySearchTree::max(TreeNode* node)
 {
     if (node == nullptr) throw new EmptyTreeException;
-    if (node->right != nullptr) return this->max(node->right);
-    else {return node->data; }
+    if (node->right != nullptr)
+        return this->max(node->right);
+    else
+    {
+        return node->data;
+    }
 }
 
 void BinarySearchTree::balanceTree() {}
@@ -429,10 +450,6 @@ void MinHeap::insert(int t_data, TreeNode* node)
     // Insert at the right most spot.
     if (node->right != nullptr) insert(t_data, node->right);
     // Fix the tree
-
 }
 
-int MinHeap::extract_min()
-{
-    return this->getRoot()->data;
-}
+int MinHeap::extract_min() { return this->getRoot()->data; }

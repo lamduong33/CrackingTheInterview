@@ -43,8 +43,9 @@ struct Graph
 {
     std::vector<Node*> nodes;
     Graph(std::vector<Node*> t_node) : nodes{t_node} {}
-    Node* DFSearch(Node* root);
-    Node* BFSearch(Node* root);
+    bool DFSearch(Node* root, std::string value);
+    bool recursiveDFS(Node* root, std::string value, std::unordered_set<Node*>& visited);
+    bool BFSearch(Node* root, std::string value);
 };
 
 /* Class for a simple linked list */
