@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <queue>
+#include <unordered_set>
 
 namespace DataStructures
 {
@@ -35,11 +37,14 @@ struct LinkedListNode
     int data;
 };
 
-/* Represents a graph with a list of nodes */
+/* Represents a graph with a list of nodes. This is essentially an adjacency
+ * list.*/
 struct Graph
 {
     std::vector<Node*> nodes;
     Graph(std::vector<Node*> t_node) : nodes{t_node} {}
+    Node* DFSearch(Node* root);
+    Node* BFSearch(Node* root);
 };
 
 /* Class for a simple linked list */

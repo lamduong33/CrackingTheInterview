@@ -63,6 +63,24 @@ void DoublyLinkedNode::printList()
     }
 }
 
+/*-------------------------------GRAPH---------------------------------------*/
+
+
+Node* Graph::BFSearch(Node* root)
+{
+    std::queue<Node*> nodeQueue;
+    std::unordered_set<Node*> visitedNodes;
+    visitedNodes.insert(root);
+    while (!nodeQueue.empty())
+    {
+    }
+}
+
+Node* Graph::DFSearch(Node* root)
+{
+
+}
+
 /*-------------------------------STACK---------------------------------------*/
 
 /* Remove the node and return the value contained by that node. */
