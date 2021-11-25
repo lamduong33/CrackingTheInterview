@@ -845,27 +845,40 @@ void sortStack(Stack &t_stack)
 /* 4.1) Route Between Nodes:
  * -----------------------------------------------------------------------------
  * Given a directed graph, design an algorithm to find out whether there is a
- * route between two nodes
- * NOTE: This is tricky. */
+ * route between two nodes. */
 bool routeBetweenNodes(Graph &t_graph, Node *origin, Node *destination)
 {
-    std::queue<Node*> nodesQueue;
+    if (origin == destination) return true;
+    std::queue<Node *> nodesQueue;
     std::unordered_set<Node *> visitedNodes;
-    nodesQueue.push(origin);
-    visitedNodes.insert(origin);
+    Node* start; // start could be either origin or destination
+    Node* end; // end could be either origin or destination
 
-    while (!nodesQueue.empty())
+    for (auto eachNode : t_graph.nodes)
     {
-        // Traverse by getting to the nodes
-        auto node = nodesQueue.front();
-        nodesQueue.pop();
-        if (node == destination) return true;
-        for (auto& child : node->children)
+        auto foundStart = false;
+        auto foundEnd = false;
+        if (!visitedNodes.count(eachNode))
         {
-
+            visitedNodes.insert(eachNode);
+            nodesQueue.push(eachNode);
+            while (!nodesQueue.empty())
+            {
+                auto node = nodesQueue.front();
+                nodesQueue.pop();
+                if (node == origin) foundStart = true;
+                else if (node == destination) foundEnd = true;
+                if (foundEnd && foundStart) return true;
+                for (auto child : node->children)
+                {
+                    visitedNodes.insert(child);
+                    if (!visitedNodes.count(child))
+                    {
+                        nodesQueue.push(child);
+                    }
+                }
+            }
         }
     }
-
-    // BFS used for searching route starting with the origin node
     return false;
 }
