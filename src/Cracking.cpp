@@ -848,11 +848,9 @@ void sortStack(Stack &t_stack)
  * route between two nodes. */
 bool routeBetweenNodes(Graph &t_graph, Node *origin, Node *destination)
 {
-    if (origin == destination) return true;
+    if (origin == destination) return true; // edge case
     std::queue<Node *> nodesQueue;
     std::unordered_set<Node *> visitedNodes;
-    Node* start; // start could be either origin or destination
-    Node* end; // end could be either origin or destination
 
     for (auto eachNode : t_graph.nodes)
     {
@@ -871,9 +869,9 @@ bool routeBetweenNodes(Graph &t_graph, Node *origin, Node *destination)
                 if (foundEnd && foundStart) return true;
                 for (auto child : node->children)
                 {
-                    visitedNodes.insert(child);
                     if (!visitedNodes.count(child))
                     {
+                        visitedNodes.insert(child);
                         nodesQueue.push(child);
                     }
                 }
