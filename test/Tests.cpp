@@ -3,8 +3,7 @@
  * @author: Lam Duong */
 
 #define CATCH_CONFIG_RUNNER
-#include <catch2/catch.hpp> // NOTE: assuming intalled via package manager.
-//#include "catch2.hpp" // NOTE: assuming catch.hpp is in local dir
+#include <catch2/catch.hpp>
 #include "../include/DataStructures.hpp"
 #include "../src/Cracking.cpp"
 
@@ -30,10 +29,12 @@ TEST_CASE("BinaryTree")
     bt.insert(230);
 }
 
+/*
+** Graph taken from
+** https://i2.wp.com/algorithms.tutorialhorizon.com/files/2015/05/Graph-BFS.png
+*/
 Graph makeTestGraph1()
 {
-    // Graph taken from
-    // https://i2.wp.com/algorithms.tutorialhorizon.com/files/2015/05/Graph-BFS.png
     auto node0 = new Node("0");
     auto node1 = new Node("1");
     auto node2 = new Node("2");
@@ -60,8 +61,44 @@ Graph makeTestGraph1()
     return newGraph;
 }
 
-TEST_CASE("Cracking The Interview: Question #4.1")
+/*
+ * A disjointed graph taken from Cracking the Coding Interview on page 106
+ */
+Graph makeTestGraph2()
 {
+    auto node0 = new Node("0");
+    auto node1 = new Node("1");
+    auto node2 = new Node("2");
+    auto node3 = new Node("3");
+    auto node4 = new Node("4");
+    auto node5 = new Node("5");
+    auto node6 = new Node("6");
+    // First set
+    node0->children.push_back(node1);
+    node1->children.push_back(node2);
+    node2->children.push_back(node0);
+    node2->children.push_back(node3);
+    node3->children.push_back(node2);
+    // Second set
+    node4->children.push_back(node5);
+    node5->children.push_back(node6);
+    node6->children.push_back(node4);
+    std::vector<Node*> nodes;
+    nodes.push_back(node0);
+    nodes.push_back(node1);
+    nodes.push_back(node2);
+    nodes.push_back(node3);
+    nodes.push_back(node4);
+    nodes.push_back(node5);
+    Graph newGraph(nodes);
+    return newGraph;
+}
+
+TEST_CASE("Cracking The Interview: Question #4.1 - Test 1")
+{
+    // This test should pass all cases because it simply creates a graph that is
+    // all connected to each other. Since routeBetweenNodes asks for a route
+    // between the two nodes, it is a bidirectional search.
     auto newGraph = makeTestGraph1();
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[1]) == true);
 
@@ -72,15 +109,25 @@ TEST_CASE("Cracking The Interview: Question #4.1")
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[3]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[4]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[5]) == true);
-    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[1], newGraph.nodes[5]) == true); // FIXME: Test case failed
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[1], newGraph.nodes[5]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[2], newGraph.nodes[5]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[3], newGraph.nodes[5]) == true);
     REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[4], newGraph.nodes[5]) == true);
-    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[0]) == false);
-    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[1]) == false);
-    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[2]) == false);
-    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[3]) == false);
-    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[4]) == false);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[0]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[1]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[2]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[3]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[5], newGraph.nodes[4]) == true);
+}
+
+TEST_CASE("Cracking The Interview: Question #4.1 - Test 2")
+{
+    auto newGraph = makeTestGraph2();
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[3]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[2]) == true);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[0], newGraph.nodes[4]) == false);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[2], newGraph.nodes[5]) == false);
+    REQUIRE(routeBetweenNodes(newGraph, newGraph.nodes[3], newGraph.nodes[6]) == false);
 }
 
 int main(int argc, char *argv[])
