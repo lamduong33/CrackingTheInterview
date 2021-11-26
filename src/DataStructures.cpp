@@ -111,7 +111,6 @@ bool Graph::recursiveDFS(Node* node, std::string value,
 }
 
 /*-------------------------------STACK---------------------------------------*/
-k
 /* Remove the node and return the value contained by that node. */
 int Stack::pop()
 {
