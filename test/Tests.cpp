@@ -34,35 +34,30 @@ Graph makeTestGraph1()
 {
     // Graph taken from
     // https://i2.wp.com/algorithms.tutorialhorizon.com/files/2015/05/Graph-BFS.png
-    Node node0("0");
-    Node node1("1");
-    Node node2("2");
-    Node node3("3");
-    Node node4("4");
-    Node node5("5");
-    node0.children.push_back(&node1);
-    node0.children.push_back(&node2);
-    node1.children.push_back(&node2);
-    node1.children.push_back(&node3);
-    node2.children.push_back(&node3);
-    node3.children.push_back(&node4);
-    node4.children.push_back(&node0);
-    node4.children.push_back(&node1);
-    node4.children.push_back(&node5);
+    auto node0 = new Node("0");
+    auto node1 = new Node("1");
+    auto node2 = new Node("2");
+    auto node3 = new Node("3");
+    auto node4 = new Node("4");
+    auto node5 = new Node("5");
+    node0->children.push_back(node1);
+    node0->children.push_back(node2);
+    node1->children.push_back(node2);
+    node1->children.push_back(node3);
+    node2->children.push_back(node3);
+    node3->children.push_back(node4);
+    node4->children.push_back(node0);
+    node4->children.push_back(node1);
+    node4->children.push_back(node5);
     std::vector<Node*> nodes;
-    nodes.push_back(&node0);
-    nodes.push_back(&node1);
-    nodes.push_back(&node2);
-    nodes.push_back(&node3);
-    nodes.push_back(&node4);
-    nodes.push_back(&node5);
+    nodes.push_back(node0);
+    nodes.push_back(node1);
+    nodes.push_back(node2);
+    nodes.push_back(node3);
+    nodes.push_back(node4);
+    nodes.push_back(node5);
     Graph newGraph(nodes);
     return newGraph;
-}
-
-TEST_CASE("DFS Test")
-{
-    auto newGraph = makeTestGraph1();
 }
 
 TEST_CASE("Cracking The Interview: Question #4.1")
