@@ -833,36 +833,27 @@ void sortStack(Stack& t_stack)
  * -----------------------------------------------------------------------------
  * Given a directed graph, design an algorithm to find out whether there is a
  * route between two nodes. */
-bool routeBetweenNodes(Graph& t_graph, Node* origin, Node* destination)
+bool routeBetweenNodes(Node* origin, Node* destination)
 {
     if (origin == destination) return true; // edge case
     std::queue<Node*> nodesQueue;
     std::unordered_set<Node*> visitedNodes;
 
-    for (auto eachNode : t_graph.nodes)
+    if (!visitedNodes.count(origin))
     {
-        auto foundStart = false;
-        auto foundEnd = false;
-        if (!visitedNodes.count(eachNode))
+        visitedNodes.insert(origin);
+        nodesQueue.push(origin);
+        while (!nodesQueue.empty())
         {
-            visitedNodes.insert(eachNode);
-            nodesQueue.push(eachNode);
-            while (!nodesQueue.empty())
+            auto node = nodesQueue.front();
+            nodesQueue.pop();
+            if (node == destination) return true;
+            for (auto child : node->children)
             {
-                auto node = nodesQueue.front();
-                nodesQueue.pop();
-                if (node == origin)
-                    foundStart = true;
-                else if (node == destination)
-                    foundEnd = true;
-                if (foundEnd && foundStart) return true;
-                for (auto child : node->children)
+                if (!visitedNodes.count(child))
                 {
-                    if (!visitedNodes.count(child))
-                    {
-                        visitedNodes.insert(child);
-                        nodesQueue.push(child);
-                    }
+                    visitedNodes.insert(child);
+                    nodesQueue.push(child);
                 }
             }
         }
@@ -873,9 +864,12 @@ bool routeBetweenNodes(Graph& t_graph, Node* origin, Node* destination)
 /* 4.2) Minimal Tree:
  * -----------------------------------------------------------------------------
  * Given a sorted (increasing order) array with unique integer elements, write
- * an algorithm to create a binary search treee with minimal height. */
-TreeNode minmalTree(std::vector<int> sortedUniqueArray)
+ * an algorithm to create a binary search tree with minimal height. */
+TreeNode* minimalTree(std::vector<int> sortedUniqueArray)
 {
-    TreeNode root;
+    auto root = new TreeNode();
+    for (auto integer : sortedUniqueArray)
+    {
+    }
     return root;
 }
