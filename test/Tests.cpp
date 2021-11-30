@@ -94,7 +94,7 @@ Graph makeTestGraph2()
     return newGraph;
 }
 
-TEST_CASE("Cracking The Interview: Question #4.1 - Test 1")
+TEST_CASE("4.1 - Test 1")
 {
     auto newGraph = makeTestGraph1();
     REQUIRE(routeBetweenNodes(newGraph.nodes[0], newGraph.nodes[1]) == true);
@@ -113,7 +113,7 @@ TEST_CASE("Cracking The Interview: Question #4.1 - Test 1")
     REQUIRE(routeBetweenNodes(newGraph.nodes[5], newGraph.nodes[4]) == false);
 }
 
-TEST_CASE("Cracking The Interview: Question #4.1 - Test 2")
+TEST_CASE("4.1 - Test 2")
 {
     auto newGraph = makeTestGraph2();
     REQUIRE(routeBetweenNodes(newGraph.nodes[0], newGraph.nodes[3]) == true);
@@ -125,6 +125,16 @@ TEST_CASE("Cracking The Interview: Question #4.1 - Test 2")
     REQUIRE(routeBetweenNodes(newGraph.nodes[0], newGraph.nodes[4]) == false);
     REQUIRE(routeBetweenNodes(newGraph.nodes[2], newGraph.nodes[5]) == false);
     REQUIRE(routeBetweenNodes(newGraph.nodes[3], newGraph.nodes[6]) == false);
+}
+
+TEST_CASE("4.2")
+{
+    std::vector<int> arr{1,2,3,4,5,6,7,8,9,10,11,12};
+    auto tree = minimalTree(arr);
+    REQUIRE(tree->data == 3);
+    REQUIRE(tree->left->data == 3);
+    REQUIRE(tree->left->data == 3);
+    REQUIRE(tree->right->data == 3);
 }
 
 int main(int argc, char *argv[])
