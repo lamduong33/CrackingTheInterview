@@ -877,16 +877,13 @@ bool routeBetweenNodes(Node *origin, Node *destination)
 }
 
 /* Helper function for question 4.2 */
-TreeNode *minimalTreeRecurse(int middle, std::vector<int> &array)
+TreeNode* minimalTreeRecurse(int begin, int end, std::vector<int>& array)
 {
+    if (begin > end) return nullptr;
+    auto middle = (end + begin) / 2;
     auto root = new TreeNode(array[middle]); // root is middle
-    if (middle / 2 != 0)
-    {
-        int left = middle - (middle / 2);
-        int right = middle + (middle / 2);
-        root->left = minimalTreeRecurse(left, array);
-        root->right = minimalTreeRecurse(right, array);
-    }
+    root->left = minimalTreeRecurse(begin, middle-1, array);
+    root->right = minimalTreeRecurse(middle+1, end, array);
     return root;
 }
 
@@ -896,10 +893,9 @@ TreeNode *minimalTreeRecurse(int middle, std::vector<int> &array)
  * an algorithm to create a binary search tree with minimal height. */
 TreeNode *minimalTree(std::vector<int> &sortedUniqueArray)
 {
-    if (sortedUniqueArray.empty())
-        throw std::exception();
-    auto middle = (int)sortedUniqueArray.size() / 2;
-    return minimalTreeRecurse(middle, sortedUniqueArray);
+    if (sortedUniqueArray.empty()) throw std::exception();
+    auto end = (int)sortedUniqueArray.size() - 1;
+    return minimalTreeRecurse(0, end, sortedUniqueArray);
 }
 
 /* 4.3) List of Depths:
