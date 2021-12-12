@@ -1,6 +1,7 @@
 *
 !.gitignore
 !Makefile
+!README.md
 
 # Only cpp files within src
 !src/
