@@ -41,6 +41,15 @@ Graph makeTestGraph1()
     return newGraph;
 }
 
+/*
+**             8
+**         /       \
+**      4            12
+**    /   \        /   \
+**   2     6     10    14
+**  / \   / \   / \   /  \
+** 1   3 5   7 9  11 13  15
+ */
 TreeNode* makeBalancedTree()
 {
     auto root = new TreeNode(8);
