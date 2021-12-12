@@ -13,7 +13,7 @@ CXX = clang++
 INCDIR := include
 SRCDIR := src
 BINDIR := bin
-TESTDIR := test
+TESTDIR := tests
 
 TARGET = Cracking
 TESTS = Tests
