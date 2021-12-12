@@ -237,6 +237,26 @@ TEST_CASE("4.3 - List of Depths #2")
     }
 }
 
+TEST_CASE("4.3 - List of Depths #3")
+{
+    auto nonBalancedList = listOfDepths(makeNonBalancedTree());
+    REQUIRE(nonBalancedList.size() == 3); // since depth is 3
+    std::vector<int> order{1,2,3,4,5,6,7,8,9};
+    std::vector<int> lengthOrder{1,2,3,3};
+    auto num = 0;
+    auto length = 0;
+
+    for (auto& list : nonBalancedList)
+    {
+        REQUIRE (list.size() == lengthOrder[length]);
+        for (auto& node : list)
+        {
+            REQUIRE(node->data == order[num++]);
+        }
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
     int result = Catch::Session().run(argc, argv);
