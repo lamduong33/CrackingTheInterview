@@ -157,8 +157,10 @@ struct TreeNode
         : data{t_data}, left{nullptr}, right{nullptr}
     {
     }
+
     bool isLeaf() { return (left == nullptr) && (right == nullptr); }
     bool hasBoth() { return (left != nullptr) && (right != nullptr); }
+    std::string treeString(); // TODO: Finish this
 };
 
 /** A binary search tree, where the children and its descendents on the left

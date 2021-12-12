@@ -108,6 +108,7 @@ bool Graph::recursiveDFS(Node* node, std::string value,
     {
         if (!visited.count(child)) recursiveDFS(child, value, visited);
     }
+    return false;
 }
 
 /*-------------------------------STACK---------------------------------------*/
@@ -201,6 +202,32 @@ template <class T> bool Queue<T>::isEmpty()
         throw new std::exception; // Invalid state
     return (first == nullptr);
 }
+
+/* TODO: Print the tree in using BFS. */
+std::string TreeNode::treeString()
+{
+    std::string treeString = "";
+    std::queue<TreeNode*> nodesQueue;
+    std::unordered_set<TreeNode*> visitedNodes;
+
+    auto head = this;
+    nodesQueue.push(head);
+    int depth = 1;
+
+    while (!nodesQueue.empty())
+    {
+        auto node = nodesQueue.front();
+        nodesQueue.pop();
+        if (!visitedNodes.count(node))
+        {
+            visitedNodes.insert(node);
+            if (node->left != nullptr) nodesQueue.push(node->left);
+            if (node->right != nullptr) nodesQueue.push(node->right);
+        }
+    }
+    return treeString;
+}
+
 
 /*-------------------------------BINARY TREE---------------------------------*/
 
