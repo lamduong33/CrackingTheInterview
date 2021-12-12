@@ -920,7 +920,7 @@ std::vector<std::list<TreeNode*>> listOfDepths(TreeNode* root)
     level.push_back(root);
     list.push_back(level);
 
-    // O(n) for n number of nodes
+    // O(n^2) for n number of nodes
     while (!nodesQueue.empty())
     {
         auto node = nodesQueue.front();
@@ -929,17 +929,25 @@ std::vector<std::list<TreeNode*>> listOfDepths(TreeNode* root)
         // if this is a child, then we finished a level
         if (children.count(node))
         {
+            // NOTE: make sure this is on the free store
+            std::list<TreeNode*> newLevel{std::begin(children),
+                                          std::end(children)};
+            list.push_back(newLevel);
+            children.clear(); // clear list without deleting pointers
         }
-        else
+
+        if (!visitedNodes.count(node))
         {
-            if (!visitedNodes.count(node))
+            visitedNodes.insert(node);
+            if (node->left != nullptr)
             {
-                // This is one node
-                visitedNodes.insert(node);
-                if (node->left != nullptr)
-                    nodesQueue.push(node->left);
-                if (node->right != nullptr)
-                    nodesQueue.push(node->right);
+                nodesQueue.push(node->left);
+                children.insert(node->left);
+            }
+            if (node->right != nullptr)
+            {
+                nodesQueue.push(node->right);
+                children.insert(node->right);
             }
         }
     }
