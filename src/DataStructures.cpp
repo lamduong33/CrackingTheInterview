@@ -106,7 +106,7 @@ bool Graph::recursiveDFS(Node* node, std::string value,
     visited.insert(node);
     for (auto& child : node->children)
     {
-        if (!visited.count(child)) recursiveDFS(child, value, visited);
+        if (!visited.count(child)) return recursiveDFS(child, value, visited);
     }
     return false;
 }
