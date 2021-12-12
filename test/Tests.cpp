@@ -176,9 +176,12 @@ TEST_CASE("4.3 - List of Depths #1")
     REQUIRE(balancedTreeList.size() == 4); // since depth is 4
     std::vector<int> order{8,4,12,2,6,10,14,1,3,5,7,9,11,13,15};
     auto num = 0;
+    auto length = 1;
 
     for (auto& list : balancedTreeList)
     {
+        REQUIRE(list.size() == length);
+        length *= 2;
         for (auto& node : list)
         {
             REQUIRE(node->data == order[num++]);
@@ -192,9 +195,12 @@ TEST_CASE("4.3 - List of Depths #2")
     REQUIRE(linearTreeList.size() == 3); // since depth is 3
     std::vector<int> order{3,2,4,1,5};
     auto num = 0;
+    auto length = 1;
 
     for (auto& list : linearTreeList)
     {
+        REQUIRE (list.size() == length);
+        if (length == 1) length = 2;
         for (auto& node : list)
         {
             REQUIRE(node->data == order[num++]);
