@@ -61,6 +61,30 @@ TreeNode* makeBalancedTree()
     return root;
 }
 
+/* A non-balanced tree that is not sorted.
+ *      1
+ *    /   \
+ *   /     \
+ * 2       3
+ *  \     / \
+ *   4   5   6
+ *  /   / \
+ * 7   8   9
+ * */
+TreeNode* makeNonBalancedTree()
+{
+    auto root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->right = new TreeNode(4);
+    root->left->right->left = new TreeNode(7);
+    root->right->left = new TreeNode(5);
+    root->right->right = new TreeNode(6);
+    root->right->left->right = new TreeNode(9);
+    root->right->left->left = new TreeNode(8);
+    return root;
+}
+
 /* A linear tree that has the form of:
  * 1<-2<-3->4->5
  */
@@ -88,10 +112,15 @@ TEST_CASE("BinaryTree Order Test 1")
     REQUIRE(root->right->right->right->data == 4);
 }
 
-TEST_CASE("BinaryTree")
+TEST_CASE("DFSearch Test")
 {
-    BinaryTree bt;
-    bt.insert(230);
+    auto testGraph = makeTestGraph1();
+    REQUIRE(testGraph.DFSearch(testGraph.nodes[0], "0") == true);
+    REQUIRE(testGraph.DFSearch(testGraph.nodes[0], "1") == true);
+    REQUIRE(testGraph.DFSearch(testGraph.nodes[0], "2") == true);
+    REQUIRE(testGraph.DFSearch(testGraph.nodes[0], "3") == true);
+    REQUIRE(testGraph.DFSearch(testGraph.nodes[0], "4") == true);
+    REQUIRE(testGraph.DFSearch(testGraph.nodes[0], "5") == true);
 }
 
 /*
