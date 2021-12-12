@@ -161,6 +161,7 @@ Graph makeTestGraph2()
     nodes.push_back(node3);
     nodes.push_back(node4);
     nodes.push_back(node5);
+    nodes.push_back(node6);
     Graph newGraph(nodes);
     return newGraph;
 }
