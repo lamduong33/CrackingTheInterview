@@ -9,26 +9,6 @@
 
 using namespace DataStructures;
 
-TEST_CASE("BinaryTree Order Test 1")
-{
-    BinaryTree bt;
-    bt.insert(1);
-    bt.insert(2);
-    bt.insert(3);
-    bt.insert(4);
-    auto root = bt.getRoot();
-    REQUIRE(root->data == 1);
-    REQUIRE(root->right->data == 2);
-    REQUIRE(root->right->right->data == 3);
-    REQUIRE(root->right->right->right->data == 4);
-}
-
-TEST_CASE("BinaryTree")
-{
-    BinaryTree bt;
-    bt.insert(230);
-}
-
 /*
 ** Graph taken from
 ** https://i2.wp.com/algorithms.tutorialhorizon.com/files/2015/05/Graph-BFS.png
@@ -59,6 +39,59 @@ Graph makeTestGraph1()
     nodes.push_back(node5);
     Graph newGraph(nodes);
     return newGraph;
+}
+
+TreeNode* makeBalancedTree()
+{
+    auto root = new TreeNode(8);
+    root->left = new TreeNode(4);
+    root->left->left = new TreeNode(2);
+    root->left->left->left = new TreeNode(1);
+    root->left->left->right = new TreeNode(3);
+    root->left->right->left = new TreeNode(5);
+    root->left->right->right = new TreeNode(7);
+    root->left->right = new TreeNode(6);
+    root->right = new TreeNode(12);
+    root->right->left = new TreeNode(10);
+    root->right->left->left = new TreeNode(9);
+    root->right->left->right = new TreeNode(11);
+    root->right->right->left = new TreeNode(13);
+    root->right->right->right = new TreeNode(15);
+    root->right->right = new TreeNode(14);
+    return root;
+}
+
+/* A linear tree that has the form of:
+ * 1<-2<-3->4->5
+ */
+TreeNode* makeLinearTree()
+{
+    auto root = new TreeNode(3);
+    root->left = new TreeNode(2);
+    root->left->left = new TreeNode(1);
+    root->right = new TreeNode(4);
+    root->right->right = new TreeNode(5);
+    return root;
+}
+
+TEST_CASE("BinaryTree Order Test 1")
+{
+    BinaryTree bt;
+    bt.insert(1);
+    bt.insert(2);
+    bt.insert(3);
+    bt.insert(4);
+    auto root = bt.getRoot();
+    REQUIRE(root->data == 1);
+    REQUIRE(root->right->data == 2);
+    REQUIRE(root->right->right->data == 3);
+    REQUIRE(root->right->right->right->data == 4);
+}
+
+TEST_CASE("BinaryTree")
+{
+    BinaryTree bt;
+    bt.insert(230);
 }
 
 /*
@@ -134,6 +167,39 @@ TEST_CASE("4.2")
     REQUIRE(tree->data == 7);
     REQUIRE(tree->left->data == 3);
     REQUIRE(tree->right->data == 3);
+}
+
+/* Test based on a balanced tree with depth of 4. */
+TEST_CASE("4.3 - List of Depths #1")
+{
+    auto balancedTreeList = listOfDepths(makeBalancedTree());
+    REQUIRE(balancedTreeList.size() == 4); // since depth is 4
+    std::vector<int> order{8,4,12,2,6,10,14,1,3,5,7,9,11,13,15};
+    auto num = 0;
+
+    for (auto& list : balancedTreeList)
+    {
+        for (auto& node : list)
+        {
+            REQUIRE(node->data == order[num++]);
+        }
+    }
+}
+
+TEST_CASE("4.3 - List of Depths #2")
+{
+    auto linearTreeList = listOfDepths(makeLinearTree());
+    REQUIRE(linearTreeList.size() == 3); // since depth is 3
+    std::vector<int> order{3,2,4,1,5};
+    auto num = 0;
+
+    for (auto& list : linearTreeList)
+    {
+        for (auto& node : list)
+        {
+            REQUIRE(node->data == order[num++]);
+        }
+    }
 }
 
 int main(int argc, char *argv[])
