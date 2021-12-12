@@ -23,7 +23,7 @@ INCFILES = $(INCDIR)/*.hpp
 all: $(TARGET)
 $(TARGET): $(SRCDIR)/$(TARGET).cpp
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCFILES)
-test: $(TESTS)
+tests: $(TESTS)
 $(TESTS): $(TESTDIR)/$(TESTS).cpp
 	$(CXX) $(CXXFLAGS) $(TESTDIR)/$(TESTS).cpp -o $(TESTS) $(SRCDIR)/DataStructures.cpp
 clean:
