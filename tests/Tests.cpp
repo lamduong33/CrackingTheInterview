@@ -262,7 +262,7 @@ TEST_CASE("4.3 - List of Depths #3")
 
     for (auto& list : nonBalancedList)
     {
-        REQUIRE (list.size() == lengthOrder[length]);
+        REQUIRE (list.size() == lengthOrder[length++]);
         for (auto& node : list)
         {
             REQUIRE(node->data == order[num++]);
