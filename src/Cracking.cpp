@@ -911,29 +911,22 @@ std::vector<std::list<TreeNode*>> listOfDepths(TreeNode* root)
     std::vector<std::list<TreeNode*>> list;
     std::queue<TreeNode*> nodesQueue;
     std::unordered_set<TreeNode*> visitedNodes;
-    std::unordered_set<TreeNode*> children;
+    std::list<TreeNode*> level;
+    level.push_back(root);
+    TreeNode* newLevelMarker = root;
 
     nodesQueue.push(root);
 
-    // Process the first level
-    std::list<TreeNode*> level; // first level, just root
-    level.push_back(root);
-    list.push_back(level);
-
-    // O(n^2) for n number of nodes
     while (!nodesQueue.empty())
     {
         auto node = nodesQueue.front();
         nodesQueue.pop();
 
-        // if this is a child, then we finished a level
-        if (children.count(node))
+        if (node == newLevelMarker)
         {
-            // NOTE: make sure this is on the free store
-            std::list<TreeNode*> newLevel{std::begin(children),
-                                          std::end(children)};
-            list.push_back(newLevel);
-            children.clear(); // clear list without deleting pointers
+            newLevelMarker = nullptr;
+            list.push_back(std::list<TreeNode*>{level}); // copy constructor
+            level.clear();
         }
 
         if (!visitedNodes.count(node))
@@ -942,12 +935,14 @@ std::vector<std::list<TreeNode*>> listOfDepths(TreeNode* root)
             if (node->left != nullptr)
             {
                 nodesQueue.push(node->left);
-                children.insert(node->left);
+                level.push_back(node->left);
+                if (newLevelMarker == nullptr) newLevelMarker = node->left;
             }
             if (node->right != nullptr)
             {
                 nodesQueue.push(node->right);
-                children.insert(node->right);
+                level.push_back(node->right);
+                if (newLevelMarker == nullptr) newLevelMarker = node->right;
             }
         }
     }
