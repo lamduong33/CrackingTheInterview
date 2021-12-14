@@ -911,12 +911,13 @@ std::vector<std::list<TreeNode*>> listOfDepths(TreeNode* root)
     std::vector<std::list<TreeNode*>> list;
     std::queue<TreeNode*> nodesQueue;
     std::unordered_set<TreeNode*> visitedNodes;
+    nodesQueue.push(root);
+
     std::list<TreeNode*> level;
     level.push_back(root);
     TreeNode* newLevelMarker = root;
 
-    nodesQueue.push(root);
-
+    // O(n) runtime for n nodes
     while (!nodesQueue.empty())
     {
         auto node = nodesQueue.front();
@@ -936,16 +937,32 @@ std::vector<std::list<TreeNode*>> listOfDepths(TreeNode* root)
             {
                 nodesQueue.push(node->left);
                 level.push_back(node->left);
-                if (newLevelMarker == nullptr) newLevelMarker = node->left;
+                if (newLevelMarker == nullptr)
+                    newLevelMarker = node->left;
             }
             if (node->right != nullptr)
             {
                 nodesQueue.push(node->right);
                 level.push_back(node->right);
-                if (newLevelMarker == nullptr) newLevelMarker = node->right;
+                if (newLevelMarker == nullptr)
+                    newLevelMarker = node->right;
             }
         }
     }
-
     return list;
+}
+
+/* 4.4) Check Balanced:
+ * -----------------------------------------------------------------------------
+ * Implement a function to check if a binary tree is balanced. For the purposes
+ * of this question, a balanced tree is defined to be a tree such that the
+ * heights of the two subtrees of any node never differ by more than one. */
+bool checkBalanced(TreeNode* root)
+{
+    if ((root->left == nullptr) != (root->right == nullptr))
+        return false; // there's an imbalance if there's one null node.
+    else if (root->left != nullptr && root->right != nullptr)
+        return std::min(checkBalanced(root->left), checkBalanced(root->right));
+    else
+        return true; // a node is balanced if it has no children.
 }
