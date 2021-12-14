@@ -270,6 +270,17 @@ TEST_CASE("4.3 - List of Depths #3")
     }
 }
 
+TEST_CASE("4.4 - Check Balanced")
+{
+    auto nonBalancedTree = makeNonBalancedTree();
+    auto balancedTree = makeBalancedTree();
+    auto linearTree = makeLinearTree();
+
+    REQUIRE(checkBalanced(nonBalancedTree) == false);
+    REQUIRE(checkBalanced(linearTree) == false);
+    REQUIRE(checkBalanced(balancedTree) == false);
+}
+
 int main(int argc, char *argv[])
 {
     int result = Catch::Session().run(argc, argv);
