@@ -924,8 +924,8 @@ std::vector<std::list<TreeNode*>> listOfDepths(TreeNode* root)
 
         if (node == newLevelMarker)
         {
-            newLevelMarker = nullptr;
-            list.push_back(std::list<TreeNode*>{level}); // copy constructor
+            newLevelMarker = nullptr; // marker to see when new level is reached
+            list.push_back(std::move(level));
             level.clear();
         }
 
