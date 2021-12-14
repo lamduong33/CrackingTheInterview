@@ -77,8 +77,8 @@ TreeNode* makeBalancedTree()
  * 2       3
  *  \     / \
  *   4   5   6
- *  /   / \
- * 7   8   9
+ *      / \
+ *     8   9
  * */
 TreeNode* makeNonBalancedTree()
 {
@@ -86,7 +86,6 @@ TreeNode* makeNonBalancedTree()
     root->left = new TreeNode(2);
     root->right = new TreeNode(3);
     root->left->right = new TreeNode(4);
-    root->left->right->left = new TreeNode(7);
     root->right->left = new TreeNode(5);
     root->right->right = new TreeNode(6);
     root->right->left->right = new TreeNode(9);
@@ -255,8 +254,8 @@ TEST_CASE("4.3 - List of Depths #3")
 {
     auto nonBalancedList = listOfDepths(makeNonBalancedTree());
     REQUIRE(nonBalancedList.size() == 4); // since depth is 4
-    std::vector<int> order{1,2,3,4,5,6,7,8,9};
-    std::vector<int> lengthOrder{1,2,3,3};
+    std::vector<int> order{1,2,3,4,5,6,8,9};
+    std::vector<int> lengthOrder{1,2,3,2};
     auto num = 0;
     auto length = 0;
 
@@ -272,15 +271,10 @@ TEST_CASE("4.3 - List of Depths #3")
 
 TEST_CASE("4.4 - Check Balanced")
 {
-    auto nonBalancedTree = makeNonBalancedTree();
-    auto balancedTree = makeBalancedTree();
-    auto linearTree = makeLinearTree();
-
-    REQUIRE(checkBalanced(nonBalancedTree) == false);
-    REQUIRE(checkBalanced(linearTree) == false);
-    REQUIRE(checkBalanced(balancedTree) == false);
+    REQUIRE(checkBalanced(makeNonBalancedTree()) == false);
+    REQUIRE(checkBalanced(makeBalancedTree()) == true);
+    REQUIRE(checkBalanced(makeLinearTree()) == false);
 }
-
 int main(int argc, char *argv[])
 {
     int result = Catch::Session().run(argc, argv);
