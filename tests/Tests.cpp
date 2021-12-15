@@ -5,7 +5,7 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch2/catch.hpp>
 #include "../include/DataStructures.hpp"
-#include "../src/Cracking.cpp"
+#include "../src/Crack.cpp"
 
 using namespace DataStructures;
 
@@ -275,6 +275,14 @@ TEST_CASE("4.4 - Check Balanced")
     REQUIRE(checkBalanced(makeBalancedTree()) == true);
     REQUIRE(checkBalanced(makeLinearTree()) == false);
 }
+
+TEST_CASE("4.5 - validate binary search tree")
+{
+    REQUIRE(validateBST(makeBalancedTree()) == true);
+    REQUIRE(validateBST(makeNonBalancedTree()) == false);
+    REQUIRE(validateBST(makeLinearTree()) == true);
+}
+
 int main(int argc, char *argv[])
 {
     int result = Catch::Session().run(argc, argv);
