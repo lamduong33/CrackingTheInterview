@@ -966,10 +966,29 @@ bool checkBalanced(TreeNode* root)
     else
         return true; // a node is balanced if it has no children.
 }
+
 /* 4.5) Validate BST:
  * -----------------------------------------------------------------------------
  * Implement a function to check if a binary tree is a binary search tree. */
 bool validateBST(TreeNode* root)
 {
-
+    // A BST has left children less than root and right children more than root
+    bool result = false;
+    if (root->isLeaf())
+    {
+        result = true;
+    }
+    else
+    {
+        if ((!validateBST(root->left)) || (!validateBST(root->right)))
+        {
+            result = false;
+        }
+        else if (root->left->data <= root->data ||
+                 root->data < root->right->data)
+        {
+            result = false;
+        }
+    }
+    return result;
 }
