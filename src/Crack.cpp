@@ -962,7 +962,9 @@ bool checkBalanced(TreeNode* root)
 bool validateBST(TreeNode* root)
 {
     // A BST has left descendants less than root and right descendants more than
-    // root
+    // root. For this problem, simply do a DFS traversal, then keep a list of
+    // ancestors and the direction in which you descended. If they contradict
+    // the definition of a BST, return falsa and propagate up.
     std::list<std::pair<TreeNode*, bool>> ancestors; // true is right
     return recursiveDFS(root, ancestors);
 }
