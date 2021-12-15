@@ -865,7 +865,6 @@ bool routeBetweenNodes(Node* origin, Node* destination)
     return false;
 }
 
-
 /* 4.2) Minimal Tree:
  * -----------------------------------------------------------------------------
  * Given a sorted (increasing order) array with unique integer elements, write
@@ -964,14 +963,45 @@ bool validateBST(TreeNode* root)
 {
     // A BST has left descendants less than root and right descendants more than
     // root
-    auto result = false;
-    std::list<TreeNode*> nodesVisited;
-    std::list<bool> directionVisited; // right is true
-
-    return result;
+    std::list<std::pair<TreeNode*, bool>> ancestors; // true is right
+    return recursiveDFS(root, ancestors);
 }
 
-bool recursiveDFS(TreeNode* root, std::list<TreeNode*> nodesList,
-                  std::list<bool> directionsList)
+/* Recursive function to determine if a tree is a valid BST for 4.5 */
+bool recursiveDFS(TreeNode* root,
+                  std::list<std::pair<TreeNode*, bool>> ancestors)
 {
+    if (root == nullptr) return true;
+    // See if the current node does not conform to BST standard of ancestors
+    for (auto& ancestor : ancestors)
+    {
+        if (((ancestor.second) && (root->data < ancestor.first->data)) ||
+            ((!ancestor.second) && (root->data > ancestor.first->data)))
+            return false;
+    }
+
+    // Go left
+    if (root->left != nullptr)
+    {
+        ancestors.push_back(std::pair<TreeNode*, bool>{root, false});
+        if (!recursiveDFS(root->left, ancestors))
+        {
+            ancestors.pop_back();
+            return false;
+        }
+        ancestors.pop_back();
+    }
+    // Go right
+    if (root->right !=nullptr)
+    {
+        ancestors.push_back(std::pair<TreeNode*, bool>{root, true});
+        if (!recursiveDFS(root->right, ancestors))
+        {
+            ancestors.pop_back();
+            return false;
+        }
+        ancestors.pop_back();
+    }
+
+    return true;
 }
