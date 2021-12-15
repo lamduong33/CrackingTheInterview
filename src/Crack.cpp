@@ -967,20 +967,6 @@ bool validateBST(TreeNode* root)
     return recursiveDFS(root, ancestors);
 }
 
-bool checkBST(TreeNode* root, TreeNode* child, bool direction,
-              std::list<std::pair<TreeNode*, bool>> ancestors)
-{
-    auto result = true;
-    if (child != nullptr)
-    {
-        ancestors.push_back(std::pair<TreeNode*, bool>{root, direction});
-        if (!recursiveDFS(child, ancestors))
-            result = false;
-        ancestors.pop_back();
-    }
-    return result;
-}
-
 /* Recursive function to determine if a tree is a valid BST for 4.5 */
 bool recursiveDFS(TreeNode* root,
                   std::list<std::pair<TreeNode*, bool>> ancestors)
@@ -999,4 +985,18 @@ bool recursiveDFS(TreeNode* root,
     if (!checkBST(root, root->right, true, ancestors)) return false;
 
     return true;
+}
+/* Helper function to recursive DFS to validate BST */
+bool checkBST(TreeNode* root, TreeNode* child, bool direction,
+              std::list<std::pair<TreeNode*, bool>> ancestors)
+{
+    auto result = true;
+    if (child != nullptr)
+    {
+        ancestors.push_back(std::pair<TreeNode*, bool>{root, direction});
+        if (!recursiveDFS(child, ancestors))
+            result = false;
+        ancestors.pop_back();
+    }
+    return result;
 }
