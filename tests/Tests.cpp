@@ -299,6 +299,7 @@ TEST_CASE("4.4 - Check Balanced")
     REQUIRE(checkBalanced(makeNonBalancedTree()) == false);
     REQUIRE(checkBalanced(makeBalancedTree()) == true);
     REQUIRE(checkBalanced(makeLinearTree()) == false);
+    REQUIRE(checkBalanced(makeWeirdTree1()) == false);
 }
 
 TEST_CASE("4.5 - validate binary search tree")
