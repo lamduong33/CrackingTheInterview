@@ -1,15 +1,5 @@
-#include "../include/DataStructures.hpp"
-#include <exception>
-#include <iostream>
-#include <list>
-#include <memory> // Smart pointers
-#include <stack>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
+#include "../include/Crack.hpp"
 
-using namespace DataStructures;
 /*
 ** 1.4) Palindrome Permutation:
 ** ----------------------------------------------------------------------
@@ -144,29 +134,6 @@ void rotateMatrix(std::vector<std::vector<int>>& matrix)
     }
 }
 
-/* Helper function for finding zeros within an MxN matrix. The first item in
-the pair is the row index and the second item is column index. This is for
-problem 1.8.*/
-std::pair<std::unordered_set<int>, std::unordered_set<int>> const
-zeroIndices(std::vector<std::vector<int>> const& matrix)
-{
-    std::unordered_set<int> rowIndices;
-    std::unordered_set<int> columnIndices;
-    for (int i = 0; i < (int)matrix.size(); i++)
-    {
-        for (int j = 0; j < (int)matrix.size(); j++)
-        {
-            if (matrix[i][j] == 0)
-            {
-                rowIndices.insert(i);
-                columnIndices.insert(j);
-            }
-        }
-    }
-    std::pair<std::unordered_set<int>, std::unordered_set<int>> result(
-        rowIndices, columnIndices);
-    return result;
-}
 /*
 ** 1.8) Zero Matrix
 **
@@ -193,6 +160,46 @@ void zeroMatrix(std::vector<std::vector<int>>& matrix)
     }
 }
 
+/* Helper function for finding zeros within an MxN matrix. The first item in
+the pair is the row index and the second item is column index. This is for
+problem 1.8.*/
+std::pair<std::unordered_set<int>, std::unordered_set<int>> const
+zeroIndices(std::vector<std::vector<int>> const& matrix)
+{
+    std::unordered_set<int> rowIndices;
+    std::unordered_set<int> columnIndices;
+    for (int i = 0; i < (int)matrix.size(); i++)
+    {
+        for (int j = 0; j < (int)matrix.size(); j++)
+        {
+            if (matrix[i][j] == 0)
+            {
+                rowIndices.insert(i);
+                columnIndices.insert(j);
+            }
+        }
+    }
+    std::pair<std::unordered_set<int>, std::unordered_set<int>> result(
+        rowIndices, columnIndices);
+    return result;
+}
+
+/*
+** 1.9) String Rotation
+---------------------------------------------------------------------------
+** Assume you have a method isSubstring which checks if one word is a
+** substring of another. Given two strings, s1 and s2, write code to check if
+** s2 is a rotation of s1 using only one call to isSubstring(e.g.
+** "waterbottle" is a rotation of "erbottlewat").
+** NOTE: A rotation is simply where a chunk is moved around, in the case of
+** "waterbottle", "wat" is moved to the end of the string, creating
+** "erbottlewat"
+*/
+bool stringRotation(const std::string& substr, const std::string& str)
+{
+    return isSubstring(substr, str + str);
+}
+
 /* Helper Method to see if a string is a substring of another for problem 1.9.
  */
 bool isSubstring(const std::string& substr, const std::string& str)
@@ -216,24 +223,6 @@ bool isSubstring(const std::string& substr, const std::string& str)
         }
     }
     return result;
-}
-
-/*
-** 1.9) String Rotation
-**
----------------------------------------------------------------------------
-** Assume you have a method isSubstring which checks if one word is a
-** substring of another. Given two strings, s1 and s2, write code to check
-if
-** s2 is a rotation of s1 using only one call to isSubstring(e.g.
-** "waterbottle" is a rotation of "erbottlewat").
-NOTE: A rotation is simply where a chunk is moved around, in the case of
-"waterbottle", "wat" is moved to the end of the string, creating
-"erbottlewat"
-*/
-bool stringRotation(const std::string& substr, const std::string& str)
-{
-    return isSubstring(substr, str + str);
 }
 
 /* Helper function to print out a matrix for simple debugging */
@@ -876,17 +865,6 @@ bool routeBetweenNodes(Node* origin, Node* destination)
     return false;
 }
 
-/* Helper function for question 4.2 */
-TreeNode* minimalTreeRecurse(int begin, int end, std::vector<int>& array)
-{
-    if (begin > end)
-        return nullptr;
-    auto middle = (end + begin) / 2;
-    auto root = new TreeNode(array[middle]); // root is middle
-    root->left = minimalTreeRecurse(begin, middle - 1, array);
-    root->right = minimalTreeRecurse(middle + 1, end, array);
-    return root;
-}
 
 /* 4.2) Minimal Tree:
  * -----------------------------------------------------------------------------
@@ -898,6 +876,18 @@ TreeNode* minimalTree(std::vector<int>& sortedUniqueArray)
         throw std::exception();
     auto end = (int)sortedUniqueArray.size() - 1;
     return minimalTreeRecurse(0, end, sortedUniqueArray);
+}
+
+/* Helper function for question 4.2 */
+TreeNode* minimalTreeRecurse(int begin, int end, std::vector<int>& array)
+{
+    if (begin > end)
+        return nullptr;
+    auto middle = (end + begin) / 2;
+    auto root = new TreeNode(array[middle]); // root is middle
+    root->left = minimalTreeRecurse(begin, middle - 1, array);
+    root->right = minimalTreeRecurse(middle + 1, end, array);
+    return root;
 }
 
 /* 4.3) List of Depths:
@@ -972,23 +962,16 @@ bool checkBalanced(TreeNode* root)
  * Implement a function to check if a binary tree is a binary search tree. */
 bool validateBST(TreeNode* root)
 {
-    // A BST has left children less than root and right children more than root
-    bool result = false;
-    if (root->isLeaf())
-    {
-        result = true;
-    }
-    else
-    {
-        if ((!validateBST(root->left)) || (!validateBST(root->right)))
-        {
-            result = false;
-        }
-        else if (root->left->data <= root->data ||
-                 root->data < root->right->data)
-        {
-            result = false;
-        }
-    }
+    // A BST has left descendants less than root and right descendants more than
+    // root
+    auto result = false;
+    std::list<TreeNode*> nodesVisited;
+    std::list<bool> directionVisited; // right is true
+
     return result;
+}
+
+bool recursiveDFS(TreeNode* root, std::list<TreeNode*> nodesList,
+                  std::list<bool> directionsList)
+{
 }
