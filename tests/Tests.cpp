@@ -106,6 +106,31 @@ TreeNode* makeLinearTree()
     return root;
 }
 
+ /*
+ ** Create an imbalanced and non-BST Tree:
+ **        15
+ **       /
+ **      8
+ **    /  \
+ **   4    11
+ **  / \
+ ** 3   6
+ **    / \
+ **   5   9
+  */
+TreeNode* makeWeirdTree1()
+{
+    auto root = new TreeNode(15);
+    root->left = new TreeNode(8);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(11);
+    root->left->left->left = new TreeNode(3);
+    root->left->left->right = new TreeNode(6);
+    root->left->left->right->left = new TreeNode(5);
+    root->left->left->right->right = new TreeNode(9);
+    return root;
+}
+
 TEST_CASE("BinaryTree Order Test 1")
 {
     BinaryTree bt;
