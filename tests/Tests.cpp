@@ -306,6 +306,7 @@ TEST_CASE("4.5 - validate binary search tree")
     REQUIRE(validateBST(makeBalancedTree()) == true);
     REQUIRE(validateBST(makeNonBalancedTree()) == false);
     REQUIRE(validateBST(makeLinearTree()) == true);
+    REQUIRE(validateBST(makeWeirdTree1()) == false);
 }
 
 int main(int argc, char *argv[])
