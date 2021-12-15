@@ -39,15 +39,15 @@ void split(DoublyLinkedNode* list, DoublyLinkedNode** left,
 DoublyLinkedNode* mergeSorted(DoublyLinkedNode* left, DoublyLinkedNode* right);
 void mergeSortLinkedList(DoublyLinkedNode** list);
 
-
 void sortStack(Stack& t_stack);
-
 
 bool routeBetweenNodes(Node* origin, Node* destination);
 TreeNode* minimalTreeRecurse(int begin, int end, std::vector<int>& array);
 std::vector<std::list<TreeNode*>> listOfDepths(TreeNode* root);
 bool checkBalanced(TreeNode* root);
-bool recursiveDFS(TreeNode* root, std::list<TreeNode*> nodesList,
-                  std::list<bool> directionsList);
+bool checkBST(TreeNode* root, TreeNode* child, bool direction,
+              std::list<std::pair<TreeNode*, bool>> ancestors);
+bool recursiveDFS(TreeNode* root,
+                  std::list<std::pair<TreeNode*, bool>> ancestors);
 
 #endif // CRACK_HPP
