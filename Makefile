@@ -15,7 +15,7 @@ SRCDIR := src
 BINDIR := bin
 TESTDIR := tests
 
-TARGET = Cracking
+TARGET = Crack
 TESTS = CrackTests
 SRCFILES = $(SRCDIR)/*.cpp
 INCFILES = $(INCDIR)/*.hpp
