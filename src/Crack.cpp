@@ -967,14 +967,16 @@ bool validateBST(TreeNode* root)
     // ancestors and the direction in which you descended. If they contradict
     // the definition of a BST, return false and propagate up.
 
-    // Old solution, inefficient. The book gives a O(n) runtime instead.
+    // Old solution, inefficient. O(n^2 runtime)
     // std::list<std::pair<TreeNode*, bool>> ancestors; // true is right
     // return recursiveDFS(root, ancestors);
 
+    // New solution
     return betterValidateBST(root, nullptr, nullptr);
 }
 
-/* Recursive function to determine if a tree is a valid BST for 4.5.
+/**
+ * @brief Recursive function to determine if a tree is a valid BST for 4.5.
  * This solution is O(n^2), since it looks for ancestors for every node n */
 bool recursiveDFS(TreeNode* root,
                   std::list<std::pair<TreeNode*, bool>> ancestors)
@@ -997,6 +999,21 @@ bool recursiveDFS(TreeNode* root,
     return true;
 }
 
+/* Helper function to recursive DFS to validate BST */
+bool checkBST(TreeNode* root, TreeNode* child, bool direction,
+              std::list<std::pair<TreeNode*, bool>> ancestors)
+{
+    auto result = true;
+    if (child != nullptr)
+    {
+        ancestors.push_back(std::pair<TreeNode*, bool>{root, direction});
+        if (!recursiveDFS(child, ancestors))
+            result = false;
+        ancestors.pop_back();
+    }
+    return result;
+}
+
 /**
  * @brief Solution for 4.5 provided by the book. O(n). */
 bool betterValidateBST(TreeNode* root, int* min, int* max)
@@ -1013,21 +1030,6 @@ bool betterValidateBST(TreeNode* root, int* min, int* max)
         return false;
 
     return true;
-}
-
-/* Helper function to recursive DFS to validate BST */
-bool checkBST(TreeNode* root, TreeNode* child, bool direction,
-              std::list<std::pair<TreeNode*, bool>> ancestors)
-{
-    auto result = true;
-    if (child != nullptr)
-    {
-        ancestors.push_back(std::pair<TreeNode*, bool>{root, direction});
-        if (!recursiveDFS(child, ancestors))
-            result = false;
-        ancestors.pop_back();
-    }
-    return result;
 }
 
 /**
