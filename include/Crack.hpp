@@ -49,5 +49,6 @@ bool checkBST(TreeNode* root, TreeNode* child, bool direction,
               std::list<std::pair<TreeNode*, bool>> ancestors);
 bool recursiveDFS(TreeNode* root,
                   std::list<std::pair<TreeNode*, bool>> ancestors);
+TreeNode* successor(TreeNode* root);
 
 #endif // CRACK_HPP

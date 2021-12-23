@@ -956,15 +956,18 @@ bool checkBalanced(TreeNode* root)
         return true; // a node is balanced if it has no children.
 }
 
-/* 4.5) Validate BST:
- * -----------------------------------------------------------------------------
- * Implement a function to check if a binary tree is a binary search tree. */
+/**
+ ** 4.5) Validate BST:
+ ** -----------------------------------------------------------------------------
+ ** Implement a function to check if a binary tree is a binary search tree. */
 bool validateBST(TreeNode* root)
 {
     // A BST has left descendants less than root and right descendants more than
     // root. For this problem, simply do a DFS traversal, then keep a list of
     // ancestors and the direction in which you descended. If they contradict
-    // the definition of a BST, return falsa and propagate up.
+    // the definition of a BST, return false and propagate up.
+
+    // Old solution, inefficient. The book gives a O(n) runtime instead.
     std::list<std::pair<TreeNode*, bool>> ancestors; // true is right
     return recursiveDFS(root, ancestors);
 }
@@ -983,8 +986,10 @@ bool recursiveDFS(TreeNode* root,
             return false;
     }
 
-    if (!checkBST(root, root->left, false, ancestors)) return false;
-    if (!checkBST(root, root->right, true, ancestors)) return false;
+    if (!checkBST(root, root->left, false, ancestors))
+        return false;
+    if (!checkBST(root, root->right, true, ancestors))
+        return false;
 
     return true;
 }
@@ -1002,3 +1007,11 @@ bool checkBST(TreeNode* root, TreeNode* child, bool direction,
     }
     return result;
 }
+
+/**
+ ** 4.6) Successor:
+ ** -----------------------------------------------------------------------------
+ ** Write an algorithm to find the "next" node (i.e., in-order successor) of a
+ ** given node in a binary search tree. You may assume that each node has alink
+ ** to its parent. */
+TreeNode* successor(TreeNode* root) {}
