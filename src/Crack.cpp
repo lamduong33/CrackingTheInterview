@@ -968,11 +968,14 @@ bool validateBST(TreeNode* root)
     // the definition of a BST, return false and propagate up.
 
     // Old solution, inefficient. The book gives a O(n) runtime instead.
-    std::list<std::pair<TreeNode*, bool>> ancestors; // true is right
-    return recursiveDFS(root, ancestors);
+    // std::list<std::pair<TreeNode*, bool>> ancestors; // true is right
+    // return recursiveDFS(root, ancestors);
+
+    return betterValidateBST(root, nullptr, nullptr);
 }
 
-/* Recursive function to determine if a tree is a valid BST for 4.5 */
+/* Recursive function to determine if a tree is a valid BST for 4.5.
+ * This solution is O(n^2), since it looks for ancestors for every node n */
 bool recursiveDFS(TreeNode* root,
                   std::list<std::pair<TreeNode*, bool>> ancestors)
 {
@@ -993,6 +996,25 @@ bool recursiveDFS(TreeNode* root,
 
     return true;
 }
+
+/**
+ * @brief Solution for 4.5 provided by the book. O(n). */
+bool betterValidateBST(TreeNode* root, int* min, int* max)
+{
+    if (root == nullptr)
+        return true;
+
+    if ((min != nullptr && root->data <= *min) ||
+        (max != nullptr && root->data > *max))
+        return false;
+
+    if ((!betterValidateBST(root->left, min, &root->data)) ||
+        (!betterValidateBST(root->right, &root->data, max)))
+        return false;
+
+    return true;
+}
+
 /* Helper function to recursive DFS to validate BST */
 bool checkBST(TreeNode* root, TreeNode* child, bool direction,
               std::list<std::pair<TreeNode*, bool>> ancestors)

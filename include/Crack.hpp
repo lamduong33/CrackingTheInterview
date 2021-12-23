@@ -49,6 +49,7 @@ bool checkBST(TreeNode* root, TreeNode* child, bool direction,
               std::list<std::pair<TreeNode*, bool>> ancestors);
 bool recursiveDFS(TreeNode* root,
                   std::list<std::pair<TreeNode*, bool>> ancestors);
+bool betterValidateBST(TreeNode* root, int* min, int* max);
 TreeNode* successor(TreeNode* root);
 
 #endif // CRACK_HPP
