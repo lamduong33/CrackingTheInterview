@@ -310,6 +310,23 @@ TEST_CASE("4.5 - validate binary search tree")
     REQUIRE(validateBST(makeWeirdTree1()) == false);
 }
 
+TEST_CASE("4.6 - successor")
+{
+    auto balancedTree = makeBalancedTree();
+    auto nonBalancedTree = makeNonBalancedTree();
+    auto linearTree = makeLinearTree();
+    auto rightTree = new TreeNode(1);
+    rightTree->right = new TreeNode(2);
+    rightTree->right->right = new TreeNode(3);
+    rightTree->right->right->right = new TreeNode(4);
+    rightTree->right->right->left = new TreeNode(5);
+
+    REQUIRE(successor(balancedTree) == balancedTree->left->left->left);
+    REQUIRE(successor(nonBalancedTree) == nonBalancedTree->left);
+    REQUIRE(successor(linearTree) == linearTree->left->left);
+    REQUIRE(successor(rightTree) == rightTree);
+}
+
 int main(int argc, char *argv[])
 {
     int result = Catch::Session().run(argc, argv);

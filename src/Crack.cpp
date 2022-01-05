@@ -999,7 +999,7 @@ bool recursiveDFS(TreeNode* root,
     return true;
 }
 
-/* Helper function to recursive DFS to validate BST */
+/** @brief Helper function to recursive DFS to validate BST */
 bool checkBST(TreeNode* root, TreeNode* child, bool direction,
               std::list<std::pair<TreeNode*, bool>> ancestors)
 {
@@ -1036,6 +1036,12 @@ bool betterValidateBST(TreeNode* root, int* min, int* max)
  ** 4.6) Successor:
  ** -----------------------------------------------------------------------------
  ** Write an algorithm to find the "next" node (i.e., in-order successor) of a
- ** given node in a binary search tree. You may assume that each node has alink
+ ** given node in a binary search tree. You may assume that each node has a link
  ** to its parent. */
-TreeNode* successor(TreeNode* root) {}
+TreeNode* successor(TreeNode* root)
+{
+    if (root->left != nullptr)
+         return successor(root->left);
+    else
+        return root;
+}
