@@ -466,16 +466,15 @@ int BinarySearchTree::max(TreeNode* node)
     }
 }
 
-void BinarySearchTree::balanceTree() {}
-
-/*-------------------------------MIN HEAP---------------------------------*/
-
-/* This takes O(log n) time. */
-void MinHeap::insert(int t_data, TreeNode* node)
+void BinarySearchTree::balanceTree()
 {
-    // Insert at the right most spot.
-    if (node->right != nullptr) insert(t_data, node->right);
-    // Fix the tree
 }
 
-int MinHeap::extract_min() { return this->getRoot()->data; }
+Heap::Heap(std::vector<int>& t_list) : m_root{}, m_list{}
+{
+    auto head = this->m_root;
+    for (auto item : t_list)
+    {
+        head->data = item;
+    }
+}
